@@ -1,0 +1,5 @@
+C:\Git\Autodrive\Autodrive\Autodrive\obj\Debug\Autodrive.csprojResolveAssemblyReference.cache
+C:\Git\Autodrive\Autodrive\Autodrive\bin\Debug\Autodrive.dll
+C:\Git\Autodrive\Autodrive\Autodrive\bin\Debug\Autodrive.pdb
+C:\Git\Autodrive\Autodrive\Autodrive\obj\Debug\Autodrive.dll
+C:\Git\Autodrive\Autodrive\Autodrive\obj\Debug\Autodrive.pdb
