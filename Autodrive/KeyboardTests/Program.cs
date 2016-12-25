@@ -1,4 +1,5 @@
 ﻿
+using Autodrive;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace KeyboardTests
     {
         static void Main(string[] args)
         {
+            var session = Session.Instance;
             var enter = char.ConvertFromUtf32(13);
           //  var tasks = new List<ITask>();
         }

@@ -34,8 +34,13 @@ namespace Autodrive
 
         public void Press(char c)
         {
-            var ascii = ASCIIEncoding.ASCII.GetBytes(new char[1] { c });
-            _sp.Write(ascii, 0, ascii.Length);
+            _sp.Write(new char[] { c }, 0, 1);
+        }
+
+        private void Send(byte code)
+        {
+            var bytes = new byte[] { code };
+            _sp.Write(bytes, 0, bytes.Length);
         }
 
         public void PressEnter()
@@ -52,23 +57,17 @@ namespace Autodrive
 
         public void PressLeft(int moveLeftAmount, int msDelay)
         {
-            //D7 = 215
-            var left = char.ConvertFromUtf32(215);
-            Press(left);
+            Send(0xD7);
         }
 
         public void PressRight(int moveRightAmount, int msDelay)
         {
-            //D8 = 216
-            var right = char.ConvertFromUtf32(216);
-            Press(right);
+            Send(0xD8);
         }
 
         public void PressDown(int moveDownAmount, int msDelay)
         {
-            //D6 = 214
-            var down = char.ConvertFromUtf32(214);
-            Press(down);
+            Send(0xD6);
         }
 
         public void EnterNumber(double num)
@@ -85,8 +84,7 @@ namespace Autodrive
 
         public void PressF2()
         {
-            var f2 = char.ConvertFromUtf32(161);
-            Press(f2);
+            Send(0xa1);
         }
     }
 }

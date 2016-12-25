@@ -18,7 +18,7 @@ namespace Autodrive
             Modes = new ModeTable();
             TreatmentModes = new TreatmentModeTable();
             Energies = new EnergyTable();
-            RepRates = new RepRateTable();
+            RepRates = new RepRateTable(Energies);
             Accessories = new AccessoryTable();
             Cones = new ConeTable();
             Motor = new MotorTable();

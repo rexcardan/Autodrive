@@ -23,13 +23,16 @@ namespace Autodrive
                 if (instance == null)
                 {
                     instance = new Session();
+                    instance.Initialize();
                 }
                 return instance;
             }
         }
         #endregion
 
-        private Session()
+        private Session() { }
+
+        private void Initialize()
         {
             this.MachineState = MachineState.InitNew();
             this.MachineConstraints = MachineConstraints.GetDefault();

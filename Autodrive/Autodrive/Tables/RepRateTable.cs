@@ -4,7 +4,7 @@ namespace Autodrive.Tables
 {
     public class RepRateTable : NavigationTable<R>
     {
-        public RepRateTable()
+        public RepRateTable(EnergyTable et)
         {
             table = new R[6][];
             table[0] = new[] {R._100};
@@ -15,9 +15,9 @@ namespace Autodrive.Tables
             table[5] = new[] {R._600};
             Current = R._600;
 
-            Session.Instance.ServiceConsoleState.Energies.OptionChanged += (e, args) =>
+            et.OptionChanged += (e, args) =>
             {
-                if (Session.Instance.ServiceConsoleState.Energies.IsPhoton)
+                if (et.IsPhoton)
                 {
                     table = new R[6][];
                     table[0] = new[] {R._100};

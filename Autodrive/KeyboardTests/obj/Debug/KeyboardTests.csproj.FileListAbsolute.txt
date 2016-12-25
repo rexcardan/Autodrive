@@ -3,3 +3,6 @@ C:\Git\Autodrive\Autodrive\KeyboardTests\bin\Debug\KeyboardTests.exe
 C:\Git\Autodrive\Autodrive\KeyboardTests\bin\Debug\KeyboardTests.pdb
 C:\Git\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.exe
 C:\Git\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.pdb
+C:\Git\Autodrive\Autodrive\KeyboardTests\bin\Debug\Autodrive.dll
+C:\Git\Autodrive\Autodrive\KeyboardTests\bin\Debug\Autodrive.pdb
+C:\Git\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.csprojResolveAssemblyReference.cache
