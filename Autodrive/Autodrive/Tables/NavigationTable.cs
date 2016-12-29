@@ -33,10 +33,12 @@ namespace Autodrive.Tables
             int rows = table.Length;
             int columns = table[row].Length;
 
-            int moveDownAmount = row - currentRow >= 0 ? row - currentRow : rows - (currentRow - row);
+            int moveDownAmount = currentRow < row ? row - currentRow : 0;
+            int moveUpAmount = currentRow > row ? currentRow - row : 0;
             int moveLeftAmount = currentCol > col ? currentCol - col : 0;
             int moveRightAmount = currentCol < col ? col - currentCol : 0;
 
+            Session.Instance.Keyboard.PressUp(moveUpAmount, 300);
             Session.Instance.Keyboard.PressDown(moveDownAmount, 300);
             Session.Instance.Keyboard.PressLeft(moveLeftAmount, 300);
             Session.Instance.Keyboard.PressRight(moveRightAmount, 300);

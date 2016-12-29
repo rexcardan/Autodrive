@@ -24,6 +24,7 @@ namespace Autodrive
         public void ModeUp()
         {
             Session.Instance.SetGantryAutomatic(CollimatorAngle, X1, X2, Y1, Y2, GantryAngle);
+            Session.Instance.SetCouchAutomatic(CouchVert, CouchLong, CouchLat, CouchRot);
         }
     }
 }

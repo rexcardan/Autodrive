@@ -47,6 +47,7 @@
     <Compile Include="MachineConstraints.cs" />
     <Compile Include="MachineState.cs" />
     <Compile Include="MechanicalTask.cs" />
+    <Compile Include="MotionWatch.cs" />
     <Compile Include="Options\AccessoryOptions.cs" />
     <Compile Include="Options\ConeOptions.cs" />
     <Compile Include="Options\CouchAutoOptions.cs" />

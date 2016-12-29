@@ -157,27 +157,36 @@ namespace Autodrive
 
         public static void SetTime(double time)
         {
-            Session.Instance.ServiceConsoleState.Main.Select(MainOptions.SET_UP);
-            Thread.Sleep(150);
-            Session.Instance.ServiceConsoleState.Setup.Select(SetupOptions.TIME);
-            Thread.Sleep(200);
+            SetUp();
+
+            Session.Instance.Keyboard.Press("T");
+            Session.Instance.ServiceConsoleState.Setup.Current = SetupOptions.TIME;
+            Session.Instance.Wait(200);
             Session.Instance.Keyboard.EnterNumber(time);
             Session.Instance.Keyboard.PressEnter();
             Session.Instance.MachineState.Time = time;
-            Thread.Sleep(200);
+            Session.Instance.Wait(200);
+        }
+
+        private static void SetUp()
+        {
+            Session.Instance.Keyboard.Press("S");
+            Session.Instance.ServiceConsoleState.Main.Current = MainOptions.SET_UP;
+            Session.Instance.Wait();
         }
 
         public static void SetAccessory(AccessoryOptions acc)
         {
             if (acc != Session.Instance.ServiceConsoleState.Accessories.Current)
             {
-                Session.Instance.ServiceConsoleState.Main.Select(MainOptions.SET_UP);
-                Thread.Sleep(150);
-                Session.Instance.ServiceConsoleState.Setup.Select(SetupOptions.ACCESSORIES);
-                Thread.Sleep(200);
+                SetUp();
+                Session.Instance.Keyboard.Press("A");
+                Session.Instance.ServiceConsoleState.Setup.Current = SetupOptions.ACCESSORIES;
+                Session.Instance.Wait(200);
+
                 Session.Instance.ServiceConsoleState.Accessories.Select(acc);
                 Session.Instance.Keyboard.PressEnter();
-                Thread.Sleep(200);
+                Session.Instance.Wait(200);
             }
         }
 
@@ -185,13 +194,14 @@ namespace Autodrive
         {
             if (cone != Session.Instance.ServiceConsoleState.Cones.Current)
             {
-                Session.Instance.ServiceConsoleState.Main.Select(MainOptions.SET_UP);
-                Thread.Sleep(150);
-                Session.Instance.ServiceConsoleState.Setup.Select(SetupOptions.ACCESSORIES);
-                Thread.Sleep(200);
+                SetUp();
+                Session.Instance.Keyboard.Press("A");
+                Session.Instance.ServiceConsoleState.Setup.Current = SetupOptions.ACCESSORIES;
+                Session.Instance.Wait(200);
+
                 Session.Instance.ServiceConsoleState.Cones.Select(cone);
                 Session.Instance.Keyboard.PressEnter();
-                Thread.Sleep(200);
+                Session.Instance.Wait(200);
             }
         }
 

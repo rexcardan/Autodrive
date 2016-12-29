@@ -12,6 +12,7 @@ namespace Autodrive.Interfaces
         void Press(string characters);
         void PressEnter();
         void PressEsc();
+        void PressUp(int moveUpAmount, int msDelay);
         void PressDown(int moveDownAmount, int msDelay);
         void PressLeft(int moveLeftAmount, int msDelay);
         void PressRight(int moveRightAmount, int msDelay);

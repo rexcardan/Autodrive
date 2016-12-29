@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -57,17 +58,38 @@ namespace Autodrive
 
         public void PressLeft(int moveLeftAmount, int msDelay)
         {
-            Send(0xD7);
+            for (int i = 0; i < moveLeftAmount; i++)
+            {
+                Send(0xD7);
+                Thread.Sleep(msDelay);
+            }
         }
 
         public void PressRight(int moveRightAmount, int msDelay)
         {
-            Send(0xD8);
+            for (int i = 0; i < moveRightAmount; i++)
+            {
+                Send(0xD8);
+                Thread.Sleep(msDelay);
+            }
         }
 
         public void PressDown(int moveDownAmount, int msDelay)
         {
-            Send(0xD6);
+            for (int i = 0; i < moveDownAmount; i++)
+            {
+                Send(0xD6);
+                Thread.Sleep(msDelay);
+            }
+        }
+
+        public void PressUp(int moveUpAmount, int msDelay)
+        {
+            for (int i = 0; i < moveUpAmount; i++)
+            {
+                Send(0xD5);
+                Thread.Sleep(msDelay);
+            }
         }
 
         public void EnterNumber(double num)

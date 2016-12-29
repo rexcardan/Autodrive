@@ -18,6 +18,7 @@ namespace Autodrive
         public double TableRotDegPerSec { get; set; }
         public int EnergySwitchTimeSec { get; set; }
         public double CouchMoveCMPerSec { get; set; }
+        public double CouchVertMoveCMPerSec { get; set; }
         public double CouchRotDegPerSec { get; set; }
 
         public static MachineConstraints GetDefault()
@@ -34,6 +35,7 @@ namespace Autodrive
                 TableRotDegPerSec = 1.5,
                 EnergySwitchTimeSec = 6,
                 CouchMoveCMPerSec = 2,
+                CouchVertMoveCMPerSec = 2,
                 CouchRotDegPerSec = 8
             };
         }
