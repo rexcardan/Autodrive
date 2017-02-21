@@ -1,4 +1,4 @@
-﻿using Autodrive.Options;
+﻿using Autodrive.Linacs.Varian.CSeries.ServiceModeTableOptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

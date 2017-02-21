@@ -1,5 +1,5 @@
 ﻿using Autodrive.Interfaces;
-using Autodrive.Options;
+using Autodrive.Linacs.Varian.CSeries.ServiceModeTableOptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +38,7 @@ namespace Autodrive
                 }
                 else if (Mode == ModeOptions.EDW)
                 {
-                    var state = Session.Instance.MachineState;
+                    var state = ServiceModeSession.Instance.MachineState;
                     BeamSetter.SetBeam(Mode, Energy, TreatmentModeOptions.NEW_TREATMENT, RepRate, MU, 99, Accessory,
                         EDWOptions);
                     state.Y1 = state.Y2 = 0.5;
@@ -59,7 +59,7 @@ namespace Autodrive
             {
                 ModeUp();
             }
-            Session.Instance.BeamOn();
+            ServiceModeSession.Instance.BeamOn();
             double wedgeFactor = Mode == ModeOptions.EDW ? 1.3 : 1.00;
             double beamTime = (MU / double.Parse(RepRate.ToString().Replace("_", "")) * 60 * 1000) * wedgeFactor;
             if (sleep)
@@ -70,7 +70,7 @@ namespace Autodrive
 
         public void Repeat()
         {
-            Session.Instance.RepeatBeam();
+            ServiceModeSession.Instance.RepeatBeam();
             double wedgeFactor = Mode == ModeOptions.EDW ? 1.3 : 1.00;
             double beamTime = (MU / double.Parse(RepRate.ToString().Replace("_", "")) * 60 * 1000) * wedgeFactor;
             Thread.Sleep((int)beamTime + 3000);

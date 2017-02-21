@@ -12,11 +12,11 @@ namespace KeyboardTests
     {
         static void Main(string[] args)
         {
-            var session = Session.Instance;
+            var session = ServiceModeSession.Instance;
             session.Keyboard = new VetraKeyboard("COM3");
             session.KeySpeedMs = 100;
            // session.EnterDefaultPassword();
-            session.ResetState();
+            session.ResetConsoleState();
             //session.ToggleDefaultInterlocks();
 
 

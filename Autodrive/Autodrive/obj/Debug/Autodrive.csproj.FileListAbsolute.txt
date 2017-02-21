@@ -3,3 +3,8 @@ C:\Git\Autodrive\Autodrive\Autodrive\bin\Debug\Autodrive.dll
 C:\Git\Autodrive\Autodrive\Autodrive\bin\Debug\Autodrive.pdb
 C:\Git\Autodrive\Autodrive\Autodrive\obj\Debug\Autodrive.dll
 C:\Git\Autodrive\Autodrive\Autodrive\obj\Debug\Autodrive.pdb
+C:\Users\variansupport\Desktop\Autodrive\Autodrive\Autodrive\obj\Debug\Autodrive.csprojResolveAssemblyReference.cache
+C:\Users\variansupport\Desktop\Autodrive\Autodrive\Autodrive\obj\Debug\Autodrive.dll
+C:\Users\variansupport\Desktop\Autodrive\Autodrive\Autodrive\obj\Debug\Autodrive.pdb
+C:\Users\variansupport\Desktop\Autodrive\Autodrive\Autodrive\bin\Debug\Autodrive.dll
+C:\Users\variansupport\Desktop\Autodrive\Autodrive\Autodrive\bin\Debug\Autodrive.pdb

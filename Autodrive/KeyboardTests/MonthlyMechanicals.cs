@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using O = Autodrive.Linacs.Varian.CSeries.ServiceModeTableOptions;
 namespace KeyboardTests
 {
     public class MonthlyMechanicals
@@ -34,13 +34,13 @@ namespace KeyboardTests
             mt.X1 = mt.X2 = mt.Y1 = mt.Y2 = 5.0;
 
             var bt = new BeamTask();
-            bt.Energy = Autodrive.Options.EnergyOptions.X1;
-            bt.Accessory = Autodrive.Options.AccessoryOptions.NO_ACC;
-            bt.Mode = Autodrive.Options.ModeOptions.FIXED;
+            bt.Energy = O.EnergyOptions.X1;
+            bt.Accessory = O.AccessoryOptions.NO_ACC;
+            bt.Mode = O.ModeOptions.FIXED;
             bt.MU = 100;
             bt.Time = 99;
-            bt.TreatmentOptions = Autodrive.Options.TreatmentModeOptions.NEW_TREATMENT;
-            bt.RepRate = Autodrive.Options.RepRateOptions._600;
+            bt.TreatmentOptions = O.TreatmentModeOptions.NEW_TREATMENT;
+            bt.RepRate = O.RepRateOptions._600;
 
             foreach (var angle in new double[] {90, 130, 150, 180, 210, 240, 270})
             {

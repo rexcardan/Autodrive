@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using SM = Autodrive.ServiceModeSession;
 namespace Autodrive
 {
     public class MechanicalTask : ITask
@@ -23,8 +23,8 @@ namespace Autodrive
 
         public void ModeUp()
         {
-            Session.Instance.SetGantryAutomatic(CollimatorAngle, X1, X2, Y1, Y2, GantryAngle);
-            Session.Instance.SetCouchAutomatic(CouchVert, CouchLong, CouchLat, CouchRot);
+            SM.Instance.SetGantryAutomatic(CollimatorAngle, X1, X2, Y1, Y2, GantryAngle);
+            SM.Instance.SetCouchAutomatic(CouchVert, CouchLong, CouchLat, CouchRot);
         }
     }
 }
