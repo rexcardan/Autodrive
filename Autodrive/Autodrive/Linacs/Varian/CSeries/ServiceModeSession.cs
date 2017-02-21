@@ -1,4 +1,5 @@
 ﻿using Autodrive.Interfaces;
+using Autodrive.Linacs.Varian.CSeries;
 using Autodrive.Linacs.Varian.CSeries.ServiceModeTableOptions;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,6 @@ namespace Autodrive
     public class ServiceModeSession
     {
         public IKeyboard Keyboard { get; set; }
-        public MotionWatch MotionWatch { get; private set; }
 
         #region SINGLETON
         private static ServiceModeSession instance;
@@ -41,52 +41,7 @@ namespace Autodrive
             this.ServiceConsoleState.Main.Current = MainOptions.BEAM_CTRL;
         }
 
-        public void SetCouchAutomatic(double couchVert, double couchLong, double couchLat, double couchRot)
-        {
-            if (MotionWatch.IsSystemInMotion) { MotionWatch.MotionCompleteEvent.WaitOne(); }
-            ResetConsoleState();
-            Keyboard.Press("M");
-            ServiceConsoleState.Main.Current = MainOptions.MOTOR;
-            Keyboard.Press("C");
-            ServiceConsoleState.Motor.Current = MotorOptions.COUCH_AUTOMATIC;
-            ServiceConsoleState.CouchAutomatic.Current = CouchAutoOptions.VERT;
-
-            if (MachineState.CouchVert != couchVert)
-            {
-                ServiceConsoleState.CouchAutomatic.MoveTo(CouchAutoOptions.VERT);
-                Keyboard.EnterNumber(couchVert);
-                this.MotionWatch.AddMotion(this.MachineState.CouchVert, couchVert, MachineConstraints.CouchVertMoveCMPerSec);
-            }
-
-            if (MachineState.CouchLng != couchLong)
-            {
-                ServiceConsoleState.CouchAutomatic.MoveTo(CouchAutoOptions.LONG);
-                Keyboard.EnterNumber(couchLong);
-                this.MotionWatch.AddMotion(this.MachineState.CouchLng, couchLong, MachineConstraints.CouchMoveCMPerSec);
-            }
-
-            if (MachineState.CouchLat != couchLat)
-            {
-                ServiceConsoleState.CouchAutomatic.MoveTo(CouchAutoOptions.LAT);
-                Keyboard.EnterNumber(couchLat);
-                this.MotionWatch.AddMotion(this.MachineState.CouchLat, couchLat, MachineConstraints.CouchMoveCMPerSec);
-            }
-
-            if (MachineState.CouchRot != couchRot)
-            {
-                ServiceConsoleState.CouchAutomatic.MoveTo(CouchAutoOptions.ROT);
-                Keyboard.EnterNumber(couchRot);
-                this.MotionWatch.AddMotion(this.MachineState.CouchRot, couchRot, MachineConstraints.CouchRotDegPerSec);
-            }
-            Keyboard.PressF2();
-            this.MotionWatch.StartMotionClock();
-
-            //Update machine state
-            this.MachineState.CouchVert = couchVert;
-            this.MachineState.CouchLat = couchLat;
-            this.MachineState.CouchLng = couchLong;
-            this.MachineState.CouchRot = couchRot;
-        }
+        public MotionManager MotionManager { get; private set; }
 
         #endregion
 
@@ -97,70 +52,9 @@ namespace Autodrive
             this.MachineState = MachineState.InitNew();
             this.MachineConstraints = MachineConstraints.GetDefault();
             this.ServiceConsoleState = new ServiceConsoleState();
-            this.MotionWatch = new MotionWatch();
+            MotionManager = new MotionManager(this);
         }
 
-        public void SetGantryAutomatic(double collimatorAngle, double x1, double x2, double y1, double y2, double gantryAngle)
-        {
-            if (MotionWatch.IsSystemInMotion) { MotionWatch.MotionCompleteEvent.WaitOne(); }
-            ResetConsoleState();
-            Keyboard.Press("M");
-            ServiceConsoleState.Main.Current = MainOptions.MOTOR;
-            Keyboard.Press("G");
-            ServiceConsoleState.Motor.Current = MotorOptions.GANTRY_AUTOMATIC;
-            ServiceConsoleState.GantryAutomatic.Current = GantryAutoOptions.COLLIMATOR_ROT;
-
-            if (MachineState.CollimatorRot != collimatorAngle)
-            {
-                Keyboard.EnterNumber(collimatorAngle);
-                this.MotionWatch.AddMotion(this.MachineState.CollimatorRot, collimatorAngle, MachineConstraints.CollimatorDegPerSec);
-            };
-
-            if (MachineState.Y1 != y1)
-            {
-                ServiceConsoleState.GantryAutomatic.MoveTo(GantryAutoOptions.COLL_Y1);
-                Keyboard.EnterNumber(y1);
-                this.MotionWatch.AddMotion(this.MachineState.Y1, y1, MachineConstraints.YJawCMPerSec);
-            }
-            if (MachineState.Y2 != y2)
-            {
-                ServiceConsoleState.GantryAutomatic.MoveTo(GantryAutoOptions.COLL_Y2);
-                Keyboard.EnterNumber(y2);
-                this.MotionWatch.AddMotion(this.MachineState.Y2, y2, MachineConstraints.YJawCMPerSec);
-            }
-
-            if (MachineState.X1 != x1)
-            {
-                ServiceConsoleState.GantryAutomatic.MoveTo(GantryAutoOptions.COLL_X1);
-                Keyboard.EnterNumber(x1);
-                this.MotionWatch.AddMotion(this.MachineState.X1, x1, MachineConstraints.XJawCMPerSec);
-            }
-            if (MachineState.X2 != x2)
-            {
-                ServiceConsoleState.GantryAutomatic.MoveTo(GantryAutoOptions.COLL_X2);
-                Keyboard.EnterNumber(x2);
-                this.MotionWatch.AddMotion(this.MachineState.X2, x2, MachineConstraints.XJawCMPerSec);
-            }
-            if (MachineState.GantryRot != gantryAngle)
-            {
-                ServiceConsoleState.GantryAutomatic.MoveTo(GantryAutoOptions.GANTRY_ROT);
-                Keyboard.EnterNumber(gantryAngle);
-                this.MotionWatch.AddMotion(this.MachineState.GantryRot, gantryAngle, MachineConstraints.GantryDegPerSec);
-            }
-            Keyboard.PressF2();
-
-            this.MotionWatch.StartMotionClock();
-
-            //Update machine state
-            this.MachineState.X1 = x1;
-            this.MachineState.X2 = x2;
-            this.MachineState.Y1 = y1;
-            this.MachineState.Y2 = y2;
-            this.MachineState.GantryRot = gantryAngle;
-            this.MachineState.CollimatorRot = collimatorAngle;
-        }
-
-        
 
         public void Wait(int ms = 0)
         {

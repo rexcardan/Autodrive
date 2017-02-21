@@ -1,4 +1,5 @@
-﻿using Autodrive.Linacs.Varian.CSeries.ServiceModeTableOptions;
+﻿using Autodrive.Linacs;
+using Autodrive.Linacs.Varian.CSeries.ServiceModeTableOptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace Autodrive
 {
     public class MachineState
     {
+        public Energy Energy { get; set; }
+        public DoseRate DoseRate { get; set; }
         public int MU { get; set; }
         public double Time { get; set; }
         public double CollimatorRot { get; set; }
@@ -21,10 +24,7 @@ namespace Autodrive
         public double CouchLng { get; set; }
         public double CouchLat { get; set; }
         public double CouchRot { get; set; }
-        public AccessoryOptions Accessory { get; set; }
-        public EDWAngle EDWAngle { get; set; }
-        public EDWOrientation EDWOrient { get; set; }
-        public ConeOptions Cone { get; set; }
+        public string Accessory { get; set; }
 
         public static MachineState InitNew()
         {
@@ -42,7 +42,6 @@ namespace Autodrive
                 CouchLng = 100,
                 CouchLat = 100,
                 CouchRot = 180,
-                Accessory = AccessoryOptions.NO_ACC
             };
         }
     }

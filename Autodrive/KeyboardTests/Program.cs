@@ -30,8 +30,8 @@ namespace KeyboardTests
             session.MachineState.CouchVert = 127.9;
             session.MachineState.CouchLng = 54.4;
 
-            MonthlyMechanicals.InitializePosition();
-            MonthlyMechanicals.CouchStarShot();
+            //MonthlyMechanicals.InitializePosition();
+            //MonthlyMechanicals.CouchStarShot();
             Console.Read();
           //  var tasks = new List<ITask>();
         }

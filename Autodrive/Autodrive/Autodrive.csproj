@@ -63,11 +63,16 @@
     <Compile Include="Interfaces\ILinacController.cs" />
     <Compile Include="Interfaces\ITask.cs" />
     <Compile Include="Jobs\TG51\DeterminePion.cs" />
+    <Compile Include="Linacs\BeamCapability.cs" />
+    <Compile Include="Linacs\DoseRate.cs" />
+    <Compile Include="Linacs\Energy.cs" />
+    <Compile Include="Linacs\Varian\CSeries\AccessoryHelper.cs" />
+    <Compile Include="Linacs\Varian\CSeries\BeamManager.cs" />
     <Compile Include="Linacs\Varian\CSeries\CSeriesLinac.cs" />
+    <Compile Include="Linacs\Varian\CSeries\MotionManager.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="MachineConstraints.cs" />
     <Compile Include="MachineState.cs" />
-    <Compile Include="MechanicalTask.cs" />
     <Compile Include="MotionWatch.cs" />
     <Compile Include="Linacs\Varian\CSeries\ServiceModeTableOptions\AccessoryOptions.cs" />
     <Compile Include="Linacs\Varian\CSeries\ServiceModeTableOptions\ConeOptions.cs" />
@@ -86,7 +91,7 @@
     <Compile Include="Linacs\Varian\CSeries\ServiceModeTableOptions\SetupOptions.cs" />
     <Compile Include="Linacs\Varian\CSeries\ServiceModeTableOptions\TreatmentModeOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="BeamTask.cs" />
+    <Compile Include="Linacs\Varian\CSeries\BeamTask.cs" />
     <Compile Include="Linacs\Varian\CSeries\ServiceConsoleState.cs" />
     <Compile Include="Linacs\Varian\CSeries\ServiceModeSession.cs" />
     <Compile Include="Linacs\Varian\CSeries\ServiceModeTables\AccessoryTable.cs" />

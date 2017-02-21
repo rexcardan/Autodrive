@@ -30,25 +30,25 @@ namespace Autodrive
 
         public void ModeUp()
         {
-            if (Energy == EnergyOptions.X1 || Energy == EnergyOptions.X2)
-            {
-                if (Mode == ModeOptions.FIXED)
-                {
-                    BeamSetter.SetBeam(Mode, Energy, TreatmentModeOptions.NEW_TREATMENT, RepRate, MU, 99, Accessory);
-                }
-                else if (Mode == ModeOptions.EDW)
-                {
-                    var state = ServiceModeSession.Instance.MachineState;
-                    BeamSetter.SetBeam(Mode, Energy, TreatmentModeOptions.NEW_TREATMENT, RepRate, MU, 99, Accessory,
-                        EDWOptions);
-                    state.Y1 = state.Y2 = 0.5;
-                }
-            }
-            else
-            {
-                //Electron
-                BeamSetter.SetBeam(ModeOptions.FIXED, Energy, TreatmentModeOptions.NEW_TREATMENT, RepRate, MU, 99, Cone);
-            }
+            //if (Energy == EnergyOptions.X1 || Energy == EnergyOptions.X2)
+            //{
+            //    if (Mode == ModeOptions.FIXED)
+            //    {
+            //        BeamSetter.SetBeam(Mode, Energy, TreatmentModeOptions.NEW_TREATMENT, RepRate, MU, 99, Accessory);
+            //    }
+            //    else if (Mode == ModeOptions.EDW)
+            //    {
+            //        var state = ServiceModeSession.Instance.MachineState;
+            //        BeamSetter.SetBeam(Mode, Energy, TreatmentModeOptions.NEW_TREATMENT, RepRate, MU, 99, Accessory,
+            //            EDWOptions);
+            //        state.Y1 = state.Y2 = 0.5;
+            //    }
+            //}
+            //else
+            //{
+            //    //Electron
+            //    BeamSetter.SetBeam(ModeOptions.FIXED, Energy, TreatmentModeOptions.NEW_TREATMENT, RepRate, MU, 99, Cone);
+            //}
 
             IsModedUp = true;
         }

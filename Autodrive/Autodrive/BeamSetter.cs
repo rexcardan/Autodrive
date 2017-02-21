@@ -11,128 +11,128 @@ namespace Autodrive
 {
     public class BeamSetter
     {
-        public static void SetBeam(ModeOptions mode, EnergyOptions energy, TreatmentModeOptions tOptions,
-         RepRateOptions repRate, int mu, int time, AccessoryOptions acc, EDWOptions edwOptions = null)
-        {
-            bool setFullBeam = SetBeam(mode, energy, tOptions, repRate, mu, time, edwOptions);
-            if (SM.Instance.ServiceConsoleState.Energies.IsPhoton && setFullBeam)
-            {
-                SM.Instance.ServiceConsoleState.Accessories.Select(acc);
-            }
-            else if (SM.Instance.ServiceConsoleState.Energies.IsPhoton && !setFullBeam)
-            {
-                SetAccessory(acc);
-            }
-            else
-            {
-                throw new Exception("Cannot set a photon accessory on an electron field!");
-            }
-            if (setFullBeam)
-            {
-                Thread.Sleep(SM.Instance.MachineConstraints.EnergySwitchTimeSec * 1000);
-            }
-        }
+    //    public static void SetBeam(ModeOptions mode, EnergyOptions energy, TreatmentModeOptions tOptions,
+    //     RepRateOptions repRate, int mu, int time, AccessoryOptions acc, EDWOptions edwOptions = null)
+    //    {
+    //        bool setFullBeam = SetBeam(mode, energy, tOptions, repRate, mu, time, edwOptions);
+    //        if (SM.Instance.ServiceConsoleState.Energies.IsPhoton && setFullBeam)
+    //        {
+    //            SM.Instance.ServiceConsoleState.Accessories.Select(acc);
+    //        }
+    //        else if (SM.Instance.ServiceConsoleState.Energies.IsPhoton && !setFullBeam)
+    //        {
+    //            SetAccessory(acc);
+    //        }
+    //        else
+    //        {
+    //            throw new Exception("Cannot set a photon accessory on an electron field!");
+    //        }
+    //        if (setFullBeam)
+    //        {
+    //            Thread.Sleep(SM.Instance.MachineConstraints.EnergySwitchTimeSec * 1000);
+    //        }
+    //    }
 
-        public static void SetBeam(ModeOptions mode, EnergyOptions energy, TreatmentModeOptions tOptions,
-    RepRateOptions repRate, int mu, int time, ConeOptions cone)
-        {
-            bool setFullBeam = SetBeam(mode, energy, tOptions, repRate, mu, time);
-            if (!SM.Instance.ServiceConsoleState.Energies.IsPhoton && setFullBeam)
-            {
-                SM.Instance.ServiceConsoleState.Cones.Select(cone);
-            }
-            else if (!SM.Instance.ServiceConsoleState.Energies.IsPhoton && !setFullBeam)
-            {
-                SetCone(cone);
-            }
-            else
-            {
-                throw new Exception("Cannot set a electron cone on a photon field!");
-            }
-            if (setFullBeam)
-            {
-                Thread.Sleep(SM.Instance.MachineConstraints.EnergySwitchTimeSec * 1000);
-            }
-        }
+    //    public static void SetBeam(ModeOptions mode, EnergyOptions energy, TreatmentModeOptions tOptions,
+    //RepRateOptions repRate, int mu, int time, ConeOptions cone)
+    //    {
+    //        bool setFullBeam = SetBeam(mode, energy, tOptions, repRate, mu, time);
+    //        if (!SM.Instance.ServiceConsoleState.Energies.IsPhoton && setFullBeam)
+    //        {
+    //            SM.Instance.ServiceConsoleState.Cones.Select(cone);
+    //        }
+    //        else if (!SM.Instance.ServiceConsoleState.Energies.IsPhoton && !setFullBeam)
+    //        {
+    //            SetCone(cone);
+    //        }
+    //        else
+    //        {
+    //            throw new Exception("Cannot set a electron cone on a photon field!");
+    //        }
+    //        if (setFullBeam)
+    //        {
+    //            Thread.Sleep(SM.Instance.MachineConstraints.EnergySwitchTimeSec * 1000);
+    //        }
+    //    }
 
-        public static bool SetBeam(ModeOptions mode, EnergyOptions energy, TreatmentModeOptions tOptions,
-            RepRateOptions repRate, int mu, int time, EDWOptions edwOpts = null)
-        {
-            bool energyChange = energy != SM.Instance.ServiceConsoleState.Energies.Current;
-            bool repRateChange = repRate != SM.Instance.ServiceConsoleState.RepRates.Current;
-            bool muChange = mu != SM.Instance.MachineState.MU;
-            bool timeChange = time != SM.Instance.MachineState.Time;
-            bool edwChange = edwOpts != null &&
-                             (edwOpts.Angle != SM.Instance.MachineState.EDWAngle || edwOpts.Orientation != SM.Instance.MachineState.EDWOrient);
+        //public static bool SetBeam(ModeOptions mode, EnergyOptions energy, TreatmentModeOptions tOptions,
+        //    RepRateOptions repRate, int mu, int time, EDWOptions edwOpts = null)
+        //{
+        //    bool energyChange = energy != SM.Instance.ServiceConsoleState.Energies.Current;
+        //    bool repRateChange = repRate != SM.Instance.ServiceConsoleState.RepRates.Current;
+        //    bool muChange = mu != SM.Instance.MachineState.MU;
+        //    bool timeChange = time != SM.Instance.MachineState.Time;
+        //    bool edwChange = edwOpts != null &&
+        //                     (edwOpts.Angle != SM.Instance.MachineState.EDWAngle || edwOpts.Orientation != SM.Instance.MachineState.EDWOrient);
 
-            //If energy is different go ahead and set all again
-            if (energyChange || edwChange)
-            {
-                SM.Instance.MachineState.X1 = double.NaN;
-                SM.Instance.MachineState.X2 = double.NaN;
-                SM.Instance.MachineState.Y1 = double.NaN;
-                SM.Instance.MachineState.Y2 = double.NaN;
+        //    //If energy is different go ahead and set all again
+        //    if (energyChange || edwChange)
+        //    {
+        //        SM.Instance.MachineState.X1 = double.NaN;
+        //        SM.Instance.MachineState.X2 = double.NaN;
+        //        SM.Instance.MachineState.Y1 = double.NaN;
+        //        SM.Instance.MachineState.Y2 = double.NaN;
 
-                SM.Instance.ServiceConsoleState.Main.Select(MainOptions.SET_UP);
-                Thread.Sleep(150);
-                SM.Instance.ServiceConsoleState.Setup.Select(SetupOptions.SET_ALL);
-                Thread.Sleep(150);
-                SM.Instance.ServiceConsoleState.Modes.Select(mode);
-                Thread.Sleep(150);
-                SM.Instance.ServiceConsoleState.TreatmentModes.Select(tOptions);
-                Thread.Sleep(150);
-                if (mode == ModeOptions.EDW && edwOpts != null)
-                {
-                    if (edwOpts.Orientation == EDWOrientation.Y1IN)
-                    {
-                        SM.Instance.Keyboard.Press("1");
-                    }
-                    else
-                    {
-                        SM.Instance.Keyboard.Press("2");
-                    }
-                    SM.Instance.Keyboard.PressEnter();
+        //        SM.Instance.ServiceConsoleState.Main.Select(MainOptions.SET_UP);
+        //        Thread.Sleep(150);
+        //        SM.Instance.ServiceConsoleState.Setup.Select(SetupOptions.SET_ALL);
+        //        Thread.Sleep(150);
+        //        SM.Instance.ServiceConsoleState.Modes.Select(mode);
+        //        Thread.Sleep(150);
+        //        SM.Instance.ServiceConsoleState.TreatmentModes.Select(tOptions);
+        //        Thread.Sleep(150);
+        //        if (mode == ModeOptions.EDW && edwOpts != null)
+        //        {
+        //            if (edwOpts.Orientation == EDWOrientation.Y1IN)
+        //            {
+        //                SM.Instance.Keyboard.Press("1");
+        //            }
+        //            else
+        //            {
+        //                SM.Instance.Keyboard.Press("2");
+        //            }
+        //            SM.Instance.Keyboard.PressEnter();
 
-                    Thread.Sleep(150);
-                    SM.Instance.Keyboard.EnterNumber(edwOpts.Y1);
-                    SM.Instance.Keyboard.PressEnter();
-                    Thread.Sleep(150);
-                    SM.Instance.Keyboard.EnterNumber(edwOpts.Y2);
-                    SM.Instance.Keyboard.PressEnter();
-                    Thread.Sleep(150);
-                    int angle;
-                    if (!int.TryParse(edwOpts.Angle.ToString().Replace("_", ""), out angle))
-                    {
-                        throw new Exception("EDW Angle could not be parsed");
-                    }
-                    SM.Instance.Keyboard.EnterNumber(angle);
-                    SM.Instance.Keyboard.PressEnter();
-                    Thread.Sleep(150);
-                    //Update machine state
-                    SM.Instance.MachineState.EDWAngle = edwOpts.Angle;
-                    SM.Instance.MachineState.EDWOrient = edwOpts.Orientation;
-                }
-                SM.Instance.ServiceConsoleState.Energies.Select(energy);
-                Thread.Sleep(500);
-                SM.Instance.ServiceConsoleState.RepRates.Select(repRate);
-                Thread.Sleep(150);
-                SM.Instance.Keyboard.EnterNumber(mu);
-                SM.Instance.Keyboard.PressEnter();
-                SM.Instance.Keyboard.EnterNumber(time);
-                SM.Instance.Keyboard.PressEnter();
-                Thread.Sleep(200);
-                return true;
-            }
+        //            Thread.Sleep(150);
+        //            SM.Instance.Keyboard.EnterNumber(edwOpts.Y1);
+        //            SM.Instance.Keyboard.PressEnter();
+        //            Thread.Sleep(150);
+        //            SM.Instance.Keyboard.EnterNumber(edwOpts.Y2);
+        //            SM.Instance.Keyboard.PressEnter();
+        //            Thread.Sleep(150);
+        //            int angle;
+        //            if (!int.TryParse(edwOpts.Angle.ToString().Replace("_", ""), out angle))
+        //            {
+        //                throw new Exception("EDW Angle could not be parsed");
+        //            }
+        //            SM.Instance.Keyboard.EnterNumber(angle);
+        //            SM.Instance.Keyboard.PressEnter();
+        //            Thread.Sleep(150);
+        //            //Update machine state
+        //            SM.Instance.MachineState.EDWAngle = edwOpts.Angle;
+        //            SM.Instance.MachineState.EDWOrient = edwOpts.Orientation;
+        //        }
+        //        SM.Instance.ServiceConsoleState.Energies.Select(energy);
+        //        Thread.Sleep(500);
+        //        SM.Instance.ServiceConsoleState.RepRates.Select(repRate);
+        //        Thread.Sleep(150);
+        //        SM.Instance.Keyboard.EnterNumber(mu);
+        //        SM.Instance.Keyboard.PressEnter();
+        //        SM.Instance.Keyboard.EnterNumber(time);
+        //        SM.Instance.Keyboard.PressEnter();
+        //        Thread.Sleep(200);
+        //        return true;
+        //    }
 
-            //REP RATE
-            if (repRateChange)
-                SetRepRate(repRate);
-            if (muChange)
-                SetMU(mu);
-            if (timeChange)
-                SetTime(time);
-            return false;
-        }
+        //    //REP RATE
+        //    if (repRateChange)
+        //        SetRepRate(repRate);
+        //    if (muChange)
+        //        SetMU(mu);
+        //    if (timeChange)
+        //        SetTime(time);
+        //    return false;
+        //}
 
         public static void SetRepRate(RepRateOptions repRate)
         {

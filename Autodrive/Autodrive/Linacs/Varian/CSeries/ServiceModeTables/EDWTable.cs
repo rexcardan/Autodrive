@@ -40,9 +40,9 @@ namespace Autodrive.Linacs.Varian.CSeries.ServiceModeTables
                 ServiceModeSession.Instance.Keyboard.EnterNumber(angle);
                 ServiceModeSession.Instance.Keyboard.PressEnter();
                 ServiceModeSession.Instance.Wait();
+
                 //Update machine state
-                ServiceModeSession.Instance.MachineState.EDWAngle = edwOptions.Angle;
-                ServiceModeSession.Instance.MachineState.EDWOrient = edwOptions.Orientation;
+                ServiceModeSession.Instance.MachineState.Accessory = AccessoryHelper.GetEDWString(edwOptions.Angle, edwOptions.Orientation);
             }
         }
     }

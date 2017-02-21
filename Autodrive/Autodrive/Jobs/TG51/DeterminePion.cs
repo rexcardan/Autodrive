@@ -9,7 +9,7 @@ namespace Autodrive.Jobs.TG51
 {
     public class DeterminePion
     {
-        public DeterminePion(I1DScanner scanner, IElectrometer el)
+        public DeterminePion(ILinacController linac, I1DScanner scanner, IElectrometer el)
         {
 
         }
