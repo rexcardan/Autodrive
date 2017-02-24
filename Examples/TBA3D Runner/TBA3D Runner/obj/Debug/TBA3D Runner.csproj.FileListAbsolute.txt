@@ -1,0 +1,12 @@
+c:\users\variansupport\documents\visual studio 2015\Projects\TBA3D Runner\TBA3D Runner\bin\Debug\TBA3D Runner.exe.config
+c:\users\variansupport\documents\visual studio 2015\Projects\TBA3D Runner\TBA3D Runner\bin\Debug\TBA3D Runner.exe
+c:\users\variansupport\documents\visual studio 2015\Projects\TBA3D Runner\TBA3D Runner\bin\Debug\TBA3D Runner.pdb
+c:\users\variansupport\documents\visual studio 2015\Projects\TBA3D Runner\TBA3D Runner\bin\Debug\Autodrive.dll
+c:\users\variansupport\documents\visual studio 2015\Projects\TBA3D Runner\TBA3D Runner\bin\Debug\Cardan.ConsoleLib.dll
+c:\users\variansupport\documents\visual studio 2015\Projects\TBA3D Runner\TBA3D Runner\bin\Debug\Autodrive.pdb
+c:\users\variansupport\documents\visual studio 2015\Projects\TBA3D Runner\TBA3D Runner\obj\Debug\TBA3D Runner.csprojResolveAssemblyReference.cache
+c:\users\variansupport\documents\visual studio 2015\Projects\TBA3D Runner\TBA3D Runner\obj\Debug\TBA3D Runner.exe
+c:\users\variansupport\documents\visual studio 2015\Projects\TBA3D Runner\TBA3D Runner\obj\Debug\TBA3D Runner.pdb
+C:\Users\variansupport\Desktop\Autodrive\Examples\TBA3D Runner\TBA3D Runner\bin\Debug\TBA3D Runner.exe.config
+C:\Users\variansupport\Desktop\Autodrive\Examples\TBA3D Runner\TBA3D Runner\obj\Debug\TBA3D Runner.exe
+C:\Users\variansupport\Desktop\Autodrive\Examples\TBA3D Runner\TBA3D Runner\obj\Debug\TBA3D Runner.pdb

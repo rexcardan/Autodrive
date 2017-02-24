@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TBA3D Runner", "TBA3D Runner\TBA3D Runner.csproj", "{82EC6CCD-6949-45E9-866D-2699669977DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autodrive", "..\..\..\..\Desktop\Autodrive\Autodrive\Autodrive\Autodrive.csproj", "{3FB13CCF-C518-4158-8AEB-2D324D9C0F08}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{82EC6CCD-6949-45E9-866D-2699669977DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82EC6CCD-6949-45E9-866D-2699669977DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82EC6CCD-6949-45E9-866D-2699669977DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82EC6CCD-6949-45E9-866D-2699669977DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FB13CCF-C518-4158-8AEB-2D324D9C0F08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FB13CCF-C518-4158-8AEB-2D324D9C0F08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FB13CCF-C518-4158-8AEB-2D324D9C0F08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FB13CCF-C518-4158-8AEB-2D324D9C0F08}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
