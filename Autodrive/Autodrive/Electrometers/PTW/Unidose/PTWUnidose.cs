@@ -7,6 +7,8 @@ using Autodrive.Electrometers.PTW.Unidose.Enums;
 using Timer = System.Timers.Timer;
 using Autodrive.Interfaces;
 using Autodrive.Logging;
+using Autodrive.RS232;
+using System.IO.Ports;
 
 namespace Autodrive.Electrometers.PTW.Unidose
 {
@@ -19,6 +21,13 @@ namespace Autodrive.Electrometers.PTW.Unidose
         {
             ComPort = comPort;
             mes = new SerialMessenger(ComPort);
+
+            //Serial Port Options
+            mes.Port = new SerialPort(ComPort, 9600, Parity.None, 8, StopBits.One);
+            mes.Port.DtrEnable = true;
+            mes.Port.Handshake = Handshake.RequestToSend;
+            mes.Port.ReadTimeout = 5000;
+            mes.Port.WriteTimeout = 5000;
         }
 
         public string ComPort { get; private set; }

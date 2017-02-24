@@ -55,7 +55,8 @@
     <Compile Include="Electrometers\PTW\Unidose\MeasureRange.cs" />
     <Compile Include="Electrometers\PTW\Unidose\Messages.cs" />
     <Compile Include="Electrometers\PTW\Unidose\PTWUnidose.cs" />
-    <Compile Include="Electrometers\PTW\Unidose\SerialMessenger.cs" />
+    <Compile Include="RS232\SerialMessenger.cs" />
+    <Compile Include="Electrometers\StandardImaging\Max4000.cs" />
     <Compile Include="Electrometers\Value.cs" />
     <Compile Include="Interfaces\I1DScanner.cs" />
     <Compile Include="Interfaces\IElectrometer.cs" />
