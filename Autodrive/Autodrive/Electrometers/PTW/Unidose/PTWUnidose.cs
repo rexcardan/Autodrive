@@ -34,6 +34,14 @@ namespace Autodrive.Electrometers.PTW.Unidose
 
         public Logger Logger { get; set; }
 
+        public bool IsZeroed
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public bool Verify()
         {
             if (!GetResponse(Messages.INDENTITY).Contains("UNIDOS"))
@@ -135,11 +143,11 @@ namespace Autodrive.Electrometers.PTW.Unidose
         {
             switch (mode)
             {
-                case MeasureMode.DOSE:
+                case MeasureMode.CHARGE:
                     if (GetResponse(Messages.MEASURE_DOSE) == Messages.MEASURE_DOSE)
                         return true;
                     break;
-                case MeasureMode.DOSE_RATE:
+                case MeasureMode.CHARGE_RATE:
                     if (GetResponse(Messages.MESAURE_DOSERATE) == Messages.MESAURE_DOSERATE)
                         return true;
                     break;
@@ -258,6 +266,26 @@ namespace Autodrive.Electrometers.PTW.Unidose
             ar.WaitOne();
             mes.MessageReceived -= handler;
             return resp;
+        }
+
+        public bool SetBias(Bias biasVoltage)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Bias GetBias()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Reset()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void StopMeasurement()
+        {
+            throw new NotImplementedException();
         }
     }
 }

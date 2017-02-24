@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BeamSetter.cs" />
+    <Compile Include="Electrometers\Bias.cs" />
     <Compile Include="Electrometers\MeasureMode.cs" />
     <Compile Include="Electrometers\PTW\Unidose\Correction.cs" />
     <Compile Include="Electrometers\PTW\Unidose\DeviceStatus.cs" />
@@ -55,6 +56,8 @@
     <Compile Include="Electrometers\PTW\Unidose\MeasureRange.cs" />
     <Compile Include="Electrometers\PTW\Unidose\Messages.cs" />
     <Compile Include="Electrometers\PTW\Unidose\PTWUnidose.cs" />
+    <Compile Include="Electrometers\StandardImaging\Enums\DeviceMode.cs" />
+    <Compile Include="Electrometers\StandardImaging\Enums\Status.cs" />
     <Compile Include="RS232\SerialMessenger.cs" />
     <Compile Include="Electrometers\StandardImaging\Max4000.cs" />
     <Compile Include="Electrometers\Value.cs" />
@@ -114,6 +117,9 @@
     <Compile Include="Linacs\Varian\CSeries\ServiceModeTables\TreatmentModeTable.cs" />
     <Compile Include="Linacs\Varian\CSeries\ServiceModeTables\UtilsTable.cs" />
     <Compile Include="Linacs\VetraKeyboard.cs" />
+    <Compile Include="UIListeners\TBAPopup.cs" />
+    <Compile Include="UIListeners\TBAScanApp.cs" />
+    <Compile Include="UIListeners\WinAPI.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="1DScanners\" />

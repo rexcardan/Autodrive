@@ -60,6 +60,16 @@ namespace Autodrive.Linacs.Varian.CSeries
             }
         }
 
+        public void StopBeam()
+        {
+            throw new NotImplementedException();
+        }
+
+        public MachineState GetMachineState()
+        {
+            return ServiceModeSession.Instance.MachineState;
+        }
+
         public void BeamOn(int mu)
         {
             throw new NotImplementedException();

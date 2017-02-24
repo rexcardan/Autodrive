@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Autodrive.Logging;
 using Autodrive.RS232;
 using System.IO.Ports;
+using Autodrive.Electrometers.StandardImaging.Enums;
+using System.Threading;
 
 namespace Autodrive.Electrometers.StandardImaging
 {
@@ -17,9 +19,52 @@ namespace Autodrive.Electrometers.StandardImaging
         public string ComPort { get; private set; }
         public Logger Logger { get; set; }
 
+        public bool IsZeroed
+        {
+            get
+            {
+                bool need = false;
+                mes.SendMessage("*NEEDZ?", resp =>
+                {
+                    bool success;
+                    var cleaned = ProcessMax4000Response(resp, out success);
+                    switch (cleaned)
+                    {
+                        case "0": need = false; break;
+                        case "1":need = true; break;
+                    }
+                });
+                return need;
+            }
+        }
+
         public Value GetValue()
         {
-            throw new NotImplementedException();
+            var value = new Value() { Measurement = double.NaN };
+            mes.SendMessage("*CURCHG?", (resp) =>
+            {
+                bool success;
+                var cleanedResponse = ProcessMax4000Response(resp, out success);
+                var split = cleanedResponse.Split(' ');
+                if(success && split.Length == 2)
+                {
+                    var number = split[0];
+                    var unit = split[1];
+                    var multiplier = 1.0;
+                    switch (unit)
+                    {
+                        case "mC": multiplier = 10E-06;break;
+                        case "nC": multiplier = 10E-09; break;
+                        case "pC": multiplier = 10E-12; break;
+                    }
+                    double result;
+                    if (double.TryParse(number, out result))
+                    {
+                        value.Measurement = result*multiplier;
+                    }
+                }
+            });
+            return value;
         }
 
         public void Initialize(string comPort)
@@ -44,17 +89,24 @@ namespace Autodrive.Electrometers.StandardImaging
             mes.Start();
 
             //Clear the line
-            mes.SendMessage(0x03, (resp)=> { Console.WriteLine(resp); });
+            mes.SendMessage(0x03, (resp) => { Console.WriteLine(resp); });
         }
 
         public bool SetMode(MeasureMode mode)
         {
-            throw new NotImplementedException();
+            var success = false;
+            switch (mode)
+            {
+                case MeasureMode.CHARGE: mes.SendMessage("*CHGMAX?", resp => ProcessMax4000Response(resp, out success));break;
+                case MeasureMode.CHARGE_RATE: mes.SendMessage("*RTCHG?", resp => ProcessMax4000Response(resp, out success)); break;
+                case MeasureMode.TRIGGERED: mes.SendMessage("*CHGTHR?", resp => ProcessMax4000Response(resp, out success)); break;
+            }
+            return success;
         }
 
         public void StartMeasurement()
         {
-            throw new NotImplementedException();
+            mes.SendMessage("*STARTNP?");
         }
 
         public bool Verify()
@@ -64,9 +116,145 @@ namespace Autodrive.Electrometers.StandardImaging
             return success;
         }
 
-        public Task<bool> Zero()
+        public async Task<bool> Zero()
         {
-            throw new NotImplementedException();
+            return await Task.Run<bool>(() =>
+            {
+                var success = false;
+                mes.SendMessage("*AUZ?");
+                Thread.Sleep(1000);
+                while (GetStatus() == Status.IS_ZEROING)
+                {
+                    success = true; //At least we know it started
+                    Thread.Sleep(1000);
+                }
+                return success;
+            });
         }
+
+        public Status GetStatus()
+        {
+            var status = Status.UNKNOWN;
+            mes.SendMessage("*STATUS?", (resp) =>
+            {
+                bool success;
+                var cleanedResponse = ProcessMax4000Response(resp, out success);
+                switch (cleanedResponse)
+                {
+                    case "0": status =  Status.IDLE; break;
+                    case "1": status = Status.IS_ZEROING; break;
+                    case "2": status = Status.COLLECTING_CHARGE; break;
+                    case "3": status = Status.THRESHOLD_RDY_NOT_TRIGGERED; break;
+                    case "4": status = Status.OVERLOAD; break;
+                }
+            });
+            return status;
+        }
+
+        public DeviceMode GetDeviceMode()
+        {
+            var status = DeviceMode.UNKNOWN;
+            mes.SendMessage("*MODE?", (resp) =>
+            {
+                bool success;
+                var cleanedResponse = ProcessMax4000Response(resp, out success);
+                switch (cleanedResponse)
+                {
+                    case "2": status = DeviceMode.WARM_UP; break;
+                    case "3": status = DeviceMode.ZERO; break;
+                    case "4": status = DeviceMode.ZERO_PROGRESS; break;
+                    case "5": status = DeviceMode.ZERO_DONE; break;
+                    case "6": status = DeviceMode.RANGE_SELECT; break;
+                    case "7": status = DeviceMode.BIAS; break;
+                    case "8": status = DeviceMode.RATE; break;
+                    case "9": status = DeviceMode.CHARGE; break;
+                    case "10": status = DeviceMode.RATE_CHARGE; break;
+                    case "11": status = DeviceMode.COLLECT_CHARGE; break;
+                    case "12": status = DeviceMode.COLLECT_RATE_CHARGE; break;
+                    case "13": status = DeviceMode.BATTERY_CHARGE; break;
+                    case "14": status = DeviceMode.OVERLOAD; break;
+                    case "22": status = DeviceMode.THRESHOLD_LEVEL; break;
+                }
+            });
+            return status;
+        }
+
+        #region PLUMBING
+        public string ProcessMax4000Response(string response, out bool isValid)
+        {
+            isValid = response.StartsWith("=>");
+            if (isValid)
+            {
+                return response.Replace("=>", "").Replace("\r", "").Trim();
+            }
+            else if(response.StartsWith("?>"))
+            {
+                Logger?.Log("Command error was detected. Doesn't understand input command.");
+            }
+            else if (response.StartsWith("!>"))
+            {
+                Logger?.Log("Execution error was detected. Command syntax is correct, but couldn't execute for some reason");
+            }
+            return string.Empty;
+        }
+
+        public bool SetBias(Bias biasVoltage)
+        {
+            if (GetBias() != biasVoltage)
+            {
+                var success = false;
+                var biasNumber = "";
+                switch (biasVoltage)
+                {
+                    case Bias.NEG_100PERC: biasNumber = "-100"; break;
+                    case Bias.NEG_50PERC: biasNumber = "-50"; break;
+                    case Bias.ZERO: biasNumber = "0"; break;
+                    case Bias.POS_50PERC: biasNumber = "50"; break;
+                    case Bias.POS_100PERC: biasNumber = "100"; break;
+                }
+                mes.SendMessage($"*BIAS{biasNumber}?", (resp) =>
+                {
+                    ProcessMax4000Response(resp, out success);
+                });
+                return success;
+            }
+
+            return true;
+        }
+
+        public Bias GetBias()
+        {
+            Bias bias = Bias.UNKNOWN;
+            mes.SendMessage("*BIAS?", (resp) =>
+            {
+                bool success;
+                var cleanedResponse = ProcessMax4000Response(resp, out success);
+                switch (cleanedResponse)
+                {
+                    case "100": bias = Bias.POS_100PERC;  break;
+                    case "50": bias = Bias.POS_50PERC; break;
+                    case "0": bias = Bias.POS_50PERC; break;
+                    case "-50": bias = Bias.NEG_50PERC; break;
+                    case "-100": bias = Bias.NEG_100PERC; break;
+                }
+            });
+            return bias;
+
+        }
+
+        public bool Reset()
+        {
+            var success = false;
+            mes.SendMessage("*STOP?", resp => ProcessMax4000Response(resp, out success));
+            return success;
+        }
+
+        public void StopMeasurement()
+        {
+            var success = false;
+            mes.SendMessage("*HALT?", resp => ProcessMax4000Response(resp, out success));
+        }
+        #endregion
+
     }
 }

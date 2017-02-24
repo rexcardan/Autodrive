@@ -14,8 +14,15 @@ namespace KeyboardTests
         static void Main(string[] args)
         {
             var max = new Max4000();
-            max.Initialize("COM4");
+            max.Initialize("COM1");
             max.Verify();
+            max.SetMode(Autodrive.Electrometers.MeasureMode.CHARGE);
+            max.StartMeasurement();
+            max.StopMeasurement();
+            var value = max.GetValue();
+            var bias = max.GetBias();
+            max.SetBias(Autodrive.Electrometers.Bias.POS_100PERC);
+            max.SetMode(Autodrive.Electrometers.MeasureMode.CHARGE);
            // var session = ServiceModeSession.Instance;
            // session.Keyboard = new VetraKeyboard("COM3");
            // session.KeySpeedMs = 100;
