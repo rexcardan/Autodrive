@@ -20,23 +20,22 @@ namespace Autodrive.Electrometers.StandardImaging
         public string ComPort { get; private set; }
         public Logger Logger { get; set; }
 
-        public bool IsZeroed
+        public bool IsZeroed()
         {
-            get
+
+            bool need = false;
+            mes.SendMessage("*NEEDZ?", resp =>
             {
-                bool need = false;
-                mes.SendMessage("*NEEDZ?", resp =>
+                bool success;
+                var cleaned = ProcessMax4000Response(resp, out success);
+                switch (cleaned)
                 {
-                    bool success;
-                    var cleaned = ProcessMax4000Response(resp, out success);
-                    switch (cleaned)
-                    {
-                        case "0": need = false; break;
-                        case "1":need = true; break;
-                    }
-                });
-                return need;
-            }
+                    case "0": need = false; break;
+                    case "1": need = true; break;
+                }
+            });
+            return need;
+
         }
 
         public Value GetValue()
@@ -47,21 +46,21 @@ namespace Autodrive.Electrometers.StandardImaging
                 bool success;
                 var cleanedResponse = ProcessMax4000Response(resp, out success);
                 var split = cleanedResponse.Split(' ');
-                if(success && split.Length == 2)
+                if (success && split.Length == 2)
                 {
                     var number = split[0];
                     var unit = split[1];
                     var multiplier = 1.0;
                     switch (unit)
                     {
-                        case "mC": multiplier = 10E-06;break;
+                        case "mC": multiplier = 10E-06; break;
                         case "nC": multiplier = 10E-09; break;
                         case "pC": multiplier = 10E-12; break;
                     }
                     double result;
                     if (double.TryParse(number, out result))
                     {
-                        value.Measurement = result*multiplier;
+                        value.Measurement = result * multiplier;
                     }
                 }
             });
@@ -71,7 +70,7 @@ namespace Autodrive.Electrometers.StandardImaging
         public bool SetRange(Range r)
         {
             var success = false;
-            if(r == Range.HIGH)
+            if (r == Range.HIGH)
             {
                 mes.SendMessage("*RNG1", resp => ProcessMax4000Response(resp, out success));
             }
@@ -112,7 +111,7 @@ namespace Autodrive.Electrometers.StandardImaging
             var success = false;
             switch (mode)
             {
-                case MeasureMode.CHARGE: mes.SendMessage("*CHGMAX?", resp => ProcessMax4000Response(resp, out success));break;
+                case MeasureMode.CHARGE: mes.SendMessage("*CHGMAX?", resp => ProcessMax4000Response(resp, out success)); break;
                 case MeasureMode.CHARGE_RATE: mes.SendMessage("*RTCHG?", resp => ProcessMax4000Response(resp, out success)); break;
                 case MeasureMode.TRIGGERED: mes.SendMessage("*CHGTHR?", resp => ProcessMax4000Response(resp, out success)); break;
             }
@@ -127,7 +126,7 @@ namespace Autodrive.Electrometers.StandardImaging
         public bool Verify()
         {
             var success = false;
-            mes.SendMessage("*IDN?", (resp) => { success = resp.Contains("MAX 4000"); });
+            mes.SendMessage("*IDN?", (resp) => ProcessMax4000Response(resp, out success));
             return success;
         }
 
@@ -156,7 +155,7 @@ namespace Autodrive.Electrometers.StandardImaging
                 var cleanedResponse = ProcessMax4000Response(resp, out success);
                 switch (cleanedResponse)
                 {
-                    case "0": status =  Status.IDLE; break;
+                    case "0": status = Status.IDLE; break;
                     case "1": status = Status.IS_ZEROING; break;
                     case "2": status = Status.COLLECTING_CHARGE; break;
                     case "3": status = Status.THRESHOLD_RDY_NOT_TRIGGERED; break;
@@ -202,7 +201,7 @@ namespace Autodrive.Electrometers.StandardImaging
             {
                 return response.Replace("=>", "").Replace("\r", "").Trim();
             }
-            else if(response.StartsWith("?>"))
+            else if (response.StartsWith("?>"))
             {
                 Logger?.Log("Command error was detected. Doesn't understand input command.");
             }
@@ -246,7 +245,7 @@ namespace Autodrive.Electrometers.StandardImaging
                 var cleanedResponse = ProcessMax4000Response(resp, out success);
                 switch (cleanedResponse)
                 {
-                    case "100": bias = Bias.POS_100PERC;  break;
+                    case "100": bias = Bias.POS_100PERC; break;
                     case "50": bias = Bias.POS_50PERC; break;
                     case "0": bias = Bias.POS_50PERC; break;
                     case "-50": bias = Bias.NEG_50PERC; break;

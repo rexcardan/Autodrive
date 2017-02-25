@@ -60,6 +60,7 @@ namespace OutputFactors
             {
                 var changeState = machineState.Copy();
                 changeState.X1 = changeState.X2 = fov / 2;
+                changeState.Y1 = changeState.Y2 = fov / 2;
                 changeState.Energy = Autodrive.Linacs.Energy._6X;
                 changeState.MU = 250;
                 return changeState;

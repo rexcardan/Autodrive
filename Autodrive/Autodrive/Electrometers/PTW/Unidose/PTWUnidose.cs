@@ -9,6 +9,7 @@ using Autodrive.Interfaces;
 using Autodrive.Logging;
 using Autodrive.RS232;
 using System.IO.Ports;
+using Autodrive.Electrometers.Enums;
 
 namespace Autodrive.Electrometers.PTW.Unidose
 {
@@ -34,12 +35,9 @@ namespace Autodrive.Electrometers.PTW.Unidose
 
         public Logger Logger { get; set; }
 
-        public bool IsZeroed
+        public bool IsZeroed()
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            throw new NotImplementedException();
         }
 
         public bool Verify()

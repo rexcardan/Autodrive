@@ -20,6 +20,7 @@ namespace OutputFactors
         static CSeriesLinac linac;
         static Max4000 elec;
 
+        [STAThread]
         static void Main(string[] args)
         {
             ui.Write("---AUTODRIVE EXAMPLE : OUTPUT FACTORS---");
@@ -41,10 +42,12 @@ namespace OutputFactors
                 if (!elecVerified) { ui.WriteError("Cannot find the Max 4000 electrometer. Try again."); }
             }
 
-            //Get Electrometer ready
-            ui.Write(""); //--Space
-            ui.Write("Zeroing Electrometer..."); //--Space
-            elec.Zero().Wait();
+            if (ui.GetYesNoResponse("Do I need to zero the electrometer?"))
+            {    //Get Electrometer ready
+                ui.Write(""); //--Space
+                ui.Write("Zeroing Electrometer..."); //--Space
+                elec.Zero().Wait();
+            }
 
             elec.SetBias(Autodrive.Electrometers.Bias.NEG_100PERC);
             elec.SetMode(Autodrive.Electrometers.MeasureMode.CHARGE);

@@ -51,7 +51,7 @@ namespace Autodrive.Interfaces
         /// <returns>returns true if zeroed</returns>
         Task<bool> Zero();
 
-        bool IsZeroed { get; }
+        bool IsZeroed();
 
         bool SetBias(Bias bias);
 

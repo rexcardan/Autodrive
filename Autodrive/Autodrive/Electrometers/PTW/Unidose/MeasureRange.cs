@@ -1,4 +1,5 @@
-﻿using Autodrive.Electrometers.PTW.Unidose.Enums;
+﻿using Autodrive.Electrometers.Enums;
+using Autodrive.Electrometers.PTW.Unidose.Enums;
 
 namespace Autodrive.Electrometers.PTW.Unidose
 {
