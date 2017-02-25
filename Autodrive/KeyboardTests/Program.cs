@@ -13,6 +13,7 @@ namespace KeyboardTests
     {
         static void Main(string[] args)
         {
+            var dv = new DoseView1D();
             var max = new Max4000();
             max.Initialize("COM1");
             max.Verify();

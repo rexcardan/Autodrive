@@ -41,6 +41,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="1DScanners\StandardImaging\DoseView1D.cs" />
     <Compile Include="BeamSetter.cs" />
     <Compile Include="Electrometers\Bias.cs" />
     <Compile Include="Electrometers\MeasureMode.cs" />
@@ -122,7 +123,6 @@
     <Compile Include="UIListeners\WinAPI.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="1DScanners\" />
     <Folder Include="3DScanners\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

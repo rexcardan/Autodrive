@@ -14,3 +14,6 @@ C:\Users\variansupport\Desktop\Autodrive\Autodrive\KeyboardTests\bin\Debug\Keybo
 C:\Users\variansupport\Desktop\Autodrive\Autodrive\KeyboardTests\bin\Debug\Autodrive.dll
 C:\Users\variansupport\Desktop\Autodrive\Autodrive\KeyboardTests\bin\Debug\Autodrive.pdb
 C:\Users\variansupport\Desktop\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.csprojResolveAssemblyReference.cache
+C:\Users\UAB\Desktop\Autodrive\Autodrive\KeyboardTests\bin\Debug\KeyboardTests.exe.config
+C:\Users\UAB\Desktop\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.exe
+C:\Users\UAB\Desktop\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.pdb
