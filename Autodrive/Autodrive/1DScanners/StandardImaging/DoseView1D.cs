@@ -107,7 +107,6 @@ namespace Autodrive._1DScanners.StandardImaging
             {
                 bool success = false;
                 statusString = ProcessDoseView1DResponse(resp, out success, this.Logger);
-                Console.WriteLine(statusString);
             }));
             switch (statusString)
             {

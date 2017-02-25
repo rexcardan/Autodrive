@@ -54,13 +54,18 @@ namespace Autodrive.Jobs.Output
 
         public void Run()
         {
+            Run(true, true);
+        }
+
+        public void Run(bool photons = true, bool electrons = true)
+        {
             if (string.IsNullOrEmpty(SavePath))
             {
                 Logger.Log("Save path is empty. Will save to desktop");
                 SavePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "outputFactors.txt");
             };
 
-            var measurementList = BuildMeasurementList();
+            var measurementList = BuildMeasurementList(photons,electrons);
 
             foreach (var m in measurementList)
             {
@@ -70,7 +75,19 @@ namespace Autodrive.Jobs.Output
 
                 for (int n = 0; n < RepeatMeasurements; n++)
                 {
-                    Logger.Log($"Working on {m.Energy}, Depth {jr.DepthOfMeasurentMM}, {m.X1 * 2} x {m.Y1 * 2},  Measurement {n + 1}");
+                    var fov = EnergyHelper.IsPhoton(m.Energy) ? $"{m.X1 * 2} x {m.Y1 * 2}" : m.Accessory;
+                    Logger.Log($"Working on {m.Energy}, Depth {jr.DepthOfMeasurentMM}, {fov} ,  Measurement {n + 1}");
+
+                    var state = _linac.GetMachineStateCopy();
+                    //Check for cone change
+                    if (_linac.GetMachineStateCopy().Accessory != m.Accessory)
+                    {
+                        Console.Beep(4000, 1000);
+                        Logger.Log($"Please change the cone to {m.Accessory}");
+                        Logger.Log($"Press ENTER when complete");
+                        while (Console.ReadKey().Key != ConsoleKey.Enter) { }
+                        Logger.Log($"{m.Accessory} inserted! Continuing...");
+                    }
 
                     _linac.SetMachineState(m);
 
@@ -96,47 +113,54 @@ namespace Autodrive.Jobs.Output
             }
         }
 
-        private List<MachineState> BuildMeasurementList()
+        private List<MachineState> BuildMeasurementList(bool photons = true, bool electrons = true)
         {
-            //PHOTONS
             var machineState = MachineState.InitNew();
             var measurementList = new List<MachineState>();
-            photonsFovs.ToList().ForEach(fov =>
+
+            if (photons)
             {
-                var changeState = machineState.Copy();
-                changeState.X1 = changeState.X2 = fov / 2;
-                changeState.Y1 = changeState.Y2 = fov / 2;
-                changeState.MU = MUPerShot;
-
-                foreach (var en in energyDepths.Where(e => EnergyHelper.IsPhoton(e.Key)))
+                //PHOTONS
+                photonsFovs.ToList().ForEach(fov =>
                 {
-                    var copy = changeState.Copy();
-                    copy.Energy = en.Key;
-                    measurementList.Add(copy);
-                }
-            });
+                    var changeState = machineState.Copy();
+                    changeState.X1 = changeState.X2 = fov / 2;
+                    changeState.Y1 = changeState.Y2 = fov / 2;
+                    changeState.MU = MUPerShot;
 
-            //ELECTRONS
-            electronCones.ToList().ForEach(cone =>
+                    foreach (var en in energyDepths.Where(e => EnergyHelper.IsPhoton(e.Key)))
+                    {
+                        var copy = changeState.Copy();
+                        copy.Energy = en.Key;
+                        measurementList.Add(copy);
+                    }
+                });
+            }
+
+            if (electrons)
             {
-                var changeState = machineState.Copy();
-                changeState.Accessory = cone;
-                changeState.MU = MUPerShot;
-
-                foreach (var en in energyDepths.Where(e => !EnergyHelper.IsPhoton(e.Key)))
+                //ELECTRONS
+                electronCones.ToList().ForEach(cone =>
                 {
-                    var copy = changeState.Copy();
-                    copy.Energy = en.Key;
-                    measurementList.Add(copy);
-                }
-            });
+                    var changeState = machineState.Copy();
+                    changeState.Accessory = cone;
+                    changeState.MU = MUPerShot;
 
+                    foreach (var en in energyDepths.Where(e => !EnergyHelper.IsPhoton(e.Key)))
+                    {
+                        var copy = changeState.Copy();
+                        copy.Energy = en.Key;
+                        measurementList.Add(copy);
+                    }
+                });
+            }
             return measurementList;
         }
 
         public static OutputFactors GetDefault(CSeriesLinac linac, IElectrometer el, I1DScanner scan1D)
         {
             var of = new OutputFactors(linac, el, scan1D);
+            of.Logger.Logged += (log => Console.WriteLine(log));
             of.AddEnergyDepth(Energy._6X, 15);
             of.AddEnergyDepth(Energy._15X, 27);
             of.AddEnergyDepth(Energy._6MeV, 13);

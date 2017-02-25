@@ -104,7 +104,7 @@ namespace Autodrive.Electrometers.StandardImaging
             mes.Start();
 
             //Clear the line
-            mes.SendMessage(0x03, (resp) => { Console.WriteLine(resp); });
+            mes.SendMessage(0x03, (resp) => {  });
         }
 
         public bool SetMode(MeasureMode mode)

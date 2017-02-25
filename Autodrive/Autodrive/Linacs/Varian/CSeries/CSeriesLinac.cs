@@ -61,7 +61,8 @@ namespace Autodrive.Linacs.Varian.CSeries
             else if (AccessoryHelper.IsElectronCone(ms.Accessory))
             {
                 var coneOption = AccessoryHelper.GetElectronCone(ms.Accessory);
-                BeamManager.SetCone(coneOption);
+                BeamManager.SetCone(coneOption) ;
+                _session.MachineState.Accessory = ms.Accessory;
             }
 
             BeamManager.SetMU(ms.MU);

@@ -24,7 +24,7 @@ namespace KeyboardTests
             max.Initialize("COM9");
             max.Verify();
 
-          //  max.Zero().Wait();
+            //  max.Zero().Wait();
 
             var bias = max.SetBias(Autodrive.Electrometers.Bias.NEG_100PERC);
             max.SetMode(Autodrive.Electrometers.MeasureMode.CHARGE);
@@ -32,12 +32,8 @@ namespace KeyboardTests
             var linac = new CSeriesLinac();
             linac.Initialize("COM10");
 
-            var muTest = new MULinearity(linac, max, dv);
-            muTest.Logger.Logged += Logger_Logged;
-            muTest.ScanningDepthMM = 50;
-            muTest.SetEnergiesToTest(Energy._6X, Energy._15X);
-            muTest.SetMULevels(10, 20, 50, 100, 200, 500);
-            muTest.Run();
+            var ofTest = OutputFactors.GetDefault(linac, max, dv);
+            ofTest.Run(false, true);
 
             // var session = ServiceModeSession.Instance;
             // session.Keyboard = new VetraKeyboard("COM3");

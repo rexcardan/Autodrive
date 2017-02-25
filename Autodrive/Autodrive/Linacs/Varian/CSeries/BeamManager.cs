@@ -99,7 +99,7 @@ namespace Autodrive.Linacs.Varian.CSeries
             throw new NotImplementedException();
         }
 
-        public static void SetCone(ConeOptions cone)
+        public static bool SetCone(ConeOptions cone)
         {
             if (cone != SM.Instance.ServiceConsoleState.Cones.Current)
             {
@@ -114,7 +114,9 @@ namespace Autodrive.Linacs.Varian.CSeries
 
                 SM.Instance.MachineState.Accessory = cone.ToString();
                 SM.Instance.ResetConsoleState();
+                return true;
             }
+            return false;//Not set
         }
     }
 }
