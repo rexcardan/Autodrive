@@ -11,6 +11,7 @@ namespace Autodrive.Interfaces
     {
         void Run();
         string SavePath { get; set; }
+        int RepeatMeasurements { get; set; }
         Logger Logger { get; set; }
     }
 }

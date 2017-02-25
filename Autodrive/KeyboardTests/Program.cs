@@ -19,8 +19,6 @@ namespace KeyboardTests
         {
             var dv = new DoseView1D();
             dv.Initalize("COM12");
-            var status = dv.GetStatus();
-            var success = dv.GetCurrentDepthMM();
 
             var max = new Max4000();
             max.Initialize("COM9");

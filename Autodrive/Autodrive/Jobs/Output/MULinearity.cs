@@ -96,5 +96,15 @@ namespace Autodrive.Jobs.Output
                 }
             }
         }
+
+        public static MULinearity GetDefault(CSeriesLinac linac, IElectrometer el, I1DScanner scan1D)
+        {
+            var muTest = new MULinearity(linac, el, scan1D);
+            muTest.Logger.Logged += (log=>Console.WriteLine(log));
+            muTest.ScanningDepthMM = 50;
+            muTest.SetEnergiesToTest(Energy._6X, Energy._15X);
+            muTest.SetMULevels(10, 20, 50, 100, 200, 500);
+            return muTest;
+        }
     }
 }
