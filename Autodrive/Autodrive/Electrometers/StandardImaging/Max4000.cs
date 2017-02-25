@@ -9,6 +9,7 @@ using Autodrive.RS232;
 using System.IO.Ports;
 using Autodrive.Electrometers.StandardImaging.Enums;
 using System.Threading;
+using Autodrive.Electrometers.Enums;
 
 namespace Autodrive.Electrometers.StandardImaging
 {
@@ -65,6 +66,20 @@ namespace Autodrive.Electrometers.StandardImaging
                 }
             });
             return value;
+        }
+
+        public bool SetRange(Range r)
+        {
+            var success = false;
+            if(r == Range.HIGH)
+            {
+                mes.SendMessage("*RNG1", resp => ProcessMax4000Response(resp, out success));
+            }
+            else
+            {
+                mes.SendMessage("*RNG0", resp => ProcessMax4000Response(resp, out success));
+            }
+            return success;
         }
 
         public void Initialize(string comPort)

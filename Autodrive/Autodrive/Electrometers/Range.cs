@@ -1,4 +1,4 @@
-﻿namespace Autodrive.Electrometers.PTW.Unidose.Enums
+﻿namespace Autodrive.Electrometers.Enums
 {
     public enum Range
     {

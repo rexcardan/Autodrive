@@ -48,7 +48,7 @@
     <Compile Include="Electrometers\PTW\Unidose\DeviceStatus.cs" />
     <Compile Include="Electrometers\PTW\Unidose\Enums\Errors.cs" />
     <Compile Include="Electrometers\PTW\Unidose\Enums\MethodOfCorrection.cs" />
-    <Compile Include="Electrometers\PTW\Unidose\Enums\Range.cs" />
+    <Compile Include="Electrometers\Range.cs" />
     <Compile Include="Electrometers\PTW\Unidose\Enums\ResolutionPercent.cs" />
     <Compile Include="Electrometers\PTW\Unidose\Enums\Status.cs" />
     <Compile Include="Electrometers\PTW\Unidose\Enums\ValidityOfCorrection.cs" />
