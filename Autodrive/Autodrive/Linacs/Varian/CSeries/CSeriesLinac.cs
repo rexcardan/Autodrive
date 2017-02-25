@@ -64,6 +64,7 @@ namespace Autodrive.Linacs.Varian.CSeries
                 BeamManager.SetCone(coneOption);
             }
 
+            BeamManager.SetMU(ms.MU);
             BeamManager.SetEnergy(ms.Energy);
         }
 
@@ -75,6 +76,13 @@ namespace Autodrive.Linacs.Varian.CSeries
         public MachineState GetMachineStateCopy()
         {
             return ServiceModeSession.Instance.MachineState.Copy();
+        }
+
+        public int WaitMsForMU(int mu)
+        {
+            //TODO make not just 600 dr
+            var ms = (int)((double)mu / 600 * 60 * 1000) + 2500; //add extra 2.5 sec
+            return ms;
         }
 
         public void BeamOn()

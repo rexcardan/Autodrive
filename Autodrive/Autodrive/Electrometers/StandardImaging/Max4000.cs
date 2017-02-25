@@ -47,7 +47,7 @@ namespace Autodrive.Electrometers.StandardImaging
                 bool success;
                 var cleanedResponse = ProcessMax4000Response(resp, out success,this.Logger);
                 var split = cleanedResponse.Split(' ');
-                if (success && split.Length == 2)
+                if (split.Length == 2)
                 {
                     var number = split[0];
                     var unit = split[1];
@@ -98,7 +98,7 @@ namespace Autodrive.Electrometers.StandardImaging
             mes.Port.RtsEnable = false;
             mes.Port.DtrEnable = false;
             mes.Port.Handshake = Handshake.None;
-            mes.Port.ReadTimeout = 111;
+            mes.Port.ReadTimeout = 222;
             mes.Port.DiscardNull = true;
             mes.Port.ReceivedBytesThreshold = 1;
             mes.Start();
@@ -122,6 +122,7 @@ namespace Autodrive.Electrometers.StandardImaging
         public void StartMeasurement()
         {
             mes.SendMessage("*STARTNP?");
+            Thread.Sleep(500);
         }
 
         public bool Verify()
@@ -137,7 +138,7 @@ namespace Autodrive.Electrometers.StandardImaging
             {
                 var success = false;
                 mes.SendMessage("*AUZ?");
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
                 while (GetStatus() == Status.IS_ZEROING)
                 {
                     success = true; //At least we know it started
@@ -244,6 +245,7 @@ namespace Autodrive.Electrometers.StandardImaging
         {
             var success = false;
             mes.SendMessage("*STOP?", resp => ProcessMax4000Response(resp, out success,this.Logger));
+            Thread.Sleep(500);
             return success;
         }
 

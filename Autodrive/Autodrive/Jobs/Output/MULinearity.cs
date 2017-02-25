@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Autodrive.Logging;
 using Autodrive.Jobs.IO;
 using System.IO;
+using System.Threading;
 
 namespace Autodrive.Jobs.Output
 {
@@ -53,9 +54,11 @@ namespace Autodrive.Jobs.Output
             };
 
             //Move to Scanning Depth
+            Logger.Log("Moving scanning chamber...");
             _scan1D.GoToDepth(ScanningDepthMM).Wait();
 
             var ms = MachineState.InitNew();
+            ms.X1 = ms.X2 = ms.Y1 = ms.Y2 = 5;
 
             foreach (var en in energiesToTest)
             {
@@ -65,15 +68,21 @@ namespace Autodrive.Jobs.Output
                     movingMs.Energy = en;
                     movingMs.MU = mu;
                     var jr = new JobResult(movingMs);
-
+                    jr.DepthOfMeasurentMM = ScanningDepthMM;
                     for (int n = 0; n < RepeatMeasurements; n++)
                     {
+                        Logger.Log($"Working on {en}, {mu} MU, Measurement {n + 1}");
+
                         _linac.SetMachineState(movingMs);
 
                         //Start measuring
+                        _el.Reset();
                         _el.StartMeasurement();
+
                         if (n == 0) { _linac.BeamOn(); }
                         else { _linac.RepeatBeam(); }
+
+                        Thread.Sleep(_linac.WaitMsForMU(mu));
 
                         //Stop and get measurement
                         _el.StopMeasurement();

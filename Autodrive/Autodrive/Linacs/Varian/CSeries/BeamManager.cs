@@ -24,13 +24,14 @@ namespace Autodrive.Linacs.Varian.CSeries
 
         public static void SetMU(int mu)
         {
-            SM.Instance.ServiceConsoleState.Main.Select(MainOptions.SET_UP);
-            Thread.Sleep(150);
-            SM.Instance.ServiceConsoleState.Setup.Select(SetupOptions.DOSE);
+            SetUp();
+            SM.Instance.Keyboard.Press("D");
+            SM.Instance.ServiceConsoleState.Setup.Current = (SetupOptions.DOSE);
             Thread.Sleep(200);
             SM.Instance.Keyboard.EnterNumber(mu);
             SM.Instance.Keyboard.PressEnter();
             Thread.Sleep(200);
+            SM.Instance.ResetConsoleState();
         }
 
         public static void SetTime(double time)
@@ -88,7 +89,7 @@ namespace Autodrive.Linacs.Varian.CSeries
                     case Energy._18MeV:
                     case Energy._20MeV: SM.Instance.ServiceConsoleState.Energies.Select(EnergyOptions.E5); break;
                 }
-
+                SM.Instance.MachineState.Energy = energy;
                 Thread.Sleep(SM.Instance.MachineConstraints.EnergySwitchTimeSec * 1000);
             }
         }

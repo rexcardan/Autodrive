@@ -11,12 +11,9 @@ namespace Autodrive.RS232
     {
         public static string ProcessMax4000Response(string response, out bool isValid, Logger logger = null)
         {
+            response = response.Trim();
             isValid = response.StartsWith("=>");
-            if (isValid)
-            {
-                return response.Replace("=>", "").Replace("\r", "").Trim();
-            }
-            else if (response.StartsWith("?>"))
+            if (response.StartsWith("?>"))
             {
                 logger?.Log("Command error was detected. Doesn't understand input command.");
             }
@@ -24,7 +21,7 @@ namespace Autodrive.RS232
             {
                 logger?.Log("Execution error was detected. Command syntax is correct, but couldn't execute for some reason");
             }
-            return string.Empty;
+            return response.Replace("=>", "").Replace("\r", "").Replace("\n", "").Trim();
         }
 
         public static string ProcessDoseView1DResponse(string response, out bool isValid, Logger logger = null)

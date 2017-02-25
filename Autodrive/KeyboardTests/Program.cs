@@ -2,6 +2,9 @@
 using Autodrive;
 using Autodrive._1DScanners.StandardImaging;
 using Autodrive.Electrometers.StandardImaging;
+using Autodrive.Jobs.Output;
+using Autodrive.Linacs;
+using Autodrive.Linacs.Varian.CSeries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,44 +18,56 @@ namespace KeyboardTests
         static void Main(string[] args)
         {
             var dv = new DoseView1D();
-            dv.Initalize("COM1");
+            dv.Initalize("COM12");
             var status = dv.GetStatus();
             var success = dv.GetCurrentDepthMM();
-            Console.WriteLine(status);
-            Console.Read();
 
             var max = new Max4000();
-            max.Initialize("COM1");
+            max.Initialize("COM9");
             max.Verify();
+
+          //  max.Zero().Wait();
+
+            var bias = max.SetBias(Autodrive.Electrometers.Bias.NEG_100PERC);
             max.SetMode(Autodrive.Electrometers.MeasureMode.CHARGE);
-            max.StartMeasurement();
-            max.StopMeasurement();
-            var value = max.GetValue();
-            var bias = max.GetBias();
-            max.SetBias(Autodrive.Electrometers.Bias.POS_100PERC);
-            max.SetMode(Autodrive.Electrometers.MeasureMode.CHARGE);
-           // var session = ServiceModeSession.Instance;
-           // session.Keyboard = new VetraKeyboard("COM3");
-           // session.KeySpeedMs = 100;
-           //// session.EnterDefaultPassword();
-           // session.ResetConsoleState();
-           // //session.ToggleDefaultInterlocks();
+
+            var linac = new CSeriesLinac();
+            linac.Initialize("COM10");
+
+            var muTest = new MULinearity(linac, max, dv);
+            muTest.Logger.Logged += Logger_Logged;
+            muTest.ScanningDepthMM = 50;
+            muTest.SetEnergiesToTest(Energy._6X, Energy._15X);
+            muTest.SetMULevels(10, 20, 50, 100, 200, 500);
+            muTest.Run();
+
+            // var session = ServiceModeSession.Instance;
+            // session.Keyboard = new VetraKeyboard("COM3");
+            // session.KeySpeedMs = 100;
+            //// session.EnterDefaultPassword();
+            // session.ResetConsoleState();
+            // //session.ToggleDefaultInterlocks();
 
 
-           // session.MachineState.GantryRot = 180;
-           // session.MachineState.CollimatorRot = 180;
-           // session.MachineState.X1 = 5.0;
-           // session.MachineState.X2 = 5.0;
-           // session.MachineState.Y1 = 5.0;
-           // session.MachineState.Y2 = 5.0;
-           // session.MachineState.CouchLat = 100.2;
-           // session.MachineState.CouchVert = 127.9;
-           // session.MachineState.CouchLng = 54.4;
+            // session.MachineState.GantryRot = 180;
+            // session.MachineState.CollimatorRot = 180;
+            // session.MachineState.X1 = 5.0;
+            // session.MachineState.X2 = 5.0;
+            // session.MachineState.Y1 = 5.0;
+            // session.MachineState.Y2 = 5.0;
+            // session.MachineState.CouchLat = 100.2;
+            // session.MachineState.CouchVert = 127.9;
+            // session.MachineState.CouchLng = 54.4;
 
             //MonthlyMechanicals.InitializePosition();
             //MonthlyMechanicals.CouchStarShot();
             Console.Read();
-          //  var tasks = new List<ITask>();
+            //  var tasks = new List<ITask>();
+        }
+
+        private static void Logger_Logged(string toLog)
+        {
+            Console.WriteLine(toLog);
         }
     }
 }

@@ -41,8 +41,8 @@ namespace Autodrive._1DScanners.StandardImaging
                 var response = ProcessDoseView1DResponse(resp, out success, this.Logger);
                 if (success)
                 {
-                    lastKnownTickPosition = int.Parse(response);
-                    result = LastKnowPositionMM;
+                    var canParse = int.TryParse(response, out lastKnownTickPosition);
+                    if (canParse) result = LastKnowPositionMM;
                 }
             }));
 

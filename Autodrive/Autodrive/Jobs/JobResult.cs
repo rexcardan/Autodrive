@@ -9,8 +9,9 @@ namespace Autodrive.Jobs
     public class JobResult
     {
         public MachineState MachineStateRun { get; set; }
-        public double[] Measurements { get; set; }
+        public double[] Measurements { get; set; } = new double[0];
         public DateTime TimeMeasured { get; set; }
+        public double DepthOfMeasurentMM { get; set; }
 
         public JobResult(MachineState ms)
         {

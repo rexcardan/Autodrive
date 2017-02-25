@@ -12,8 +12,12 @@ namespace Autodrive.Jobs.IO
     {
         public static List<JobResult> Read(string file)
         {
-            var json = File.ReadAllText(file);
-            return JsonConvert.DeserializeObject<List<JobResult>>(json);
+            if (File.Exists(file))
+            {
+                var json = File.ReadAllText(file);
+                return JsonConvert.DeserializeObject<List<JobResult>>(json);
+            }
+            return new List<JobResult>();
         }
     }
 }
