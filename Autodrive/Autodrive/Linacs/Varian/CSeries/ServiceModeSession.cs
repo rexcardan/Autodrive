@@ -73,6 +73,12 @@ namespace Autodrive
             Keyboard.Press("B");
             ServiceConsoleState.Main.Current = MainOptions.BEAM_CTRL;
             Keyboard.Press("Y");
+
+            if (AccessoryHelper.IsEDW(MachineState.Accessory))
+            {
+                //The jaw moves during the beam on operation
+                MachineState.Y1 = MachineState.Y2 = 0;
+            }
         }
 
         public void RepeatBeam()

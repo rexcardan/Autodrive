@@ -61,7 +61,7 @@ namespace Autodrive.Linacs.Varian.CSeries
             else if (AccessoryHelper.IsElectronCone(ms.Accessory))
             {
                 var coneOption = AccessoryHelper.GetElectronCone(ms.Accessory);
-                BeamManager.SetCone(coneOption) ;
+                BeamManager.SetCone(coneOption);
                 _session.MachineState.Accessory = ms.Accessory;
             }
 
@@ -79,10 +79,25 @@ namespace Autodrive.Linacs.Varian.CSeries
             return ServiceModeSession.Instance.MachineState.Copy();
         }
 
-        public int WaitMsForMU(int mu)
+        public int WaitMsForMU(int mu, bool isEDW = false)
         {
             //TODO make not just 600 dr
             var ms = (int)((double)mu / 600 * 60 * 1000) + 2500; //add extra 2.5 sec
+            if (isEDW)
+            {
+                var angle = AccessoryHelper.GetEDWOptions(_session.MachineState.Accessory).Angle;
+                switch (angle)
+                {
+                    //These are custom factors to increase time, so we don't move on too quickly
+                    case ServiceModeTableOptions.EDWAngle._10: ms *= (int)(ms * 1.1); break;
+                    case ServiceModeTableOptions.EDWAngle._15: ms *= (int)(ms * 1.1); break;
+                    case ServiceModeTableOptions.EDWAngle._20: ms *= (int)(ms * 1.1); break;
+                    case ServiceModeTableOptions.EDWAngle._25: ms *= (int)(ms * 1.1); break;
+                    case ServiceModeTableOptions.EDWAngle._30: ms *= (int)(ms * 1.1); break;
+                    case ServiceModeTableOptions.EDWAngle._45: ms *= (int)(ms * 1.1); break;
+                    case ServiceModeTableOptions.EDWAngle._60: ms *= (int)(ms * 1.1); break;
+                }
+            }
             return ms;
         }
 

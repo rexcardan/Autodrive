@@ -8,6 +8,7 @@ namespace Autodrive.Interfaces
 {
     public interface I1DScanner
     {
+        double LastKnowPositionMM { get; }
         Task<bool> GoToDepth(double depthMm);
         double GetCurrentDepthMM();
     }
