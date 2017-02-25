@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Autodrive.UIListeners
 {
@@ -9,14 +10,26 @@ namespace Autodrive.UIListeners
         public const int BmClick = 0x00F5;
         private readonly IntPtr _buttonPtr;
 
-        public TbaPopup(IntPtr pointer)
+        public ManualResetEvent ResetEvent { get; set; } = new ManualResetEvent(true);
+
+        public TbaPopup(IntPtr pointer, bool outOfLimitsPopup = false)
         {
             List<string> messages =
                 WinAPI.GetAllChildrenWindowHandles(pointer, 10).Select(WinAPI.GetWindowCaption).ToList();
             Instructions = messages.Last();
-            _buttonPtr =
-                WinAPI.GetAllChildrenWindowHandles(pointer, 10)
-                    .FirstOrDefault(b => WinAPI.GetWindowCaption(b).Contains("OK"));
+            if (outOfLimitsPopup)
+            {
+                //BUTTON SAYS YES
+                _buttonPtr =
+                 WinAPI.GetAllChildrenWindowHandles(pointer, 10)
+                   .FirstOrDefault(b => WinAPI.GetWindowCaption(b).Contains("Yes"));
+            }
+            else
+            {
+                //BUTTON SAYS OK
+                _buttonPtr =WinAPI.GetAllChildrenWindowHandles(pointer, 10)
+                   .FirstOrDefault(b => WinAPI.GetWindowCaption(b).Contains("OK"));
+            }
         }
 
         public string Instructions { get; set; }

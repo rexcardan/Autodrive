@@ -25,8 +25,8 @@ namespace Autodrive
         {
             return new MachineConstraints()
             {
-                XJawCMPerSec = 3.9,
-                YJawCMPerSec = 2.0,
+                XJawCMPerSec = 1.5,
+                YJawCMPerSec = 1.0,
                 CollimatorDegPerSec = 0.5,
                 GantryDegPerSec = 0.8,
                 TableLatCMPerSec = 1.5,

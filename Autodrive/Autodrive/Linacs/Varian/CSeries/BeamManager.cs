@@ -68,6 +68,31 @@ namespace Autodrive.Linacs.Varian.CSeries
             }
         }
 
+        public static void SetEnergy(Energy energy)
+        {
+            if (energy != SM.Instance.MachineState.Energy)
+            {
+                SetUp();
+                SM.Instance.Keyboard.Press("E");
+                SM.Instance.ServiceConsoleState.Setup.Current = SetupOptions.ENERGY;
+                switch (energy)
+                {
+                    case Energy._6X: SM.Instance.ServiceConsoleState.Energies.Select(EnergyOptions.X1); break;
+                    case Energy._15X:
+                    case Energy._18X: SM.Instance.ServiceConsoleState.Energies.Select(EnergyOptions.X2); break;
+                    case Energy._6MeV: SM.Instance.ServiceConsoleState.Energies.Select(EnergyOptions.E1); break;
+                    case Energy._9MeV: SM.Instance.ServiceConsoleState.Energies.Select(EnergyOptions.E2); break;
+                    case Energy._12MeV: SM.Instance.ServiceConsoleState.Energies.Select(EnergyOptions.E3); break;
+                    case Energy._15MeV:
+                    case Energy._16MeV: SM.Instance.ServiceConsoleState.Energies.Select(EnergyOptions.E4); break;
+                    case Energy._18MeV:
+                    case Energy._20MeV: SM.Instance.ServiceConsoleState.Energies.Select(EnergyOptions.E5); break;
+                }
+
+                Thread.Sleep(SM.Instance.MachineConstraints.EnergySwitchTimeSec * 1000);
+            }
+        }
+
         internal static void SetEDW(EDWOptions edwOptions)
         {
             throw new NotImplementedException();
@@ -85,6 +110,9 @@ namespace Autodrive.Linacs.Varian.CSeries
                 SM.Instance.ServiceConsoleState.Cones.Select(cone);
                 SM.Instance.Keyboard.PressEnter();
                 SM.Instance.Wait(200);
+
+                SM.Instance.MachineState.Accessory = cone.ToString();
+                SM.Instance.ResetConsoleState();
             }
         }
     }

@@ -32,17 +32,22 @@ namespace Autodrive
             {
                 MU = 0,
                 Time = 0,
-                CollimatorRot = 0,
+                CollimatorRot = 180,
                 X1 = 0,
                 X2 = 0,
                 Y1 = 0,
                 Y2 = 0,
-                GantryRot = 0,
+                GantryRot = 180,
                 CouchVert = 100,
                 CouchLng = 100,
                 CouchLat = 100,
                 CouchRot = 180,
             };
+        }
+
+        public MachineState Copy()
+        {
+            return (MachineState)this.MemberwiseClone();
         }
     }
 }

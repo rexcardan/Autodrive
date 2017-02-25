@@ -21,6 +21,6 @@ namespace Autodrive.Interfaces
         /// </summary>
         List<BeamCapability> BeamCapabilities { get; }
 
-        void BeamOn(int mu);
+        void BeamOn();
     }
 }

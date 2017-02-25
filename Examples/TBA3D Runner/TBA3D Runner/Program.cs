@@ -1,4 +1,5 @@
-﻿using Autodrive.Linacs.Varian.CSeries;
+﻿using Autodrive;
+using Autodrive.Linacs.Varian.CSeries;
 using Autodrive.UIListeners;
 using Cardan.ConsoleLib;
 using System;
@@ -38,32 +39,44 @@ namespace TBA3D_Runner
                 }
             }
 
+            ui.Write("");
+
             //Ask user to start task list running before we start listening for popups
             ui.Write("TBA Software found!.");
             ui.WritePrompt("Go ahead and start a task list and start the first beam. Press Enter when once you are started.");
             while (Console.ReadKey().Key != ConsoleKey.Enter) { }
 
+            ui.Write("");
+            ui.Write("Listening for popup dialogs");
+            ui.Write("");
+
             //Subscribe to changes that will be requested by the scanning software
-            tba.PopupRaised += Tba_PopupRaised;
             tba.FieldSizeChange += Tba_FieldSizeChange;
             tba.ApplicatorChange += Tba_ApplicatorChange;
             tba.EnergyChange += Tba_EnergyChange;
-
+            tba.PopupOpsCompleted += Tba_PopupOpsCompleted;
             tba.ListenForPopup();
 
+            ui.WritePrompt("Press Esc to stop listener");
+            while (Console.ReadKey().Key != ConsoleKey.Escape) { }
         }
 
-        private static void Tba_PopupRaised(TbaPopup popup)
+        private static void Tba_PopupOpsCompleted(TbaPopup popup)
         {
-            if (ui.GetYesNoResponse($"Close popup {popup.Instructions}")) ;
+            //Beam on
+            linac.BeamOn();
+            //Close popup
             popup.PressOk();
+            //Resubscribe to popups
+            tba.ListenForPopup();
         }
 
-        private static void Tba_EnergyChange(string energyId)
+        private static void Tba_EnergyChange(string energyId, TbaPopup popup)
         {
             ui.Write($"Changing energy to {energyId}");
             linac.StopBeam();
-            var current = linac.GetMachineState();
+
+            var current = linac.GetMachineStateCopy();
             switch (energyId)
             {
                 case "6 MV": current.Energy = Autodrive.Linacs.Energy._6X; break;
@@ -76,10 +89,10 @@ namespace TBA3D_Runner
             }
 
             linac.SetMachineState(current);
-            linac.BeamOn(9999);
+            popup.ResetEvent.Set(); //Allow to move on
         }
 
-        private static void Tba_ApplicatorChange(string applicatorId)
+        private static void Tba_ApplicatorChange(string applicatorId, TbaPopup popup)
         {
             //Alert User - Need human for this part
             Console.Beep(300, 1);
@@ -88,21 +101,22 @@ namespace TBA3D_Runner
             ui.WritePrompt($"Press ENTER when complete");
             while (Console.ReadKey().Key != ConsoleKey.Enter) { }
 
-            var current = linac.GetMachineState();
+            var current = linac.GetMachineStateCopy();
             current.Accessory = applicatorId;
             linac.SetMachineState(current);
-            linac.BeamOn(9999);
+            popup.ResetEvent.Set(); //Allow to move on
         }
 
-        private static void Tba_FieldSizeChange(double x, double y)
+        private static void Tba_FieldSizeChange(double x, double y, TbaPopup popup)
         {
             ui.Write($"Changing field size to {x} x {y}");
             linac.StopBeam();
-            var current = linac.GetMachineState();
+            var current = linac.GetMachineStateCopy();
             current.X1 = current.X2 = x / 2;
             current.Y1 = current.Y2 = x / 2;
             linac.SetMachineState(current);
-            linac.BeamOn(9999);
+            
+            popup.ResetEvent.Set(); //Allow to move on
         }
     }
 }

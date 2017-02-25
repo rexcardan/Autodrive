@@ -143,6 +143,9 @@ namespace Autodrive.Linacs.Varian.CSeries
             _session.MachineState.Y2 = y2;
             _session.MachineState.GantryRot = gantryAngle;
             _session.MachineState.CollimatorRot = collimatorAngle;
+
+            if (MotionWatch.IsSystemInMotion)
+                this.MotionWatch.MotionCompleteEvent.WaitOne();
         }
     }
 }

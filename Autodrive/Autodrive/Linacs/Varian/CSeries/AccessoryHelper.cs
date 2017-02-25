@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Autodrive.Linacs.Varian.CSeries
@@ -16,6 +17,7 @@ namespace Autodrive.Linacs.Varian.CSeries
 
         public static bool IsEDW(string accessory)
         {
+            if (accessory == null) { return false; }
             return accessory.StartsWith("Y1IN") || accessory.StartsWith("Y2OUT");
         }
 
@@ -50,6 +52,27 @@ namespace Autodrive.Linacs.Varian.CSeries
                     break;
             }
             return options;
+        }
+
+        public static bool IsElectronCone(string accessory)
+        {
+            if (accessory == null) { return false; }
+            return Regex.IsMatch(accessory, @"[Aa]\d{1,2}");
+        }
+
+        public static ConeOptions GetElectronCone(string accessory)
+        {
+            var size = Regex.Match(accessory, @"\d+$");
+            var sizeInt = int.Parse(size.Value);
+            switch (sizeInt)
+            {
+                case 6: return ConeOptions.A6;
+                case 10: return ConeOptions.A10;
+                case 15: return ConeOptions.A15;
+                case 20: return ConeOptions.A20;
+                case 25: return ConeOptions.A25;
+            }
+            return ConeOptions.None;
         }
     }
 }

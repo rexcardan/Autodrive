@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using static Autodrive.Linacs.DoseRate;
 
@@ -55,24 +56,36 @@ namespace Autodrive.Linacs.Varian.CSeries
                 var edwOptions = AccessoryHelper.GetEDWOptions(ms.Accessory);
                 edwOptions.Y1 = ms.Y1;
                 edwOptions.Y2 = ms.Y2;
-
                 BeamManager.SetEDW(edwOptions);
             }
+            else if (AccessoryHelper.IsElectronCone(ms.Accessory))
+            {
+                var coneOption = AccessoryHelper.GetElectronCone(ms.Accessory);
+                BeamManager.SetCone(coneOption);
+            }
+
+            BeamManager.SetEnergy(ms.Energy);
         }
 
         public void StopBeam()
         {
-            throw new NotImplementedException();
+            _session.BeamOff();
         }
 
-        public MachineState GetMachineState()
+        public MachineState GetMachineStateCopy()
         {
-            return ServiceModeSession.Instance.MachineState;
+            return ServiceModeSession.Instance.MachineState.Copy();
         }
 
-        public void BeamOn(int mu)
+        public void BeamOn()
         {
-            throw new NotImplementedException();
+            _session.BeamOn();
+            Thread.Sleep(1000);
+        }
+
+        public void RepeatBeam()
+        {
+            _session.RepeatBeam();
         }
     }
 }

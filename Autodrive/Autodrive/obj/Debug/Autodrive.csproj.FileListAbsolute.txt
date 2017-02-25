@@ -8,3 +8,8 @@ C:\Users\variansupport\Desktop\Autodrive\Autodrive\Autodrive\obj\Debug\Autodrive
 C:\Users\variansupport\Desktop\Autodrive\Autodrive\Autodrive\obj\Debug\Autodrive.pdb
 C:\Users\variansupport\Desktop\Autodrive\Autodrive\Autodrive\bin\Debug\Autodrive.dll
 C:\Users\variansupport\Desktop\Autodrive\Autodrive\Autodrive\bin\Debug\Autodrive.pdb
+C:\Users\UAB\Desktop\Autodrive\Autodrive\Autodrive\bin\Debug\Autodrive.dll
+C:\Users\UAB\Desktop\Autodrive\Autodrive\Autodrive\bin\Debug\Autodrive.pdb
+C:\Users\UAB\Desktop\Autodrive\Autodrive\Autodrive\obj\Debug\Autodrive.csprojResolveAssemblyReference.cache
+C:\Users\UAB\Desktop\Autodrive\Autodrive\Autodrive\obj\Debug\Autodrive.dll
+C:\Users\UAB\Desktop\Autodrive\Autodrive\Autodrive\obj\Debug\Autodrive.pdb

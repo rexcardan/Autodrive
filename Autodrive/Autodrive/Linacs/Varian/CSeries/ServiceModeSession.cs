@@ -69,16 +69,28 @@ namespace Autodrive
 
         public void BeamOn()
         {
-            ServiceConsoleState.Main.Select(MainOptions.BEAM_CTRL);
+            ResetConsoleState();
+            Keyboard.Press("B");
+            ServiceConsoleState.Main.Current = MainOptions.BEAM_CTRL;
             Keyboard.Press("Y");
         }
 
         public void RepeatBeam()
         {
-            ServiceConsoleState.Main.Select(MainOptions.SET_UP);
-            ServiceConsoleState.Setup.Select(SetupOptions.DOSE);
+            ResetConsoleState();
+            Keyboard.Press("S");
+            ServiceConsoleState.Main.Current = MainOptions.SET_UP;
+
+            Keyboard.Press("D");
+            ServiceConsoleState.Setup.Current = SetupOptions.DOSE;
             Keyboard.PressEnter();
             BeamOn();
+        }
+
+        public void BeamOff()
+        {
+            Keyboard.Press("B");
+            ResetConsoleState();
         }
 
         public void EnterDefaultPassword()
