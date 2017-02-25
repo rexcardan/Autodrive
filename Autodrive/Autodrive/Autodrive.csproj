@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="1DScanners\StandardImaging\DoseView1D.cs" />
+    <Compile Include="1DScanners\Status.cs" />
     <Compile Include="BeamSetter.cs" />
     <Compile Include="Electrometers\Bias.cs" />
     <Compile Include="Electrometers\MeasureMode.cs" />
@@ -59,6 +64,11 @@
     <Compile Include="Electrometers\PTW\Unidose\PTWUnidose.cs" />
     <Compile Include="Electrometers\StandardImaging\Enums\DeviceMode.cs" />
     <Compile Include="Electrometers\StandardImaging\Enums\Status.cs" />
+    <Compile Include="Interfaces\IJob.cs" />
+    <Compile Include="Jobs\IO\JobResultReader.cs" />
+    <Compile Include="Jobs\IO\JobResultWriter.cs" />
+    <Compile Include="Jobs\JobResult.cs" />
+    <Compile Include="Jobs\Output\MULinearity.cs" />
     <Compile Include="RS232\SerialMessenger.cs" />
     <Compile Include="Electrometers\StandardImaging\Max4000.cs" />
     <Compile Include="Electrometers\Value.cs" />
@@ -118,12 +128,16 @@
     <Compile Include="Linacs\Varian\CSeries\ServiceModeTables\TreatmentModeTable.cs" />
     <Compile Include="Linacs\Varian\CSeries\ServiceModeTables\UtilsTable.cs" />
     <Compile Include="Linacs\VetraKeyboard.cs" />
+    <Compile Include="RS232\RS232Processor.cs" />
     <Compile Include="UIListeners\TBAPopup.cs" />
     <Compile Include="UIListeners\TBAScanApp.cs" />
     <Compile Include="UIListeners\WinAPI.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="3DScanners\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

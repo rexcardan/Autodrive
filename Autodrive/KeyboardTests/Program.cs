@@ -1,5 +1,6 @@
 ﻿
 using Autodrive;
+using Autodrive._1DScanners.StandardImaging;
 using Autodrive.Electrometers.StandardImaging;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,12 @@ namespace KeyboardTests
         static void Main(string[] args)
         {
             var dv = new DoseView1D();
+            dv.Initalize("COM1");
+            var status = dv.GetStatus();
+            var success = dv.GetCurrentDepthMM();
+            Console.WriteLine(status);
+            Console.Read();
+
             var max = new Max4000();
             max.Initialize("COM1");
             max.Verify();

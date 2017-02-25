@@ -79,45 +79,9 @@ namespace Autodrive.RS232
         private void ProcessBuffer()
         {
             string completeMessage = string.Empty;
-
-            lock (_buffer)
-            {
-                bool hasDelimeter = true;
-                while (hasDelimeter)
-                {
-                    if (Port.BytesToRead > 0)
-                    {
-                        ReadBytes();
-                    }
-                    //-- Look for Return char in buffer --
-                    for (int i = 0; i < _bufferFilled; i++)
-                    {
-                        //-- Consider EITHER CR or LF as end of line, so if both were received it would register as an extra blank line. --
-                        if (_buffer.Length > i + Delimeter.Length)
-                        {
-                            if (_buffer.Skip(i).Take(Delimeter.Length).SequenceEqual(Encoding.UTF8.GetBytes(Delimeter)))
-                            {
-                                var msgBytes = new byte[i];
-                                Array.Copy(_buffer, 0, msgBytes, 0, i);
-                                completeMessage = string.Empty + new string(Encoding.UTF8.GetChars(msgBytes));
-                                if (!string.IsNullOrEmpty(completeMessage))
-                                {
-                                    OnMessageReceived(CommName, completeMessage);
-                                }
-
-                                _bufferFilled = _bufferFilled - msgBytes.Length - Delimeter.Length;
-                                Array.Copy(_buffer, msgBytes.Length + 1, _buffer, 0,
-                                    _buffer.Length - msgBytes.Length - Delimeter.Length);
-                                    // Shift everything past NewLine to beginning of buffer
-                            }
-                        }
-                        else
-                        {
-                            hasDelimeter = false;
-                        }
-                    }
-                }
-            }
+            Thread.Sleep(Port.ReadTimeout);
+            completeMessage = Port.ReadExisting();
+            OnMessageReceived(this.CommName, completeMessage);
         }
 
         public void SendMessage(string message)
