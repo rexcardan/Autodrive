@@ -97,6 +97,8 @@ namespace Autodrive._1DScanners.StandardImaging
             mes.Port.DiscardNull = true;
             mes.Port.ReceivedBytesThreshold = 1;
             mes.Start();
+
+            GetCurrentDepthMM();
         }
 
         public Status GetStatus()

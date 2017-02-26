@@ -15,8 +15,6 @@ C:\Users\variansupport\Desktop\Autodrive\Autodrive\KeyboardTests\bin\Debug\Autod
 C:\Users\variansupport\Desktop\Autodrive\Autodrive\KeyboardTests\bin\Debug\Autodrive.pdb
 C:\Users\variansupport\Desktop\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.csprojResolveAssemblyReference.cache
 C:\Users\UAB\Desktop\Autodrive\Autodrive\KeyboardTests\bin\Debug\KeyboardTests.exe.config
-C:\Users\UAB\Desktop\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.exe
-C:\Users\UAB\Desktop\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.pdb
 C:\Users\UAB\Desktop\Autodrive\Autodrive\KeyboardTests\bin\Debug\KeyboardTests.exe
 C:\Users\UAB\Desktop\Autodrive\Autodrive\KeyboardTests\bin\Debug\KeyboardTests.pdb
 C:\Users\UAB\Desktop\Autodrive\Autodrive\KeyboardTests\bin\Debug\Autodrive.dll
@@ -24,3 +22,5 @@ C:\Users\UAB\Desktop\Autodrive\Autodrive\KeyboardTests\bin\Debug\Newtonsoft.Json
 C:\Users\UAB\Desktop\Autodrive\Autodrive\KeyboardTests\bin\Debug\Autodrive.pdb
 C:\Users\UAB\Desktop\Autodrive\Autodrive\KeyboardTests\bin\Debug\Newtonsoft.Json.xml
 C:\Users\UAB\Desktop\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.csprojResolveAssemblyReference.cache
+C:\Users\UAB\Desktop\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.exe
+C:\Users\UAB\Desktop\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.pdb

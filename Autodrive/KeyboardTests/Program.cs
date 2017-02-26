@@ -32,8 +32,9 @@ namespace KeyboardTests
             var linac = new CSeriesLinac();
             linac.Initialize("COM10");
 
-            var ofTest = OutputFactors.GetDefault(linac, max, dv);
-            ofTest.Run(false, true);
+            var ofTest = new EDWFactors(linac, max, dv);
+            ofTest.Logger.Logged += Logger_Logged;
+            ofTest.Run();
 
             // var session = ServiceModeSession.Instance;
             // session.Keyboard = new VetraKeyboard("COM3");

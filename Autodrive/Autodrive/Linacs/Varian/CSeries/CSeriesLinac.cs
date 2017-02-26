@@ -56,8 +56,10 @@ namespace Autodrive.Linacs.Varian.CSeries
                 var edwOptions = AccessoryHelper.GetEDWOptions(ms.Accessory);
                 edwOptions.Y1 = ms.Y1;
                 edwOptions.Y2 = ms.Y2;
+                _session.MachineState.Accessory = ms.Accessory;
                 BeamManager.SetEDW(edwOptions);
             }
+
             else if (AccessoryHelper.IsElectronCone(ms.Accessory))
             {
                 var coneOption = AccessoryHelper.GetElectronCone(ms.Accessory);
@@ -89,13 +91,13 @@ namespace Autodrive.Linacs.Varian.CSeries
                 switch (angle)
                 {
                     //These are custom factors to increase time, so we don't move on too quickly
-                    case ServiceModeTableOptions.EDWAngle._10: ms *= (int)(ms * 1.1); break;
-                    case ServiceModeTableOptions.EDWAngle._15: ms *= (int)(ms * 1.1); break;
-                    case ServiceModeTableOptions.EDWAngle._20: ms *= (int)(ms * 1.1); break;
-                    case ServiceModeTableOptions.EDWAngle._25: ms *= (int)(ms * 1.1); break;
-                    case ServiceModeTableOptions.EDWAngle._30: ms *= (int)(ms * 1.1); break;
-                    case ServiceModeTableOptions.EDWAngle._45: ms *= (int)(ms * 1.1); break;
-                    case ServiceModeTableOptions.EDWAngle._60: ms *= (int)(ms * 1.1); break;
+                    case ServiceModeTableOptions.EDWAngle._10: ms = (int)(ms * 1.40); break;
+                    case ServiceModeTableOptions.EDWAngle._15: ms = (int)(ms * 1.40); break;
+                    case ServiceModeTableOptions.EDWAngle._20: ms = (int)(ms * 1.30); break;
+                    case ServiceModeTableOptions.EDWAngle._25: ms = (int)(ms * 1.30); break;
+                    case ServiceModeTableOptions.EDWAngle._30: ms = (int)(ms * 1.30); break;
+                    case ServiceModeTableOptions.EDWAngle._45: ms = (int)(ms * 1.30); break;
+                    case ServiceModeTableOptions.EDWAngle._60: ms = (int)(ms * 1.30); break;
                 }
             }
             return ms;
@@ -110,6 +112,7 @@ namespace Autodrive.Linacs.Varian.CSeries
         public void RepeatBeam()
         {
             _session.RepeatBeam();
+            Thread.Sleep(1000);
         }
     }
 }

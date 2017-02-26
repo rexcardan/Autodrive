@@ -72,6 +72,7 @@
     <Compile Include="Jobs\Output\MULinearity.cs" />
     <Compile Include="Jobs\Output\OutputFactors.cs" />
     <Compile Include="Linacs\EnergyHelper.cs" />
+    <Compile Include="Logging\TimerLogger.cs" />
     <Compile Include="RS232\SerialMessenger.cs" />
     <Compile Include="Electrometers\StandardImaging\Max4000.cs" />
     <Compile Include="Electrometers\Value.cs" />

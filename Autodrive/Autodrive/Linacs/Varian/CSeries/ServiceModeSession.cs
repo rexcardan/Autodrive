@@ -77,7 +77,7 @@ namespace Autodrive
             if (AccessoryHelper.IsEDW(MachineState.Accessory))
             {
                 //The jaw moves during the beam on operation
-                MachineState.Y1 = MachineState.Y2 = 0;
+                MachineState.Y1 = MachineState.Y2 = -5;
             }
         }
 

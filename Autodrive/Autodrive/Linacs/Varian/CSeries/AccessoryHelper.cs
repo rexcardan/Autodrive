@@ -54,6 +54,28 @@ namespace Autodrive.Linacs.Varian.CSeries
             return options;
         }
 
+        public static int GetEDWAngleNumber(EDWAngle angle)
+        {
+            switch (angle)
+            {
+                case EDWAngle._10:
+                    return 10;
+                case EDWAngle._15:
+                    return 15;
+                case EDWAngle._20:
+                    return 20;
+                case EDWAngle._25:
+                    return 25;
+                case EDWAngle._30:
+                    return 30;
+                case EDWAngle._45:
+                    return 45;
+                case EDWAngle._60:
+                    return 60;
+            }
+            return 0;
+        }
+
         public static bool IsElectronCone(string accessory)
         {
             if (accessory == null) { return false; }

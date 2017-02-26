@@ -42,7 +42,6 @@ namespace Autodrive
             timer.Dispose();
             IsSystemInMotion = false;
             motionsToExecute.Clear();
-            Console.Beep(1000, 500);
         }
 
         public ManualResetEvent MotionCompleteEvent = new ManualResetEvent(false);

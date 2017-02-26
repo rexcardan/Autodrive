@@ -26,14 +26,14 @@ namespace Autodrive
             return new MachineConstraints()
             {
                 XJawCMPerSec = 1.5,
-                YJawCMPerSec = 1.0,
+                YJawCMPerSec = 0.8,
                 CollimatorDegPerSec = 0.5,
                 GantryDegPerSec = 0.8,
                 TableLatCMPerSec = 1.5,
                 TableVertCMPerSec = 1.5,
                 TableLongCMPerSec = 1.5,
                 TableRotDegPerSec = 1.5,
-                EnergySwitchTimeSec = 6,
+                EnergySwitchTimeSec = 7,
                 CouchMoveCMPerSec = 2,
                 CouchVertMoveCMPerSec = 2,
                 CouchRotDegPerSec = 8

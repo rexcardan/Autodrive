@@ -20,6 +20,7 @@ namespace Autodrive.Linacs.Varian.CSeries
             SM.Instance.ServiceConsoleState.RepRates.Select(repRate);
             SM.Instance.Keyboard.PressEnter();
             Thread.Sleep(200);
+            SM.Instance.ResetConsoleState();
         }
 
         public static void SetMU(int mu)
@@ -45,6 +46,7 @@ namespace Autodrive.Linacs.Varian.CSeries
             SM.Instance.Keyboard.PressEnter();
             SM.Instance.MachineState.Time = time;
             SM.Instance.Wait(200);
+            SM.Instance.ResetConsoleState();
         }
 
         private static void SetUp()
@@ -94,9 +96,26 @@ namespace Autodrive.Linacs.Varian.CSeries
             }
         }
 
-        internal static void SetEDW(EDWOptions edwOptions)
+        public static void SetEDW(EDWOptions edwOptions)
         {
-            throw new NotImplementedException();
+            SetUp();
+            SM.Instance.Keyboard.Press("M");
+            SM.Instance.ServiceConsoleState.Setup.Current = SetupOptions.MODE;
+            SM.Instance.Keyboard.Press("E"); //EDW
+            SM.Instance.ServiceConsoleState.Modes.Current = ModeOptions.EDW;
+            SM.Instance.Keyboard.Press("N"); // New treatment
+
+            var orientationOp = edwOptions.Orientation == EDWOrientation.Y1IN ? 1 : 2;
+            SM.Instance.Keyboard.EnterNumber(orientationOp);
+            SM.Instance.Keyboard.PressEnter();
+            SM.Instance.Keyboard.EnterNumber(edwOptions.Y1);
+            SM.Instance.Keyboard.PressEnter();
+            SM.Instance.Keyboard.EnterNumber(edwOptions.Y2);
+            SM.Instance.Keyboard.PressEnter();
+
+            var angle = AccessoryHelper.GetEDWAngleNumber(edwOptions.Angle);
+            SM.Instance.Keyboard.EnterNumber(angle);
+            SM.Instance.Keyboard.PressEnter();
         }
 
         public static bool SetCone(ConeOptions cone)
