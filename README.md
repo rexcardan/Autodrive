@@ -16,7 +16,7 @@ Autodrive is an open source, .NET framework component for automating medical phy
 * Varian Medical Systems C-Series Linacs
 
 ####How is the linac controlled?
-Linac control is perfomed using a keyboard emulator through the service mode console. The API has the method that looks like:
+Linac control is perfomed using a [keyboard emulator](http://www.vetra.com/335text.html) through the service mode console. The API has a map of the Varian Service Mode console and executes as if a user was entering keys. It can be thought of as a very sophisticated macro with fine grained control. The API has the method that looks like:
 ```cs
 MachineState ms = MachineState.InitNew();
 ms.X1 = 10;
