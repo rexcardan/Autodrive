@@ -65,12 +65,14 @@
     <Compile Include="Electrometers\StandardImaging\Enums\DeviceMode.cs" />
     <Compile Include="Electrometers\StandardImaging\Enums\Status.cs" />
     <Compile Include="Interfaces\IJob.cs" />
+    <Compile Include="Jobs\IO\IOTable.cs" />
     <Compile Include="Jobs\IO\JobResultReader.cs" />
     <Compile Include="Jobs\IO\JobResultWriter.cs" />
     <Compile Include="Jobs\JobResult.cs" />
     <Compile Include="Jobs\Output\EDWFactors.cs" />
     <Compile Include="Jobs\Output\MULinearity.cs" />
     <Compile Include="Jobs\Output\OutputFactors.cs" />
+    <Compile Include="Jobs\Processor\OFProcessor.cs" />
     <Compile Include="Linacs\EnergyHelper.cs" />
     <Compile Include="Logging\TimerLogger.cs" />
     <Compile Include="RS232\SerialMessenger.cs" />
