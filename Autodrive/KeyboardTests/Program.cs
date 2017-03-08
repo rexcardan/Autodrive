@@ -19,9 +19,11 @@ namespace KeyboardTests
     {
         static void Main(string[] args)
         {
-            var of = @"C:\Users\Rex\Desktop\photonOoutputFactors.txt";
+            var of = @"C:\Users\variansupport\Desktop\photonOoutputFactors.txt";
+            var edwOF = @"C:\Users\variansupport\Desktop\edwFactors.txt";
             var jobs = JobResultReader.Read(of);
-            var table = OFProcessor.GetTableRows(jobs);
+            var edwJobs = JobResultReader.Read(edwOF).ToList();
+            var table = AccessoryOFProcessor.GetTableRows(edwJobs);
             foreach(var t in table)
             {
                 t.PrintToConsole();

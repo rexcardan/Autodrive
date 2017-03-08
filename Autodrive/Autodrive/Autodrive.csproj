@@ -69,10 +69,14 @@
     <Compile Include="Jobs\IO\JobResultReader.cs" />
     <Compile Include="Jobs\IO\JobResultWriter.cs" />
     <Compile Include="Jobs\JobResult.cs" />
+    <Compile Include="Jobs\Mechanical\CollimatorStarShot.cs" />
+    <Compile Include="Jobs\Mechanical\CouchStarShot.cs" />
     <Compile Include="Jobs\Mechanical\JawShots.cs" />
+    <Compile Include="Jobs\Mechanical\MechanicalSuite.cs" />
     <Compile Include="Jobs\Output\EDWFactors.cs" />
     <Compile Include="Jobs\Output\MULinearity.cs" />
     <Compile Include="Jobs\Output\OutputFactors.cs" />
+    <Compile Include="Jobs\Processor\AccessoryOFProcessor.cs" />
     <Compile Include="Jobs\Processor\OFProcessor.cs" />
     <Compile Include="Linacs\EnergyHelper.cs" />
     <Compile Include="Logging\TimerLogger.cs" />
