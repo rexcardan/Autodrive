@@ -24,3 +24,5 @@ C:\Users\UAB\Desktop\Autodrive\Autodrive\KeyboardTests\bin\Debug\Newtonsoft.Json
 C:\Users\UAB\Desktop\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.csprojResolveAssemblyReference.cache
 C:\Users\UAB\Desktop\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.exe
 C:\Users\UAB\Desktop\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.pdb
+C:\Git\Autodrive\Autodrive\KeyboardTests\bin\Debug\Newtonsoft.Json.dll
+C:\Git\Autodrive\Autodrive\KeyboardTests\bin\Debug\Newtonsoft.Json.xml

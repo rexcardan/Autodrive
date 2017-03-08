@@ -17,7 +17,7 @@ namespace Autodrive.Jobs.IO
             WriteResults(file, results);
         }
 
-        private static void WriteResults(string file, List<JobResult> results)
+        public static void WriteResults(string file, List<JobResult> results)
         {
             var json = JsonConvert.SerializeObject(results);
             File.WriteAllText(file, json);

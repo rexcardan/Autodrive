@@ -2,7 +2,9 @@
 using Autodrive;
 using Autodrive._1DScanners.StandardImaging;
 using Autodrive.Electrometers.StandardImaging;
+using Autodrive.Jobs.IO;
 using Autodrive.Jobs.Output;
+using Autodrive.Jobs.Processor;
 using Autodrive.Linacs;
 using Autodrive.Linacs.Varian.CSeries;
 using System;
@@ -17,6 +19,15 @@ namespace KeyboardTests
     {
         static void Main(string[] args)
         {
+            var of = @"C:\Users\Rex\Desktop\photonOoutputFactors.txt";
+            var jobs = JobResultReader.Read(of);
+            var table = OFProcessor.GetTableRows(jobs);
+            foreach(var t in table)
+            {
+                t.PrintToConsole();
+            }
+            Console.ReadLine();
+
             var dv = new DoseView1D();
             dv.Initalize("COM12");
 

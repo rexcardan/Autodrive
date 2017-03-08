@@ -69,6 +69,7 @@
     <Compile Include="Jobs\IO\JobResultReader.cs" />
     <Compile Include="Jobs\IO\JobResultWriter.cs" />
     <Compile Include="Jobs\JobResult.cs" />
+    <Compile Include="Jobs\Mechanical\JawShots.cs" />
     <Compile Include="Jobs\Output\EDWFactors.cs" />
     <Compile Include="Jobs\Output\MULinearity.cs" />
     <Compile Include="Jobs\Output\OutputFactors.cs" />

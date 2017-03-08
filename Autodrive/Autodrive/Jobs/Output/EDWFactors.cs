@@ -83,11 +83,10 @@ namespace Autodrive.Jobs.Output
                     var measured = _el.GetValue().Measurement;
                     Logger?.Log($"Measured : {measured}");
 
-                    //Save results
                     jr.AddMeasurement(_el.GetValue().Measurement);
-
-                    JobResultWriter.AppendResult(SavePath, jr);
                 }
+                //Save results
+                JobResultWriter.AppendResult(SavePath, jr);
             }
         }
 
