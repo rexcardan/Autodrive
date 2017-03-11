@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Autodrive.Jobs.Mechanical
@@ -30,7 +31,7 @@ namespace Autodrive.Jobs.Mechanical
         {
             Logger?.Log($"=====COUCH STAR SHOT =====");
             var ms = _linac.GetMachineStateCopy();
-            ms.X1 = ms.X2 = 0.5;
+            ms.X1 = ms.X2 = 0.2;
             ms.Y1 = 5;
             ms.Y2 = -3;
             ms.MU = MUPerShot;
@@ -40,10 +41,10 @@ namespace Autodrive.Jobs.Mechanical
             foreach (var angle in new double[] { 270, 245, 220, 195, 170, 145, 120 })
             {
                 Logger?.Log($"Moding up couch angle {angle}...");
-                ms.CollimatorRot = angle;
+                ms.CouchRot = angle;
                 _linac.SetMachineState(ms);
                 _linac.BeamOn();
-                _linac.WaitMsForMU(MUPerShot);
+                Thread.Sleep(_linac.WaitMsForMU(MUPerShot));
             }
         }
     }

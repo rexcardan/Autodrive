@@ -3,10 +3,12 @@ using Autodrive;
 using Autodrive._1DScanners.StandardImaging;
 using Autodrive.Electrometers.StandardImaging;
 using Autodrive.Jobs.IO;
+using Autodrive.Jobs.Mechanical;
 using Autodrive.Jobs.Output;
 using Autodrive.Jobs.Processor;
 using Autodrive.Linacs;
 using Autodrive.Linacs.Varian.CSeries;
+using Autodrive.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,35 +21,46 @@ namespace KeyboardTests
     {
         static void Main(string[] args)
         {
-            var of = @"C:\Users\variansupport\Desktop\photonOoutputFactors.txt";
-            var edwOF = @"C:\Users\variansupport\Desktop\edwFactors.txt";
-            var jobs = JobResultReader.Read(of);
-            var edwJobs = JobResultReader.Read(edwOF).ToList();
-            var table = AccessoryOFProcessor.GetTableRows(edwJobs);
-            foreach(var t in table)
-            {
-                t.PrintToConsole();
-            }
-            Console.ReadLine();
-
-            var dv = new DoseView1D();
-            dv.Initalize("COM12");
-
-            var max = new Max4000();
-            max.Initialize("COM9");
-            max.Verify();
-
-            //  max.Zero().Wait();
-
-            var bias = max.SetBias(Autodrive.Electrometers.Bias.NEG_100PERC);
-            max.SetMode(Autodrive.Electrometers.MeasureMode.CHARGE);
-
             var linac = new CSeriesLinac();
-            linac.Initialize("COM10");
+            linac.Initialize("COM5");
+         // linac.OverrideDefaultInterlocks();
+      
+            var logger = new Logger();
+            logger.Logged += Logger_Logged;
+            var suite = new MechanicalSuite(linac);
+            suite.Logger = logger;
 
-            var ofTest = new EDWFactors(linac, max, dv);
-            ofTest.Logger.Logged += Logger_Logged;
-            ofTest.Run();
+            suite.Run();
+
+            //var of = @"C:\Users\variansupport\Desktop\photonOoutputFactors.txt";
+            //var edwOF = @"C:\Users\variansupport\Desktop\edwFactors.txt";
+            //var jobs = JobResultReader.Read(of);
+            //var edwJobs = JobResultReader.Read(edwOF).ToList();
+            //var table = AccessoryOFProcessor.GetTableRows(edwJobs);
+            //foreach(var t in table)
+            //{
+            //    t.PrintToConsole();
+            //}
+            //Console.ReadLine();
+
+            //var dv = new DoseView1D();
+            //dv.Initalize("COM12");
+
+            //var max = new Max4000();
+            //max.Initialize("COM9");
+            //max.Verify();
+
+            ////  max.Zero().Wait();
+
+            //var bias = max.SetBias(Autodrive.Electrometers.Bias.NEG_100PERC);
+            //max.SetMode(Autodrive.Electrometers.MeasureMode.CHARGE);
+
+            //var linac = new CSeriesLinac();
+            //linac.Initialize("COM10");
+
+            //var ofTest = new EDWFactors(linac, max, dv);
+            //ofTest.Logger.Logged += Logger_Logged;
+            //ofTest.Run();
 
             // var session = ServiceModeSession.Instance;
             // session.Keyboard = new VetraKeyboard("COM3");
@@ -72,6 +85,7 @@ namespace KeyboardTests
             Console.Read();
             //  var tasks = new List<ITask>();
         }
+
 
         private static void Logger_Logged(string toLog)
         {

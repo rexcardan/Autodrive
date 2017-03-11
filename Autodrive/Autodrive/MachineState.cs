@@ -31,12 +31,12 @@ namespace Autodrive
             return new MachineState()
             {
                 MU = 0,
-                Time = 0,
+                Time = 99,
                 CollimatorRot = 180,
-                X1 = 0,
-                X2 = 0,
-                Y1 = 0,
-                Y2 = 0,
+                X1 = 0.1,
+                X2 = 0.1,
+                Y1 = 0.1,
+                Y2 = 0.1,
                 GantryRot = 180,
                 CouchVert = 100,
                 CouchLng = 100,

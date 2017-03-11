@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Autodrive.Logging;
 using Autodrive.Linacs.Varian.CSeries;
+using System.Threading;
+using Autodrive.Linacs;
 
 namespace Autodrive.Jobs.Mechanical
 {
@@ -34,31 +36,33 @@ namespace Autodrive.Jobs.Mechanical
                 shot.MU = MUPerShot;
                 _linac.SetMachineState(shot);
                 _linac.BeamOn();
-                _linac.WaitMsForMU(shot.MU);
-                for (int i = 0; i < RepeatMeasurements; i++)
+                Thread.Sleep(_linac.WaitMsForMU(shot.MU));
+                for (int i = 1; i < RepeatMeasurements; i++)
                 {
                     _linac.RepeatBeam();
                 }
             }
         }
 
-        public void AddShot(double x1, double x2, double y1, double y2)
+        public void AddShot(double x1, double x2, double y1, double y2, Energy energy = Energy._6X)
         {
             var ms = ServiceModeSession.Instance.MachineState.Copy();
             ms.X1 = x1;
             ms.X2 = x2;
             ms.Y1 = y1;
             ms.Y2 = y2;
+            ms.Energy = energy;
             toShoot.Add(ms);
         }
 
-        public void AddShot(double x, double y)
+        public void AddShot(double x, double y, Energy energy = Energy._6X)
         {
             var ms = ServiceModeSession.Instance.MachineState.Copy();
             ms.X1 = x / 2;
             ms.X2 = x / 2;
             ms.Y1 = y / 2;
             ms.Y2 = y / 2;
+            ms.Energy = energy;
             toShoot.Add(ms);
         }
 
@@ -66,7 +70,7 @@ namespace Autodrive.Jobs.Mechanical
         {
             var js = new JawShots(linac);
             js.AddShot(10, 10);
-            js.AddShot(15, 15);
+            js.AddShot(15, 15, Energy._15X);
             return js;
         }
 
@@ -75,13 +79,9 @@ namespace Autodrive.Jobs.Mechanical
             var js = new JawShots(linac);
             var sizes = new double[] { 2.5, 5, 7.5, 10, 15 };
             foreach (var size in sizes)
-                js.AddShot(size, 0, 1.25, 1.25);
+                js.AddShot(size, size, 1.3, 1.3);
             foreach (var size in sizes)
-                js.AddShot(0, size, 1.25, 1.25);
-            foreach (var size in sizes)
-                js.AddShot(1.25, 1.25, size, 0);
-            foreach (var size in sizes)
-                js.AddShot(1.25, 1.25, 0, size);
+                js.AddShot(1.3, 1.3, size, size);
             return js;
         }
     }

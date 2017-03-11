@@ -25,14 +25,17 @@ namespace Autodrive.Linacs.Varian.CSeries
 
         public static void SetMU(int mu)
         {
-            SetUp();
-            SM.Instance.Keyboard.Press("D");
-            SM.Instance.ServiceConsoleState.Setup.Current = (SetupOptions.DOSE);
-            Thread.Sleep(200);
-            SM.Instance.Keyboard.EnterNumber(mu);
-            SM.Instance.Keyboard.PressEnter();
-            Thread.Sleep(200);
-            SM.Instance.ResetConsoleState();
+            if (mu != 0)
+            {
+                SetUp();
+                SM.Instance.Keyboard.Press("D");
+                SM.Instance.ServiceConsoleState.Setup.Current = (SetupOptions.DOSE);
+                Thread.Sleep(200);
+                SM.Instance.Keyboard.EnterNumber(mu);
+                SM.Instance.Keyboard.PressEnter();
+                Thread.Sleep(200);
+                SM.Instance.ResetConsoleState();
+            }  
         }
 
         public static void SetTime(double time)
@@ -94,6 +97,16 @@ namespace Autodrive.Linacs.Varian.CSeries
                 SM.Instance.MachineState.Energy = energy;
                 Thread.Sleep(SM.Instance.MachineConstraints.EnergySwitchTimeSec * 1000);
             }
+        }
+
+        public static void SetFixed()
+        {
+            SetUp();
+            SM.Instance.Keyboard.Press("M");
+            SM.Instance.ServiceConsoleState.Setup.Current = SetupOptions.MODE;
+            SM.Instance.Keyboard.Press("F"); //Fixed
+            SM.Instance.ServiceConsoleState.Modes.Current = ModeOptions.FIXED;
+            SM.Instance.Keyboard.Press("N"); // New treatment
         }
 
         public static void SetEDW(EDWOptions edwOptions)

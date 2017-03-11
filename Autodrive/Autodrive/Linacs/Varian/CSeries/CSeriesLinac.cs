@@ -12,6 +12,7 @@ namespace Autodrive.Linacs.Varian.CSeries
     public class CSeriesLinac : ILinacController
     {
         private ServiceModeSession _session;
+        private int machineStatesSet = 0;
 
         public CSeriesLinac()
         {
@@ -45,11 +46,16 @@ namespace Autodrive.Linacs.Varian.CSeries
         public void SetMachineState(MachineState ms)
         {
             var current = ServiceModeSession.Instance.MachineState;
+            if(machineStatesSet == 0) { BeamManager.SetFixed(); }
 
             //Do mechanical operations first
+            //Do Gantry Operations
             _session.MotionManager.SetGantryAutomatic(ms.CollimatorRot, ms.X1, ms.X2, ms.Y1, ms.Y2, ms.GantryRot);
-            //Move couch
+            if (machineStatesSet == 0) { Thread.Sleep(5000); }
+
+            //Do Couch Operations
             _session.MotionManager.SetCouchAutomatic(ms.CouchVert, ms.CouchLng, ms.CouchLat, ms.CouchRot);
+            if (machineStatesSet == 0) { Thread.Sleep(5000); }
 
             if (AccessoryHelper.IsEDW(ms.Accessory))
             {
@@ -67,8 +73,10 @@ namespace Autodrive.Linacs.Varian.CSeries
                 _session.MachineState.Accessory = ms.Accessory;
             }
 
+            BeamManager.SetTime(ms.Time);
             BeamManager.SetMU(ms.MU);
             BeamManager.SetEnergy(ms.Energy);
+            machineStatesSet++;
         }
 
         public void StopBeam()

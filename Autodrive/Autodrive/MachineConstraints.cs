@@ -27,7 +27,7 @@ namespace Autodrive
             {
                 XJawCMPerSec = 1.5,
                 YJawCMPerSec = 0.8,
-                CollimatorDegPerSec = 0.5,
+                CollimatorDegPerSec = 2,
                 GantryDegPerSec = 0.8,
                 TableLatCMPerSec = 1.5,
                 TableVertCMPerSec = 1.5,

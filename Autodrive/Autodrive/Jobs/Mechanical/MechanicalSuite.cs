@@ -30,49 +30,48 @@ namespace Autodrive.Jobs.Mechanical
         {
             //Put couch and gantry and home position
             var ms = MachineState.InitNew();
-            ms.CouchLat = 101;
-            ms.CouchLng = 101;
-            ms.CouchVert = 101;
-            ms.CouchRot = 181;
-            _linac.SetMachineState(ms);
-            Thread.Sleep(8000);
-
-            ms = MachineState.InitNew();
-            _linac.SetMachineState(ms);
+            ms.Energy = Linacs.Energy._6X;
+            //ms.CouchLat = 101;
+            //ms.CouchLng = 101;
+            //ms.CouchVert = 101;
+            //ms.CouchRot = 181;
+            //_linac.SetMachineState(ms);
+            //Thread.Sleep(8000);
+            ms.Time = 99;
 
             //Set through different x y jaw combos and beam on to film/portal
             var jawShows = JawShots.GetXYCalibrationShots(_linac);
-            jawShows.Run();
+            //jawShows.Run();
 
             //Shoot a couple square fields to test for coincidence
-            jawShows = JawShots.GetLightFieldCoincidence(_linac);
-            jawShows.Run();
+            //jawShows = JawShots.GetLightFieldCoincidence(_linac);
+            //jawShows.Run();
 
             //TESTING FOR COUCH RELATIVE MOTION ACCURACY
             //Step couch 20 cm long and lat to shoot a square
             ms = _linac.GetMachineStateCopy();
-            ms.CouchLat += 20;
-            ms.CouchLng += 20;
+            ms.CouchLat += 8;
+            ms.CouchLng += 8;
             ms.X1 = ms.X2 = ms.Y1 = ms.Y2 = 1; //2 x 2 field
             ms.MU = 400;
             _linac.SetMachineState(ms);
             _linac.BeamOn();
-            _linac.WaitMsForMU(400);
+            Thread.Sleep(_linac.WaitMsForMU(400));
 
             //Move couch to other side shoot a square
-            ms.CouchLat -= 40;
-            ms.CouchLng -= 40;
+            ms.CouchLat -= 16;
+            ms.CouchLng -= 16;
             _linac.SetMachineState(ms);
             _linac.BeamOn();
-            _linac.WaitMsForMU(400);
+            Thread.Sleep(_linac.WaitMsForMU(400));
 
             //Collimator Star
-            var cs = new CollimatorStarShot(_linac);
-            cs.Run();
+            //var cs = new CollimatorStarShot(_linac);
+            //cs.Run();
 
             //Couch Star
             var cos = new CouchStarShot(_linac);
-            cs.Run();
+            cos.Run();
         }
     }
 }
