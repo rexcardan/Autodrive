@@ -1,4 +1,5 @@
 ﻿using Autodrive.Interfaces;
+using Autodrive.Linacs.Varian.CSeries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Autodrive.Jobs.TG51
 {
     public class DeterminePion
     {
-        public DeterminePion(ILinacController linac, I1DScanner scanner, IElectrometer el)
+        public DeterminePion(CSeriesLinac linac, I1DScanner scanner, IElectrometer el)
         {
 
         }

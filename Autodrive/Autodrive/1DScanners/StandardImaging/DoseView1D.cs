@@ -24,7 +24,7 @@ namespace Autodrive._1DScanners.StandardImaging
 
         public double LastKnowPositionMM
         {
-            get { return lastKnownTickPosition == -1 ? double.NaN : lastKnownTickPosition / TicksPerMM; }
+            get; private set;
         }
 
         public Logger Logger { get; set; }
@@ -34,6 +34,7 @@ namespace Autodrive._1DScanners.StandardImaging
         public double GetCurrentDepthMM()
         {
             double result = double.NaN;
+            var origin = GetOrigin();
 
             mes.SendMessage($"*G?", (resp =>
             {
@@ -42,7 +43,8 @@ namespace Autodrive._1DScanners.StandardImaging
                 if (success)
                 {
                     var canParse = int.TryParse(response, out lastKnownTickPosition);
-                    if (canParse) result = LastKnowPositionMM;
+                    if (canParse) result = (lastKnownTickPosition - origin) * TicksPerMM;
+                    LastKnowPositionMM = result;
                 }
             }));
 
@@ -51,10 +53,12 @@ namespace Autodrive._1DScanners.StandardImaging
 
         public async Task<bool> GoToDepth(double depthMm)
         {
+            var origin = GetOrigin();
+
             return await Task.Run<bool>(() =>
             {
                 var success = false;
-                var reqTicks = (int)(depthMm * TicksPerMM);
+                var reqTicks = origin + (int)(depthMm * TicksPerMM);
                 if (reqTicks < MaxTickPosition)
                 {
                     mes.SendMessage($"*S{reqTicks}?", (resp =>
@@ -138,6 +142,23 @@ namespace Autodrive._1DScanners.StandardImaging
                 var answer = ProcessDoseView1DResponse(resp, out success, this.Logger);
             }));
             return success;
+        }
+
+        public int GetOrigin()
+        {
+            int result = -1;
+
+            mes.SendMessage($"*o?", (resp =>
+            {
+                bool success = false;
+                var response = ProcessDoseView1DResponse(resp, out success, this.Logger);
+                if (success)
+                {
+                    var canParse = int.TryParse(response, out result);
+                }
+            }));
+
+            return result;
         }
     }
 }
