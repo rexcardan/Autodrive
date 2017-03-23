@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autodrive", "Autodrive\Autodrive.csproj", "{3FB13CCF-C518-4158-8AEB-2D324D9C0F08}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardTests", "KeyboardTests\KeyboardTests.csproj", "{48A35E7E-09BD-46B1-90A6-D131C2E6927C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutodriveTests", "AutodriveTests\AutodriveTests.csproj", "{C26B323A-3DE2-4ADB-98D0-504F22F2E253}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{48A35E7E-09BD-46B1-90A6-D131C2E6927C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48A35E7E-09BD-46B1-90A6-D131C2E6927C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48A35E7E-09BD-46B1-90A6-D131C2E6927C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C26B323A-3DE2-4ADB-98D0-504F22F2E253}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C26B323A-3DE2-4ADB-98D0-504F22F2E253}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C26B323A-3DE2-4ADB-98D0-504F22F2E253}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C26B323A-3DE2-4ADB-98D0-504F22F2E253}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

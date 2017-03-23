@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace Autodrive.Jobs.IO
 {
-    public class JobResultWriter
+    public class JobWriter
     {
-        public static void AppendResult(string file, JobResult jr)
+        public static void AppendResult(string file, Job jr)
         {
-            var results = JobResultReader.Read(file);
+            var results = JobReader.ReadJson(file);
             results.Add(jr);
             WriteResults(file, results);
         }
 
-        public static void WriteResults(string file, List<JobResult> results)
+        public static void WriteResults(string file, List<Job> results)
         {
             var json = JsonConvert.SerializeObject(results);
             File.WriteAllText(file, json);

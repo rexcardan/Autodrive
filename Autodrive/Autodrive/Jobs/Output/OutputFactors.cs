@@ -69,7 +69,7 @@ namespace Autodrive.Jobs.Output
 
             foreach (var m in measurementList)
             {
-                var jr = new JobResult(m);
+                var jr = new Job(m);
                 jr.DepthOfMeasurentMM = energyDepths[m.Energy];
                 _scan1D.GoToDepth(jr.DepthOfMeasurentMM);
 
@@ -109,7 +109,7 @@ namespace Autodrive.Jobs.Output
                 }
 
                 //Save results
-                JobResultWriter.AppendResult(SavePath, jr);
+                JobWriter.AppendResult(SavePath, jr);
             }
         }
 

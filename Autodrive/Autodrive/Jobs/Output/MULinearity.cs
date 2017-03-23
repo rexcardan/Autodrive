@@ -67,7 +67,7 @@ namespace Autodrive.Jobs.Output
                     var movingMs = ms.Copy();
                     movingMs.Energy = en;
                     movingMs.MU = mu;
-                    var jr = new JobResult(movingMs);
+                    var jr = new Job(movingMs);
                     jr.DepthOfMeasurentMM = ScanningDepthMM;
                     for (int n = 0; n < RepeatMeasurements; n++)
                     {
@@ -92,7 +92,7 @@ namespace Autodrive.Jobs.Output
                         //Save results
                         jr.AddMeasurement(_el.GetValue().Measurement);
                     }
-                    JobResultWriter.AppendResult(SavePath, jr);
+                    JobWriter.AppendResult(SavePath, jr);
                 }
             }
         }

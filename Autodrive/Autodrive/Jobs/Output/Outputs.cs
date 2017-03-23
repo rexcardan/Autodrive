@@ -98,7 +98,7 @@ namespace Autodrive.Jobs.Output
                 }
 
                 //Save results
-                JobResultWriter.AppendResult(SavePath, jr);
+                JobWriter.AppendResult(SavePath, jr);
             }
         }
 
@@ -112,10 +112,10 @@ namespace Autodrive.Jobs.Output
             electronCone = cone;
         }
 
-        private List<JobResult> BuildMeasurementList(bool photons = true, bool electrons = true)
+        private List<Job> BuildMeasurementList(bool photons = true, bool electrons = true)
         {
             var machineState = MachineState.InitNew();
-            var measurementList = new List<JobResult>();
+            var measurementList = new List<Job>();
 
             var lastPhotonFovHalf = 0.5;
             if (photons)
@@ -129,7 +129,7 @@ namespace Autodrive.Jobs.Output
                 {
                     var copy = changeState.Copy();
                     copy.Energy = en.Item1;
-                    measurementList.Add(new JobResult(copy) { DepthOfMeasurentMM = en.Item2 });
+                    measurementList.Add(new Job(copy) { DepthOfMeasurentMM = en.Item2 });
                 }
             }
             if (electrons)
@@ -145,7 +145,7 @@ namespace Autodrive.Jobs.Output
                 {
                     var copy = changeState.Copy();
                     copy.Energy = en.Item1;
-                    measurementList.Add(new JobResult(copy) { DepthOfMeasurentMM = en.Item2 });
+                    measurementList.Add(new Job(copy) { DepthOfMeasurentMM = en.Item2 });
                 }
             }
             return measurementList;

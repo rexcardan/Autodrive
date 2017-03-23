@@ -10,7 +10,7 @@ namespace Autodrive.Jobs.Processor
 {
     public class AccessoryOFProcessor
     {
-        public static List<IOTable> GetTableRows(List<JobResult> results)
+        public static List<IOTable> GetTableRows(List<Job> results)
         {
             List<IOTable> tables = new List<IOTable>();
             //There are possibly multiple energies. Let's split out
@@ -47,7 +47,7 @@ namespace Autodrive.Jobs.Processor
             return tables;
         }
 
-        private static double GetReference(IGrouping<Energy, JobResult> energyGroup)
+        private static double GetReference(IGrouping<Energy, Job> energyGroup)
         {
             foreach (var state in energyGroup)
             {

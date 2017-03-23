@@ -30,8 +30,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Cardan.XCel, Version=1.0.9.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cardan.XCel.1.0.9.4\lib\net40\Cardan.XCel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EPPlus, Version=4.1.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.1.0\lib\net40\EPPlus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -66,9 +74,11 @@
     <Compile Include="Electrometers\StandardImaging\Enums\Status.cs" />
     <Compile Include="Interfaces\IJob.cs" />
     <Compile Include="Jobs\IO\IOTable.cs" />
-    <Compile Include="Jobs\IO\JobResultReader.cs" />
-    <Compile Include="Jobs\IO\JobResultWriter.cs" />
-    <Compile Include="Jobs\JobResult.cs" />
+    <Compile Include="Jobs\IO\JobReader.cs" />
+    <Compile Include="Jobs\IO\JobWriter.cs" />
+    <Compile Include="Jobs\IO\XCelJobList.cs" />
+    <Compile Include="Jobs\IO\XCelRowParser.cs" />
+    <Compile Include="Jobs\Job.cs" />
     <Compile Include="Jobs\Mechanical\CollimatorStarShot.cs" />
     <Compile Include="Jobs\Mechanical\CouchStarShot.cs" />
     <Compile Include="Jobs\Mechanical\JawShots.cs" />

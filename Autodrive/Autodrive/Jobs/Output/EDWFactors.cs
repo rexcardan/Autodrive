@@ -51,7 +51,7 @@ namespace Autodrive.Jobs.Output
             var states = BuildMeasurementList();
             foreach (var m in states)
             {
-                var jr = new JobResult(m);
+                var jr = new Job(m);
                 jr.DepthOfMeasurentMM = DepthOfMeasurementMM;
                 if (Math.Abs(_scan1D.LastKnowPositionMM - DepthOfMeasurementMM) > 0.1)
                 {
@@ -62,7 +62,7 @@ namespace Autodrive.Jobs.Output
                 for (int n = 0; n < RepeatMeasurements; n++)
                 {
                     var fov = EnergyHelper.IsPhoton(m.Energy) ? $"{m.X1 * 2} x {m.Y1 * 2}" : m.Accessory;
-                    Logger.Log($"Working on {m.Energy}, Depth {jr.DepthOfMeasurentMM}, {fov} ,  Measurement {n + 1}");
+                    Logger.Log($"Working on {m.Energy}, Depth {jr.DepthOfMeasurentMM}, {m.Accessory} ,  Measurement {n + 1}");
 
                     _linac.SetMachineState(m);
 
@@ -86,7 +86,7 @@ namespace Autodrive.Jobs.Output
                     jr.AddMeasurement(_el.GetValue().Measurement);
                 }
                 //Save results
-                JobResultWriter.AppendResult(SavePath, jr);
+                JobWriter.AppendResult(SavePath, jr);
             }
         }
 

@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace Autodrive.Jobs
 {
-    public class JobResult
+    public class Job
     {
         public MachineState MachineStateRun { get; set; }
         public double[] Measurements { get; set; } = new double[0];
         public DateTime TimeMeasured { get; set; }
         public double DepthOfMeasurentMM { get; set; }
+        public int NumberOfMeasurementsDesired { get; set; }
 
-        public JobResult(MachineState ms)
+        public Job(MachineState ms)
         {
             this.MachineStateRun = ms;
             this.TimeMeasured = DateTime.Now;

@@ -18,3 +18,13 @@ C:\Git\Autodrive\Autodrive\Autodrive\bin\Debug\Newtonsoft.Json.xml
 C:\Git\Autodrive\Autodrive\Autodrive\obj\Debug\Autodrive.csprojResolveAssemblyReference.cache
 C:\Git\Autodrive\Autodrive\Autodrive\obj\Debug\Autodrive.dll
 C:\Git\Autodrive\Autodrive\Autodrive\obj\Debug\Autodrive.pdb
+C:\Users\rcardan\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\Autodrive\obj\Debug\Autodrive.csprojResolveAssemblyReference.cache
+C:\Users\rcardan\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\Autodrive\obj\Debug\Autodrive.dll
+C:\Users\rcardan\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\Autodrive\obj\Debug\Autodrive.pdb
+C:\Users\rcardan\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\Autodrive\bin\Debug\Autodrive.dll
+C:\Users\rcardan\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\Autodrive\bin\Debug\Autodrive.pdb
+C:\Users\rcardan\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\Autodrive\bin\Debug\Cardan.XCel.dll
+C:\Users\rcardan\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\Autodrive\bin\Debug\EPPlus.dll
+C:\Users\rcardan\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\Autodrive\bin\Debug\Newtonsoft.Json.dll
+C:\Users\rcardan\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\Autodrive\bin\Debug\EPPlus.xml
+C:\Users\rcardan\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\Autodrive\bin\Debug\Newtonsoft.Json.xml
