@@ -21,6 +21,11 @@ namespace KeyboardTests
     {
         static void Main(string[] args)
         {
+            var dv = new DoseView1D();
+            dv.Initalize("COM3");
+           
+            dv.GoToDepth(64.2).Wait();
+            var test = dv.GetOrigin();
             var linac = new CSeriesLinac();
             linac.Initialize("COM5");
          // linac.OverrideDefaultInterlocks();

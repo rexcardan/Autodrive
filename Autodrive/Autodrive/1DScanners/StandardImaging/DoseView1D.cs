@@ -80,7 +80,7 @@ namespace Autodrive._1DScanners.StandardImaging
             });
         }
 
-        public void Initalize(string com)
+        public void Initialize(string com)
         {
             mes = new SerialMessenger(com, "\n");
             ComPort = com;

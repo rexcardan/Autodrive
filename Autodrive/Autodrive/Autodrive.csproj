@@ -76,6 +76,7 @@
     <Compile Include="Jobs\Output\EDWFactors.cs" />
     <Compile Include="Jobs\Output\MULinearity.cs" />
     <Compile Include="Jobs\Output\OutputFactors.cs" />
+    <Compile Include="Jobs\Output\Outputs.cs" />
     <Compile Include="Jobs\Processor\AccessoryOFProcessor.cs" />
     <Compile Include="Jobs\Processor\OFProcessor.cs" />
     <Compile Include="Linacs\EnergyHelper.cs" />

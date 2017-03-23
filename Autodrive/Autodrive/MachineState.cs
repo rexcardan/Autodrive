@@ -10,7 +10,7 @@ namespace Autodrive
 {
     public class MachineState
     {
-        public Energy Energy { get; set; }
+        public Energy Energy { get; set; } = Energy.NONE;
         public DoseRate DoseRate { get; set; }
         public int MU { get; set; }
         public double Time { get; set; }

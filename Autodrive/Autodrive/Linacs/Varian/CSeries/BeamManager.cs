@@ -52,6 +52,27 @@ namespace Autodrive.Linacs.Varian.CSeries
             SM.Instance.ResetConsoleState();
         }
 
+        public static void SetDoseRate(DoseRate doseRate)
+        {
+            SetUp();
+
+            SM.Instance.Keyboard.Press("R");
+            SM.Instance.ServiceConsoleState.Setup.Current = SetupOptions.REP_RATE;
+            SM.Instance.Wait(200);
+            switch (doseRate)
+            {
+                case DoseRate._100: SM.Instance.Keyboard.EnterNumber(1); break;
+                case DoseRate._200: SM.Instance.Keyboard.EnterNumber(2); break;
+                case DoseRate._300: SM.Instance.Keyboard.EnterNumber(3); break;
+                case DoseRate._400: SM.Instance.Keyboard.EnterNumber(4); break;
+                case DoseRate._500: SM.Instance.Keyboard.EnterNumber(5); break;
+                case DoseRate._600: SM.Instance.Keyboard.EnterNumber(6); break;
+            }
+            SM.Instance.Wait(200);
+            SM.Instance.MachineState.DoseRate = doseRate;
+            SM.Instance.ResetConsoleState();
+        }
+
         private static void SetUp()
         {
             SM.Instance.Keyboard.Press("S");
@@ -146,6 +167,7 @@ namespace Autodrive.Linacs.Varian.CSeries
 
                 SM.Instance.MachineState.Accessory = cone.ToString();
                 SM.Instance.ResetConsoleState();
+                SM.Instance.Wait(5000);
                 return true;
             }
             return false;//Not set
