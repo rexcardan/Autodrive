@@ -44,11 +44,11 @@ namespace Autodrive.Linacs.Varian.CSeries
 
             SM.Instance.Keyboard.Press("T");
             SM.Instance.ServiceConsoleState.Setup.Current = SetupOptions.TIME;
-            SM.Instance.Wait(200);
+            Thread.Sleep(200);
             SM.Instance.Keyboard.EnterNumber(time);
             SM.Instance.Keyboard.PressEnter();
             SM.Instance.MachineState.Time = time;
-            SM.Instance.Wait(200);
+            Thread.Sleep(200);
             SM.Instance.ResetConsoleState();
         }
 
@@ -58,7 +58,7 @@ namespace Autodrive.Linacs.Varian.CSeries
 
             SM.Instance.Keyboard.Press("R");
             SM.Instance.ServiceConsoleState.Setup.Current = SetupOptions.REP_RATE;
-            SM.Instance.Wait(200);
+            Thread.Sleep(200);
             switch (doseRate)
             {
                 case DoseRate._100: SM.Instance.Keyboard.EnterNumber(1); break;
@@ -68,7 +68,7 @@ namespace Autodrive.Linacs.Varian.CSeries
                 case DoseRate._500: SM.Instance.Keyboard.EnterNumber(5); break;
                 case DoseRate._600: SM.Instance.Keyboard.EnterNumber(6); break;
             }
-            SM.Instance.Wait(200);
+            Thread.Sleep(200);
             SM.Instance.MachineState.DoseRate = doseRate;
             SM.Instance.ResetConsoleState();
         }
@@ -87,11 +87,11 @@ namespace Autodrive.Linacs.Varian.CSeries
                 SetUp();
                 SM.Instance.Keyboard.Press("A");
                 SM.Instance.ServiceConsoleState.Setup.Current = SetupOptions.ACCESSORIES;
-                SM.Instance.Wait(200);
+                Thread.Sleep(200);
 
                 SM.Instance.ServiceConsoleState.Accessories.Select(acc);
                 SM.Instance.Keyboard.PressEnter();
-                SM.Instance.Wait(200);
+                Thread.Sleep(200);
             }
         }
 
@@ -116,7 +116,7 @@ namespace Autodrive.Linacs.Varian.CSeries
                     case Energy._20MeV: SM.Instance.ServiceConsoleState.Energies.Select(EnergyOptions.E5); break;
                 }
                 SM.Instance.MachineState.Energy = energy;
-                Thread.Sleep(SM.Instance.MachineConstraints.EnergySwitchTimeSec * 1000);
+                SM.Instance.AddWaitTime("Waiting on carriage and bmag", SM.Instance.MachineConstraints.EnergySwitchTimeSec * 1000);
             }
         }
 
@@ -159,15 +159,15 @@ namespace Autodrive.Linacs.Varian.CSeries
                 SetUp();
                 SM.Instance.Keyboard.Press("A");
                 SM.Instance.ServiceConsoleState.Setup.Current = SetupOptions.ACCESSORIES;
-                SM.Instance.Wait(200);
+                Thread.Sleep(200);
 
                 SM.Instance.ServiceConsoleState.Cones.Select(cone);
                 SM.Instance.Keyboard.PressEnter();
-                SM.Instance.Wait(200);
+                Thread.Sleep(200);
 
                 SM.Instance.MachineState.Accessory = cone.ToString();
                 SM.Instance.ResetConsoleState();
-                SM.Instance.Wait(5000);
+                SM.Instance.AddWaitTime("Allowing jaw motion for cone insert", 5000);
                 return true;
             }
             return false;//Not set

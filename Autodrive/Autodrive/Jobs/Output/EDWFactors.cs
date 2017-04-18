@@ -18,7 +18,10 @@ namespace Autodrive.Jobs.Output
         private CSeriesLinac _linac;
         private IElectrometer _el;
         private I1DScanner _scan1D;
+
+        //Default energies
         private Energy[] energiesToMeasure = new Energy[] { Energy._6X, Energy._15X };
+
         public Logger Logger { get; set; }
         public double MeasurementFOV { get; set; } = 10;
         public int MUPerShot { get; set; } = 200;
@@ -44,7 +47,7 @@ namespace Autodrive.Jobs.Output
         {
             if (string.IsNullOrEmpty(SavePath))
             {
-                Logger.Log("Save path is empty. Will save to desktop");
+                Logger.Log("Save path is empty. Will save to desktop\n");
                 SavePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "edwFactors.txt");
             };
 
@@ -55,14 +58,14 @@ namespace Autodrive.Jobs.Output
                 jr.DepthOfMeasurentMM = DepthOfMeasurementMM;
                 if (Math.Abs(_scan1D.LastKnowPositionMM - DepthOfMeasurementMM) > 0.1)
                 {
-                    Logger.Log($"Changing depth to {DepthOfMeasurementMM} mm");
+                    Logger.Log($"Changing depth to {DepthOfMeasurementMM} mm\n");
                     _scan1D.GoToDepth(jr.DepthOfMeasurentMM);
                 }
 
                 for (int n = 0; n < RepeatMeasurements; n++)
                 {
                     var fov = EnergyHelper.IsPhoton(m.Energy) ? $"{m.X1 * 2} x {m.Y1 * 2}" : m.Accessory;
-                    Logger.Log($"Working on {m.Energy}, Depth {jr.DepthOfMeasurentMM}, {m.Accessory} ,  Measurement {n + 1}");
+                    Logger.Log($"Working on {m.Energy}, Depth {jr.DepthOfMeasurentMM}, {m.Accessory} ,  Measurement {n + 1}\n\n");
 
                     _linac.SetMachineState(m);
 
@@ -74,14 +77,14 @@ namespace Autodrive.Jobs.Output
                     else { _linac.RepeatBeam(); }
 
                     var waitTime = _linac.WaitMsForMU(m.MU, true);
-                    using (var t = new TimerLogger(waitTime, 1000, this.Logger))
+                    using (var t = new TimerLogger("Waiting on beam completion", waitTime, 1000, this.Logger))
                     {
                         Thread.Sleep(waitTime);
                     }
                     //Stop and get measurement
                     _el.StopMeasurement();
                     var measured = _el.GetValue().Measurement;
-                    Logger?.Log($"Measured : {measured}");
+                    Logger?.Log($"Measured : {measured}\n");
 
                     jr.AddMeasurement(_el.GetValue().Measurement);
                 }
@@ -100,19 +103,19 @@ namespace Autodrive.Jobs.Output
             var wedgeAngles = new int[] { 10, 15, 20, 25, 30, 45, 60 };
             var wedgeList = wedgeAngles.Select(a => $"Y1IN{a}").Concat(wedgeAngles.Select(a => $"Y2OUT{a}"));
 
-            foreach (var wedge in wedgeList)
+            energiesToMeasure.ToList().ForEach(en =>
             {
                 var copy = machineState.Copy();
-                copy.Accessory = wedge;
+                copy.Energy = en;
 
-                energiesToMeasure.ToList().ForEach(en =>
+                foreach (var wedge in wedgeList)
                 {
                     var changeState = copy.Copy();
                     changeState.Energy = en;
                     measurementList.Add(changeState);
 
-                });
-            }
+                }
+            });
             return measurementList;
         }
     }

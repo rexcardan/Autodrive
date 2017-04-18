@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Cardan.XCel;
 using Autodrive.Interfaces;
 using Autodrive.Linacs.Varian.CSeries;
+using Autodrive.Logging;
 
 namespace Autodrive.Jobs.IO
 {
@@ -29,8 +30,10 @@ namespace Autodrive.Jobs.IO
 
         public List<Tuple<Job, int>> RowJobs { get; set; }
 
-        public void Run(CSeriesLinac linac, IElectrometer el, I1DScanner scan1D)
+        public void Run(CSeriesLinac linac, IElectrometer el, I1DScanner scan1D, Logger logger = null)
         {
+            ServiceModeSession.Instance.Logger = logger;
+
             foreach (var job in RowJobs)
             {
                 var measurementsLeft = job.Item1.NumberOfMeasurementsDesired - job.Item1.Measurements.Length;

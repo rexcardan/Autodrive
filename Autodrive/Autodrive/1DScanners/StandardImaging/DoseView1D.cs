@@ -73,7 +73,7 @@ namespace Autodrive._1DScanners.StandardImaging
                 }
                 else
                 {
-                    Logger?.Log($"Cannot move to {reqTicks}. Maximum is {MaxTickPosition}");
+                    Logger?.Log($"Cannot move to {reqTicks}. Maximum is {MaxTickPosition}\n");
                 }
                 if (success) { lastKnownTickPosition = reqTicks; }
                 return success;

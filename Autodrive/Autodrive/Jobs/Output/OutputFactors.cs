@@ -61,7 +61,7 @@ namespace Autodrive.Jobs.Output
         {
             if (string.IsNullOrEmpty(SavePath))
             {
-                Logger.Log("Save path is empty. Will save to desktop");
+                Logger.Log("Save path is empty. Will save to desktop\n");
                 SavePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "outputFactors.txt");
             };
 
@@ -83,10 +83,10 @@ namespace Autodrive.Jobs.Output
                     if (_linac.GetMachineStateCopy().Accessory != m.Accessory)
                     {
                         Console.Beep(4000, 1000);
-                        Logger.Log($"Please change the cone to {m.Accessory}");
-                        Logger.Log($"Press ENTER when complete");
+                        Logger.Log($"Please change the cone to {m.Accessory}\n");
+                        Logger.Log($"Press ENTER when complete\n");
                         while (Console.ReadKey().Key != ConsoleKey.Enter) { }
-                        Logger.Log($"{m.Accessory} inserted! Continuing...");
+                        Logger.Log($"{m.Accessory} inserted! Continuing...\n");
                     }
 
                     _linac.SetMachineState(m);
@@ -103,7 +103,7 @@ namespace Autodrive.Jobs.Output
                     //Stop and get measurement
                     _el.StopMeasurement();
                     var measured = _el.GetValue().Measurement;
-                    Logger?.Log($"Measured : {measured}");
+                    Logger?.Log($"Measured : {measured}\n");
 
                     jr.AddMeasurement(_el.GetValue().Measurement);
                 }

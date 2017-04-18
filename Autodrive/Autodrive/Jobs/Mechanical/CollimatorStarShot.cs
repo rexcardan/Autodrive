@@ -29,7 +29,7 @@ namespace Autodrive.Jobs.Mechanical
 
         public void Run()
         {
-            Logger?.Log($"=====COLLIMATOR STAR SHOT =====");
+            Logger?.Log($"=====COLLIMATOR STAR SHOT =====\n");
 
             var ms = _linac.GetMachineStateCopy();
             ms.X1 = ms.X2 = 0.2;
@@ -41,7 +41,7 @@ namespace Autodrive.Jobs.Mechanical
 
             foreach(var angle in new double[] { 270, 245, 220, 195, 170, 145, 120 })
             {
-                Logger?.Log($"Moding up collimator angle {angle}...");
+                Logger?.Log($"Moding up collimator angle {angle}...\n");
                 ms.CollimatorRot = angle;
                 _linac.SetMachineState(ms);
                 _linac.BeamOn();

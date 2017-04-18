@@ -45,7 +45,7 @@ namespace Autodrive.Jobs.Output
 
             if (string.IsNullOrEmpty(SavePath))
             {
-                Logger.Log("Save path is empty. Will save to desktop");
+                Logger.Log("Save path is empty. Will save to desktop\n");
                 SavePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "outputs.txt");
             };
 
@@ -64,17 +64,17 @@ namespace Autodrive.Jobs.Output
 
                 for (int n = 0; n < RepeatMeasurements; n++)
                 {
-                    Logger.Log($"Working on {jr.MachineStateRun.Energy}, Depth {jr.DepthOfMeasurentMM},  Measurement {n + 1}");
+                    Logger.Log($"Working on {jr.MachineStateRun.Energy}, Depth {jr.DepthOfMeasurentMM},  Measurement {n + 1}\n");
 
                     var state = _linac.GetMachineStateCopy();
                     //Check for cone change
                     if (_linac.GetMachineStateCopy().Accessory != jr.MachineStateRun.Accessory)
                     {
                         Console.Beep(4000, 1000);
-                        Logger.Log($"Please change the cone to {jr.MachineStateRun.Accessory}");
-                        Logger.Log($"Press ENTER when complete");
+                        Logger.Log($"Please change the cone to {jr.MachineStateRun.Accessory}\n");
+                        Logger.Log($"Press ENTER when complete\n");
                         while (Console.ReadKey().Key != ConsoleKey.Enter) { }
-                        Logger.Log($"{jr.MachineStateRun.Accessory} inserted! Continuing...");
+                        Logger.Log($"{jr.MachineStateRun.Accessory} inserted! Continuing...\n");
                     }
 
                     _linac.SetMachineState(jr.MachineStateRun);
@@ -92,7 +92,7 @@ namespace Autodrive.Jobs.Output
                     //Stop and get measurement
                     _el.StopMeasurement();
                     var measured = _el.GetValue().Measurement;
-                    Logger?.Log($"Measured : {measured}");
+                    Logger?.Log($"Measured : {measured}\n");
 
                     jr.AddMeasurement(_el.GetValue().Measurement);
                 }

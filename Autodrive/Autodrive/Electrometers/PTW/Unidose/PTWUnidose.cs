@@ -44,10 +44,10 @@ namespace Autodrive.Electrometers.PTW.Unidose
         {
             if (!GetResponse(Messages.INDENTITY).Contains("UNIDOS"))
             {
-                Logger?.Log("PTW Unidos not found on {0}!", ComPort);
+                Logger?.Log("PTW Unidos not found on {0}!\n", ComPort);
                 return true;
             }
-            Logger?.Log("PTW Unidos found on {0}!", ComPort);
+            Logger?.Log("PTW Unidos found on {0}!\n", ComPort);
             return false;
         }
 
@@ -159,15 +159,15 @@ namespace Autodrive.Electrometers.PTW.Unidose
 
         public void StartMeasurement()
         {
-            Logger?.Log("Starting measurement...");
+            Logger?.Log("Starting measurement...\n");
             string resp = string.Empty;
             if ((resp = GetResponse(Messages.START)) == Messages.START)
             {
-                Logger?.Log("Measurement successfully started.");
+                Logger?.Log("Measurement successfully started.\n");
             }
             else
             {
-                Logger?.Log("Measurement not started {0}.", resp);
+                Logger?.Log("Measurement not started {0}.\n", resp);
             }
             Thread.Sleep(1000); //Operation takes 1s
         }
@@ -191,17 +191,17 @@ namespace Autodrive.Electrometers.PTW.Unidose
             if (split[2] == "**")
                 val.ResolutionPercent = ResolutionPercent.GREATER_THAN_ONE;
 
-            Logger?.Log("Measured value {0}", val);
+            Logger?.Log("Measured value {0}\n", val);
             return val;
         }
 
         public async Task<bool> Zero()
         {
-            Logger?.Log("Zeroing Unidose device on {0}", mes.CommName);
+            Logger?.Log("Zeroing Unidose device on {0}\n", mes.CommName);
             string resp = GetResponse(Messages.NULL);
             if (resp.Contains(Errors.E13.ToString()))
             {
-                Logger?.Log("Zeroing failed, must wait {0} s", resp.Split(' ')[1]);
+                Logger?.Log("Zeroing failed, must wait {0} s\n", resp.Split(' ')[1]);
                 return false;
             }
             if (resp == Messages.NULL)
@@ -227,7 +227,7 @@ namespace Autodrive.Electrometers.PTW.Unidose
                     timer.Dispose();
                     bool success = dStatus.Status == Status.RUN || dStatus.Status == Status.RES;
                     // returns true if success, false if error;
-                    Logger?.Log("Zeroing {0}.", success ? "was successful" : "failed");
+                    Logger?.Log("Zeroing {0}...\n", success ? "was successful" : "failed");
                     return success;
                 });
                 return result;
@@ -237,10 +237,10 @@ namespace Autodrive.Electrometers.PTW.Unidose
 
         public DeviceStatus GetStatus()
         {
-            Logger?.Log("Getting Unidose device status on {0}...", mes.CommName);
+            Logger?.Log("Getting Unidose device status on {0}...\n", mes.CommName);
             string resp = GetResponse(Messages.CURRENT_STATUS);
             var status = new DeviceStatus(resp);
-            Logger?.Log("Status reported as {0}", status);
+            Logger?.Log("Status reported as {0}\n", status);
             return status;
         }
 

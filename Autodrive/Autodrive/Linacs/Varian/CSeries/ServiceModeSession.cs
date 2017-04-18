@@ -1,6 +1,7 @@
 ﻿using Autodrive.Interfaces;
 using Autodrive.Linacs.Varian.CSeries;
 using Autodrive.Linacs.Varian.CSeries.ServiceModeTableOptions;
+using Autodrive.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,10 @@ namespace Autodrive
 {
     public class ServiceModeSession
     {
-        public IKeyboard Keyboard { get; set; }
+        private List<Task> waitableTasks = new List<Task>();
 
+        public IKeyboard Keyboard { get; set; }
+        public Logger Logger { get; set; }
         #region SINGLETON
         private static ServiceModeSession instance;
 
@@ -56,10 +59,10 @@ namespace Autodrive
         }
 
 
-        public void Wait(int ms = 0)
+        public void Wait()
         {
-            ms = ms > 0 ? ms : KeySpeedMs;
-            Thread.Sleep(ms);
+            Task.WaitAll(waitableTasks.ToArray());
+            waitableTasks.Clear();
         }
 
         public MachineConstraints MachineConstraints { get; private set; }
@@ -103,7 +106,7 @@ namespace Autodrive
         {
             Keyboard.Press("1111");
             Keyboard.PressEnter();
-            Wait(3000);
+            Thread.Sleep(3000);
         }
 
         public void ToggleDefaultInterlocks()
@@ -121,6 +124,15 @@ namespace Autodrive
             ServiceConsoleState.Interlocks.Select(InterlockOptions.PNDT);
             ServiceConsoleState.Interlocks.Select(InterlockOptions.KEY);
             Keyboard.PressEsc();
+        }
+
+        public void AddWaitTime(string message, int msWait)
+        {
+            waitableTasks.Add(Task.Run(() =>
+            {
+                var tl = new TimerLogger(message, msWait, 1, this.Logger);
+                tl.CompletionEvent.WaitOne();
+            }));
         }
     }
 }

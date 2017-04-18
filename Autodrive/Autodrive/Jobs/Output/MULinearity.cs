@@ -49,12 +49,12 @@ namespace Autodrive.Jobs.Output
         {
             if (string.IsNullOrEmpty(SavePath))
             {
-                Logger.Log("Save path is empty. Will save to desktop");
+                Logger.Log("Save path is empty. Will save to desktop\n");
                 SavePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "mulinearity.txt");
             };
 
             //Move to Scanning Depth
-            Logger.Log("Moving scanning chamber...");
+            Logger.Log("Moving scanning chamber...\n");
             _scan1D.GoToDepth(ScanningDepthMM).Wait();
 
             var ms = MachineState.InitNew();
@@ -71,7 +71,7 @@ namespace Autodrive.Jobs.Output
                     jr.DepthOfMeasurentMM = ScanningDepthMM;
                     for (int n = 0; n < RepeatMeasurements; n++)
                     {
-                        Logger.Log($"Working on {en}, {mu} MU, Measurement {n + 1}");
+                        Logger.Log($"Working on {en}, {mu} MU, Measurement {n + 1}\n");
 
                         _linac.SetMachineState(movingMs);
 
@@ -87,7 +87,7 @@ namespace Autodrive.Jobs.Output
                         //Stop and get measurement
                         _el.StopMeasurement();
                         var measured = _el.GetValue().Measurement;
-                        Logger?.Log($"Measured : {measured}");
+                        Logger?.Log($"Measured : {measured}\n");
 
                         //Save results
                         jr.AddMeasurement(_el.GetValue().Measurement);

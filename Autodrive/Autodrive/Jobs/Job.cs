@@ -26,5 +26,10 @@ namespace Autodrive.Jobs
             temp.Add(val);
             Measurements = temp.ToArray();
         }
+
+        public bool IsComplete()
+        {
+            return NumberOfMeasurementsDesired == 0 || Measurements.Count() >= NumberOfMeasurementsDesired;
+        }
     }
 }

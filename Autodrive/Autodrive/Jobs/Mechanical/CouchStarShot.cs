@@ -29,7 +29,7 @@ namespace Autodrive.Jobs.Mechanical
 
         public void Run()
         {
-            Logger?.Log($"=====COUCH STAR SHOT =====");
+            Logger?.Log($"=====COUCH STAR SHOT =====\n");
             var ms = _linac.GetMachineStateCopy();
             ms.X1 = ms.X2 = 0.2;
             ms.Y1 = 5;
@@ -40,7 +40,7 @@ namespace Autodrive.Jobs.Mechanical
 
             foreach (var angle in new double[] { 270, 245, 220, 195, 170, 145, 120 })
             {
-                Logger?.Log($"Moding up couch angle {angle}...");
+                Logger?.Log($"Moding up couch angle {angle}...\n");
                 ms.CouchRot = angle;
                 _linac.SetMachineState(ms);
                 _linac.BeamOn();

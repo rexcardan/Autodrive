@@ -47,6 +47,7 @@ namespace Autodrive.Linacs.Varian.CSeries
         {
             var current = ServiceModeSession.Instance.MachineState;
             if(machineStatesSet == 0) { BeamManager.SetFixed(); }
+            BeamManager.SetEnergy(ms.Energy);
 
             //Do mechanical operations first
             //Do Gantry Operations
@@ -75,7 +76,7 @@ namespace Autodrive.Linacs.Varian.CSeries
 
             BeamManager.SetTime(ms.Time);
             BeamManager.SetMU(ms.MU);
-            BeamManager.SetEnergy(ms.Energy);
+
             machineStatesSet++;
         }
 
@@ -113,6 +114,7 @@ namespace Autodrive.Linacs.Varian.CSeries
 
         public void BeamOn()
         {
+            _session.Wait();
             _session.BeamOn();
             Thread.Sleep(1000);
         }

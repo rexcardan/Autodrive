@@ -44,6 +44,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -55,7 +56,6 @@
   <ItemGroup>
     <Compile Include="1DScanners\StandardImaging\DoseView1D.cs" />
     <Compile Include="1DScanners\Status.cs" />
-    <Compile Include="BeamSetter.cs" />
     <Compile Include="Electrometers\Bias.cs" />
     <Compile Include="Electrometers\MeasureMode.cs" />
     <Compile Include="Electrometers\PTW\Unidose\Correction.cs" />
@@ -154,6 +154,9 @@
     <Compile Include="UIListeners\TBAPopup.cs" />
     <Compile Include="UIListeners\TBAScanApp.cs" />
     <Compile Include="UIListeners\WinAPI.cs" />
+    <Compile Include="UI\ConsoleUI.cs" />
+    <Compile Include="UI\ExcelRunnerUI.cs" />
+    <Compile Include="UI\ProgressBar.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="3DScanners\" />
