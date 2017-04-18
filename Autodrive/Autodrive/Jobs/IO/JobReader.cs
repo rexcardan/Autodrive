@@ -67,7 +67,7 @@ namespace Autodrive.Jobs.IO
                     state.Y1 = XCelRowParser.GetY1(header, row);
                     state.Y2 = XCelRowParser.GetY2(header, row);
                     var job = new Job(state);
-                    foreach(var measurement in XCelRowParser.GetMeasurements(header, row))
+                    foreach(var measurement in XCelRowParser.ReadMeasurements(header, row))
                     {
                         job.AddMeasurement(measurement);
                     }

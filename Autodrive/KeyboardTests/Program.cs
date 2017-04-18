@@ -21,6 +21,11 @@ namespace KeyboardTests
     {
         static void Main(string[] args)
         {
+            var max = new Max4000();
+            max.Initialize("COM1");
+
+            var verify = max.Verify();
+            var status = max.GetStatus();
             var dv = new DoseView1D();
             dv.Initialize("COM3");
            

@@ -18,6 +18,7 @@ namespace Autodrive.RS232
         public void Start()
         {
             IsRunning = true;
+            if (Port.IsOpen) { Port.Close(); }
             Port.Open();
             Port.DataReceived += port_DataReceived;
         }

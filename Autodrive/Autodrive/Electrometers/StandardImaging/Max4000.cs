@@ -128,8 +128,9 @@ namespace Autodrive.Electrometers.StandardImaging
         public bool Verify()
         {
             var success = false;
-            mes.SendMessage("*IDN?", (resp) => ProcessMax4000Response(resp, out success,this.Logger));
-            return success;
+            var max = false;
+            mes.SendMessage("*IDN?", (resp) => max = (ProcessMax4000Response(resp, out success,this.Logger)).StartsWith("MAX"));
+            return success && max;
         }
 
         public async Task<bool> Zero()

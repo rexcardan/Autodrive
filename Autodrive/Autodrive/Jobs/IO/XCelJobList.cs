@@ -25,6 +25,7 @@ namespace Autodrive.Jobs.IO
             tl._bookPath = path;
 
             tl.RowJobs = JobReader.ReadExcelWithRowIndex(path);
+            tl.SaveAction = () => tl.Save();
             return tl;
         }
 
@@ -55,10 +56,12 @@ namespace Autodrive.Jobs.IO
                         var val = el.GetValue();
                         job.Item1.AddMeasurement(val.Measurement);
                     }
-                    Save();
+                    SaveAction();
                 }
             }
         }
+
+        public Action SaveAction { get; set; }
 
         public void Save()
         {

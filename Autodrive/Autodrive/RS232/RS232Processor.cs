@@ -12,7 +12,7 @@ namespace Autodrive.RS232
         public static string ProcessMax4000Response(string response, out bool isValid, Logger logger = null)
         {
             response = response.Trim();
-            isValid = response.StartsWith("=>");
+            isValid = response.EndsWith("=>");
             if (response.StartsWith("?>"))
             {
                 logger?.Log("Command error was detected. Doesn't understand input command.");

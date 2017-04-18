@@ -81,11 +81,6 @@ namespace Autodrive.Jobs.IO
             return TryGetDouble(header, row, "Y2");
         }
 
-        public static IEnumerable<double> GetMeasurements(XCelData header, XCelData row)
-        {
-            throw new NotImplementedException();
-        }
-
         public static double GetTime(XCelData header, XCelData row)
         {
             return TryGetDouble(header, row, "Time");
@@ -108,7 +103,8 @@ namespace Autodrive.Jobs.IO
 
         public static int GetNMeasurements(XCelData header, XCelData row)
         {
-            return TryGetInt(header, row, "N", "Num Measurements", "Number of Measurements");
+            var n = TryGetInt(header, row, "N", "Num Measurements", "Number of Measurements");
+            return n;
         }
 
         public static double GetCouchLng(XCelData header, XCelData row)
@@ -129,14 +125,14 @@ namespace Autodrive.Jobs.IO
         public static List<double> ReadMeasurements(XCelData header, XCelData row)
         {
             var mheaders = Enumerable.Range(1, 5).Select(n => $"M{n}");
-            return mheaders.Select(h => TryGetDouble(header, row, h)).Where(n => !double.IsNaN(n)).ToList();
+            return mheaders.Select(h => TryGetDouble(header, row, h)).Where(n => !double.IsNaN(n) && n != 0.0).ToList();
         }
 
         public static int GetIgnoreCaseIndex(XCelData header, params string[] possibilities)
         {
             foreach (var poss in possibilities)
             {
-                var index = Array.FindIndex(header.ToArray(), t => t.IndexOf(poss, StringComparison.InvariantCultureIgnoreCase) >= 0);
+                var index = header.ToList().IndexOf(poss);
                 if (index != -1) { return index; }
             }
             //Not found
