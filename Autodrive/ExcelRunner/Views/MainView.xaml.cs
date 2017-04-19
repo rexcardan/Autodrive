@@ -22,6 +22,9 @@ namespace ExcelRunner.Views
     /// </summary>
     public partial class MainView : RibbonWindow
     {
+        private BackstageTabItem fileTab;
+        private Ribbon sfribbon;
+
         public MainView()
         {
             InitializeComponent();
@@ -29,18 +32,20 @@ namespace ExcelRunner.Views
 
         private void ribbon_Loaded(object sender, RoutedEventArgs e)
         {
-            var sfribbon = GridUtil.GetVisualChild<Ribbon>(sender as SfSpreadsheetRibbon);
+            sfribbon = GridUtil.GetVisualChild<Ribbon>(sender as SfSpreadsheetRibbon);
             var backstage = sfribbon.BackStage;
             foreach (var item in backstage.Items)
             {
                 if (item is BackStageCommandButton)
                 {
+
                     var button = item as BackStageCommandButton;
                     var header = button.Header;
 
                     if (button.Header.Contains("Open"))
                     {
                         button.Click += FileOpen;
+
                     }
                     else if (button.Header.Contains("Save As"))
                     {
@@ -50,6 +55,11 @@ namespace ExcelRunner.Views
                     {
                         button.Click += Save; ;
                     }
+                }
+                else if (item is BackstageTabItem)
+                {
+                    fileTab = item as BackstageTabItem;
+
                 }
             }
             if (sfribbon != null)
@@ -105,7 +115,7 @@ namespace ExcelRunner.Views
                 string filename = dlg.FileName;
                 this.spreadsheet.Open(filename);
             }
-
+            sfribbon.HideBackStage();
         }
     }
 }

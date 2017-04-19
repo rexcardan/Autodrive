@@ -41,3 +41,16 @@ C:\Users\rcardan\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\KeyboardTests\bin\
 C:\Users\rcardan\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.csprojResolveAssemblyReference.cache
 C:\Users\rcardan\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.exe
 C:\Users\rcardan\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.pdb
+D:\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\KeyboardTests\bin\Debug\KeyboardTests.exe.config
+D:\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\KeyboardTests\bin\Debug\KeyboardTests.exe
+D:\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\KeyboardTests\bin\Debug\KeyboardTests.pdb
+D:\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\KeyboardTests\bin\Debug\Autodrive.dll
+D:\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\KeyboardTests\bin\Debug\Cardan.XCel.dll
+D:\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\KeyboardTests\bin\Debug\Newtonsoft.Json.dll
+D:\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\KeyboardTests\bin\Debug\EPPlus.dll
+D:\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\KeyboardTests\bin\Debug\Autodrive.pdb
+D:\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\KeyboardTests\bin\Debug\Newtonsoft.Json.xml
+D:\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\KeyboardTests\bin\Debug\EPPlus.xml
+D:\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.csprojResolveAssemblyReference.cache
+D:\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.exe
+D:\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.pdb

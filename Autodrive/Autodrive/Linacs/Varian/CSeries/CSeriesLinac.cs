@@ -1,4 +1,5 @@
 ﻿using Autodrive.Interfaces;
+using Autodrive.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,10 @@ namespace Autodrive.Linacs.Varian.CSeries
     {
         private ServiceModeSession _session;
         private int machineStatesSet = 0;
+        /// <summary>
+        /// The logger to use with this component
+        /// </summary>
+        public Logger Logger { get; set; }
 
         public CSeriesLinac()
         {
@@ -32,7 +37,10 @@ namespace Autodrive.Linacs.Varian.CSeries
 
         public void Initialize(string comPort)
         {
+            Logger?.Log($"Initalizing Autodrive on port {comPort}");
+         
             _session = ServiceModeSession.Instance;
+            if (Logger != null) { _session.Logger = Logger; }
             _session.Keyboard = new VetraKeyboard(comPort);
             _session.KeySpeedMs = 100;
             _session.ResetConsoleState();
@@ -40,6 +48,7 @@ namespace Autodrive.Linacs.Varian.CSeries
 
         public void OverrideDefaultInterlocks()
         {
+            Logger?.Log($"Toggling interlocks...");
             _session.ToggleDefaultInterlocks();
         }
 
