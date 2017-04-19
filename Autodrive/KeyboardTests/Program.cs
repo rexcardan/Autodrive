@@ -21,6 +21,29 @@ namespace KeyboardTests
     {
         static void Main(string[] args)
         {
+            var linac = new CSeriesLinac();
+            linac.Initialize("COM1");
+            var logger = new Logger();
+            logger.Logged += (log) => Console.WriteLine(log);
+            linac.Logger = logger;
+
+            var ms = MachineState.InitNew();
+            ms.Energy = Energy._6X;
+            ms.X1 = 5;
+            ms.X2 = 5;
+            linac.SetMachineState(ms);
+
+            var ss = ServiceModeSession.Instance;
+            ss.Logger = logger;
+            ss.AddWaitTime("test", 7000);
+            ss.Wait();
+
+
+            var time = new TimerLogger("Test", 7000, 1000, logger);
+            time.CompletionEvent.WaitOne();
+            Console.WriteLine("Timer complete");
+            Console.Read();
+
             var max = new Max4000();
             max.Initialize("COM1");
 
@@ -31,17 +54,11 @@ namespace KeyboardTests
            
             dv.GoToDepth(64.2).Wait();
             var test = dv.GetOrigin();
-            var linac = new CSeriesLinac();
-            linac.Initialize("COM5");
+            //var linac = new CSeriesLinac();
+            //linac.Initialize("COM5");
          // linac.OverrideDefaultInterlocks();
       
-            var logger = new Logger();
-            logger.Logged += Logger_Logged;
-            var suite = new MechanicalSuite(linac);
-            suite.Logger = logger;
-
-            suite.Run();
-
+         
             //var of = @"C:\Users\variansupport\Desktop\photonOoutputFactors.txt";
             //var edwOF = @"C:\Users\variansupport\Desktop\edwFactors.txt";
             //var jobs = JobResultReader.Read(of);

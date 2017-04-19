@@ -109,7 +109,7 @@ namespace ExcelRunner.ViewModels
             if (ComPorts.Count > 3)
             {
                 //Take last 4 
-                var edgeport = ComPorts.OrderByDescending(n => n).Take(4).OrderBy(n=>n).ToArray();
+                var edgeport = ComPorts.OrderByDescending(n => n).Take(4).OrderBy(n => n).ToArray();
                 ELComPort = edgeport[1];
                 ADComPort = edgeport[0];
                 DVComPort = edgeport[2];
@@ -227,7 +227,8 @@ namespace ExcelRunner.ViewModels
                         var measurementsLeft = job.Item1.NumberOfMeasurementsDesired - job.Item1.Measurements.Length;
                         if (measurementsLeft > 0)
                         {
-                            linac.SetMachineState(job.Item1.MachineStateRun);
+                            if (linac != null)
+                                linac.SetMachineState(job.Item1.MachineStateRun);
                         }
                         if (scan1D != null)
                         {
@@ -237,12 +238,19 @@ namespace ExcelRunner.ViewModels
                         {
                             for (int i = 0; i < measurementsLeft; i++)
                             {
-                                el.StartMeasurement();
+                                if (el != null)
+                                    el.StartMeasurement();
+                                if (linac != null)
+                                    linac.BeamOn();
+                                if (el != null)
+                                    el.StopMeasurement();
 
-                                linac.BeamOn();
-                                el.StopMeasurement();
-                                var val = el.GetValue().Measurement;
-                                el.Reset();
+                                double val = double.NaN;
+                                if (el != null)
+                                {
+                                    val = el.GetValue().Measurement;
+                                    el.Reset();
+                                }
                                 job.Item1.AddMeasurement(val);
                                 //Save
                                 var mNumber = job.Item1.Measurements.Count();

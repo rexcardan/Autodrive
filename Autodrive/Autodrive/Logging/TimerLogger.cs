@@ -27,9 +27,9 @@ namespace Autodrive.Logging
 
         private void TimerCallback(Object o)
         {
-            timeLeft = timeLeft >  countingSpeed? timeLeft - countingSpeed : 0;
+            timeLeft = timeLeft > countingSpeed ? timeLeft - countingSpeed : 0;
             log?.Log($"\r{_message} | {timeLeft.ToString("F2")} sec left");
-            if (timeLeft == 0) { CompletionEvent.Set(); GC.Collect(); }
+            if (timeLeft == 0) { CompletionEvent.Set(); timer.Dispose(); GC.Collect(); }
         }
 
         public ManualResetEvent CompletionEvent { get; set; }

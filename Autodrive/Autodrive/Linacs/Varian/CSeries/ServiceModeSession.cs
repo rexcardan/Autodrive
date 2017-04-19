@@ -130,7 +130,7 @@ namespace Autodrive
         {
             waitableTasks.Add(Task.Run(() =>
             {
-                var tl = new TimerLogger(message, msWait, 1, this.Logger);
+                var tl = new TimerLogger(message, msWait, 1000, this.Logger);
                 tl.CompletionEvent.WaitOne();
             }));
         }

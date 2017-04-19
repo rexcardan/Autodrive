@@ -1,6 +1,7 @@
 ﻿using Autodrive.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
@@ -29,19 +30,44 @@ namespace Autodrive
 
         public void Press(string characters)
         {
+            Debug.Write(characters);
             var ascii = ASCIIEncoding.ASCII.GetBytes(characters);
-            _sp.Write(ascii, 0, ascii.Length);
+            _sp.WriteTimeout = 500;
+            try
+            {
+                _sp.Write(ascii, 0, ascii.Length);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
 
         public void Press(char c)
         {
-            _sp.Write(new char[] { c }, 0, 1);
+            try
+            {
+                _sp.WriteTimeout = 500;
+                _sp.Write(new char[] { c }, 0, 1);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
 
         private void Send(byte code)
         {
             var bytes = new byte[] { code };
-            _sp.Write(bytes, 0, bytes.Length);
+            try
+            {
+                _sp.WriteTimeout = 500;
+                _sp.Write(bytes, 0, bytes.Length);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
 
         public void PressEnter()
