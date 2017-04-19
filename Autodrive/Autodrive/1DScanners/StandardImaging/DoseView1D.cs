@@ -53,6 +53,7 @@ namespace Autodrive._1DScanners.StandardImaging
 
         public async Task<bool> GoToDepth(double depthMm)
         {
+            Logger.Log($"Moving chamber to {depthMm} mm");
             var origin = GetOrigin();
 
             return await Task.Run<bool>(() =>
@@ -68,7 +69,9 @@ namespace Autodrive._1DScanners.StandardImaging
 
                     if (success)
                     {
-                        while (GetStatus() != Status.IDLE) { Thread.Sleep(500); }
+                        var status = GetStatus();
+                        Logger.Log($"DoseView 1D status = {status}");
+                        while (GetStatus() != Status.IDLE) { Thread.Sleep(800); }
                     }
                 }
                 else

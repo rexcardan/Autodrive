@@ -28,7 +28,7 @@ namespace Autodrive.Electrometers.StandardImaging
             mes.SendMessage("*NEEDZ?", resp =>
             {
                 bool success;
-                var cleaned = ProcessMax4000Response(resp, out success,this.Logger);
+                var cleaned = ProcessMax4000Response(resp, out success, this.Logger);
                 switch (cleaned)
                 {
                     case "0": need = false; break;
@@ -45,7 +45,7 @@ namespace Autodrive.Electrometers.StandardImaging
             mes.SendMessage("*CURCHG?", (resp) =>
             {
                 bool success;
-                var cleanedResponse = ProcessMax4000Response(resp, out success,this.Logger);
+                var cleanedResponse = ProcessMax4000Response(resp, out success, this.Logger);
                 var split = cleanedResponse.Split(' ');
                 if (split.Length == 2)
                 {
@@ -73,11 +73,11 @@ namespace Autodrive.Electrometers.StandardImaging
             var success = false;
             if (r == Range.HIGH)
             {
-                mes.SendMessage("*RNG1", resp => ProcessMax4000Response(resp, out success,this.Logger));
+                mes.SendMessage("*RNG1", resp => ProcessMax4000Response(resp, out success, this.Logger));
             }
             else
             {
-                mes.SendMessage("*RNG0", resp => ProcessMax4000Response(resp, out success,this.Logger));
+                mes.SendMessage("*RNG0", resp => ProcessMax4000Response(resp, out success, this.Logger));
             }
             return success;
         }
@@ -104,7 +104,7 @@ namespace Autodrive.Electrometers.StandardImaging
             mes.Start();
 
             //Clear the line
-            mes.SendMessage(0x03, (resp) => {  });
+            mes.SendMessage(0x03, (resp) => { });
         }
 
         public bool SetMode(MeasureMode mode)
@@ -112,16 +112,20 @@ namespace Autodrive.Electrometers.StandardImaging
             var success = false;
             switch (mode)
             {
-                case MeasureMode.CHARGE: mes.SendMessage("*CHGMAX?", resp => ProcessMax4000Response(resp, out success,this.Logger)); break;
-                case MeasureMode.CHARGE_RATE: mes.SendMessage("*RTCHG?", resp => ProcessMax4000Response(resp, out success,this.Logger)); break;
-                case MeasureMode.TRIGGERED: mes.SendMessage("*CHGTHR?", resp => ProcessMax4000Response(resp, out success,this.Logger)); break;
+                case MeasureMode.CHARGE: mes.SendMessage("*CHGMAX?", resp => ProcessMax4000Response(resp, out success, this.Logger)); break;
+                case MeasureMode.CHARGE_RATE: mes.SendMessage("*RTCHG?", resp => ProcessMax4000Response(resp, out success, this.Logger)); break;
+                case MeasureMode.TRIGGERED: mes.SendMessage("*CHGTHR?", resp => ProcessMax4000Response(resp, out success, this.Logger)); break;
             }
             return success;
         }
 
         public void StartMeasurement()
         {
-            mes.SendMessage("*STARTNP?");
+            bool success = false;
+            mes.SendMessage("*STARTNP?", (resp) =>
+            {
+                ProcessMax4000Response(resp, out success, this.Logger);
+            });
             Thread.Sleep(500);
         }
 
@@ -129,7 +133,7 @@ namespace Autodrive.Electrometers.StandardImaging
         {
             var success = false;
             var max = false;
-            mes.SendMessage("*IDN?", (resp) => max = (ProcessMax4000Response(resp, out success,this.Logger)).StartsWith("MAX"));
+            mes.SendMessage("*IDN?", (resp) => max = (ProcessMax4000Response(resp, out success, this.Logger)).StartsWith("MAX"));
             return success && max;
         }
 
@@ -155,7 +159,7 @@ namespace Autodrive.Electrometers.StandardImaging
             mes.SendMessage("*STATUS?", (resp) =>
             {
                 bool success;
-                var cleanedResponse = ProcessMax4000Response(resp, out success,this.Logger);
+                var cleanedResponse = ProcessMax4000Response(resp, out success, this.Logger);
                 switch (cleanedResponse)
                 {
                     case "0": status = Status.IDLE; break;
@@ -174,7 +178,7 @@ namespace Autodrive.Electrometers.StandardImaging
             mes.SendMessage("*MODE?", (resp) =>
             {
                 bool success;
-                var cleanedResponse = ProcessMax4000Response(resp, out success,this.Logger);
+                var cleanedResponse = ProcessMax4000Response(resp, out success, this.Logger);
                 switch (cleanedResponse)
                 {
                     case "2": status = DeviceMode.WARM_UP; break;
@@ -214,7 +218,7 @@ namespace Autodrive.Electrometers.StandardImaging
                 }
                 mes.SendMessage($"*BIAS{biasNumber}?", (resp) =>
                 {
-                ProcessMax4000Response(resp, out success,this.Logger);
+                    ProcessMax4000Response(resp, out success, this.Logger);
                 });
                 return success;
             }
@@ -228,7 +232,7 @@ namespace Autodrive.Electrometers.StandardImaging
             mes.SendMessage("*BIAS?", (resp) =>
             {
                 bool success;
-                var cleanedResponse = ProcessMax4000Response(resp, out success,this.Logger);
+                var cleanedResponse = ProcessMax4000Response(resp, out success, this.Logger);
                 switch (cleanedResponse)
                 {
                     case "100": bias = Bias.POS_100PERC; break;
@@ -245,7 +249,7 @@ namespace Autodrive.Electrometers.StandardImaging
         public bool Reset()
         {
             var success = false;
-            mes.SendMessage("*STOP?", resp => ProcessMax4000Response(resp, out success,this.Logger));
+            mes.SendMessage("*STOP?", resp => ProcessMax4000Response(resp, out success, this.Logger));
             Thread.Sleep(500);
             return success;
         }
@@ -253,7 +257,7 @@ namespace Autodrive.Electrometers.StandardImaging
         public void StopMeasurement()
         {
             var success = false;
-            mes.SendMessage("*HALT?", resp => ProcessMax4000Response(resp, out success,this.Logger));
+            mes.SendMessage("*HALT?", resp => ProcessMax4000Response(resp, out success, this.Logger));
         }
         #endregion
 

@@ -81,13 +81,39 @@ namespace ExcelRunner.ViewModels
             set { SetProperty(ref status, value); }
         }
 
+        private string dvConected;
+
+        public string DVConnected
+        {
+            get { return dvConected; }
+            set { SetProperty(ref dvConected, value); }
+        }
+
+        private string elConected;
+
+        public string ELConnected
+        {
+            get { return elConected; }
+            set { SetProperty(ref elConected, value); }
+        }
+
+
 
         public MainViewModel()
         {
             logger = new Logger();
             logger.Logged += Logger_Logged;
             SerialPort.GetPortNames().ToList().ForEach(ComPorts.Add);
-            ELComPort = ComPorts[0];
+
+            //Autoselect for EdgePort hookup
+            if (ComPorts.Count > 3)
+            {
+                //Take last 4 
+                var edgeport = ComPorts.OrderByDescending(n => n).Take(4).OrderBy(n=>n).ToArray();
+                ELComPort = edgeport[1];
+                ADComPort = edgeport[0];
+                DVComPort = edgeport[2];
+            }
 
             RelaySpreadsheetControlCommand = new DelegateCommand<SfSpreadsheet>((sp) =>
             {
@@ -110,6 +136,11 @@ namespace ExcelRunner.ViewModels
                 {
                     MessageBox.Show("Couldn't find Max 4000!");
                 }
+                else
+                {
+                    ELConnected = "(Connected)";
+                    el.Reset();
+                }
             });
 
             Connect1DCommand = new DelegateCommand(() =>
@@ -117,10 +148,16 @@ namespace ExcelRunner.ViewModels
                 this.scan1D = new DoseView1D();
                 scan1D.Logger = logger;
                 scan1D.Initialize(DVComPort);
-                if (string.IsNullOrEmpty(scan1D.GetVersion()))
+                var version = scan1D.GetVersion();
+                if (string.IsNullOrEmpty(version))
                 {
                     MessageBox.Show("Couldn't find DoseView 1D!");
                 }
+                else
+                {
+                    DVConnected = "(Connected)";
+                }
+
             });
 
             RunTasksCommand = new DelegateCommand(async () =>
@@ -201,11 +238,12 @@ namespace ExcelRunner.ViewModels
                             for (int i = 0; i < measurementsLeft; i++)
                             {
                                 el.StartMeasurement();
+
                                 linac.BeamOn();
                                 el.StopMeasurement();
                                 var val = el.GetValue().Measurement;
+                                el.Reset();
                                 job.Item1.AddMeasurement(val);
-
                                 //Save
                                 var mNumber = job.Item1.Measurements.Count();
                                 var mHeader = $"M{mNumber}";

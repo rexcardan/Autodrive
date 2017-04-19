@@ -54,3 +54,6 @@ D:\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\KeyboardTests\bin\Debug\EPPlus.x
 D:\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.csprojResolveAssemblyReference.cache
 D:\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.exe
 D:\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\KeyboardTests\obj\Debug\KeyboardTests.pdb
+C:\Users\variansupport\Desktop\Autodrive\Autodrive\KeyboardTests\bin\Debug\Cardan.XCel.dll
+C:\Users\variansupport\Desktop\Autodrive\Autodrive\KeyboardTests\bin\Debug\EPPlus.dll
+C:\Users\variansupport\Desktop\Autodrive\Autodrive\KeyboardTests\bin\Debug\EPPlus.xml

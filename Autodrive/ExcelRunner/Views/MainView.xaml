@@ -34,14 +34,20 @@
                         </StackPanel>
                     </StackPanel>
                     <StackPanel  Margin="20 0">
-                        <TextBlock Text="Max 4000" Padding="5"/>
+                        <TextBlock  Padding="5">
+                            <Run Text="Max 4000 "/>
+                            <Run Text="{Binding ELConnected}"/>
+                        </TextBlock>
                         <StackPanel Orientation="Horizontal">
                             <ComboBox Width="100" ItemsSource="{Binding ComPorts}" SelectedItem="{Binding ELComPort}"/>
                             <Button Content="Connect" Command="{Binding ConnectELCommand}"/>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel  Margin="20 0">
-                        <TextBlock Text="DoseView 1D" Padding="5"/>
+                        <TextBlock  Padding="5">
+                            <Run Text="DoseView 1D "/>
+                            <Run Text="{Binding DVConnected}"/>
+                        </TextBlock>
                         <StackPanel Orientation="Horizontal">
                             <ComboBox Width="100" ItemsSource="{Binding ComPorts}" SelectedItem="{Binding DVComPort}"/>
                             <Button Content="Connect" Command="{Binding Connect1DCommand}"/>

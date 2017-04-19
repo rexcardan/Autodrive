@@ -119,6 +119,7 @@ namespace Autodrive.RS232
             MessageReceived += responseHandler;
             SendMessage(message);
             mr.WaitOne(msTimeout);
+            MessageReceived -= responseHandler; //Unsubscribe
         }
 
         public void SendMessage(string message, Action<string> responseCallBack, int msTimeout = 2000)
@@ -136,6 +137,7 @@ namespace Autodrive.RS232
             MessageReceived += responseHandler;
             SendMessage(message);
             mr.WaitOne(msTimeout);
+            MessageReceived -= responseHandler; //Unsubscribe
         }
 
         #region EVENT SUBSCRIPTION CODE

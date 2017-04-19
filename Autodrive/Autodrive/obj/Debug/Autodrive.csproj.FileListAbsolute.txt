@@ -38,3 +38,6 @@ D:\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\Autodrive\bin\Debug\Newtonsoft.J
 D:\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\Autodrive\obj\Debug\Autodrive.csprojResolveAssemblyReference.cache
 D:\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\Autodrive\obj\Debug\Autodrive.dll
 D:\OneDrive\Cardan.Code\Git\Autodrive\Autodrive\Autodrive\obj\Debug\Autodrive.pdb
+C:\Users\variansupport\Desktop\Autodrive\Autodrive\Autodrive\bin\Debug\Cardan.XCel.dll
+C:\Users\variansupport\Desktop\Autodrive\Autodrive\Autodrive\bin\Debug\EPPlus.dll
+C:\Users\variansupport\Desktop\Autodrive\Autodrive\Autodrive\bin\Debug\EPPlus.xml
