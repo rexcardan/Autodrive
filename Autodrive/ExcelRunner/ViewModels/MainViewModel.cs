@@ -29,14 +29,16 @@ namespace ExcelRunner.ViewModels
 {
     public class MainViewModel : BindableBase
     {
+        #region FIELDS
         private SfSpreadsheet spreadsheet;
         private SfSpreadsheetRibbon ribbon;
         CSeriesLinac linac;
         IElectrometer el;
         DoseView1D scan1D;
         Logger logger = null;
+        #endregion
 
-
+        #region PROPERTIES
         public DelegateCommand OpenCommand { get; set; }
         public DelegateCommand SaveCommand { get; set; }
         public DelegateCommand SaveAsCommand { get; set; }
@@ -45,11 +47,11 @@ namespace ExcelRunner.ViewModels
         public DelegateCommand Connect1DCommand { get; set; }
         public DelegateCommand RunTasksCommand { get; set; }
         public DelegateCommand<object> RelayRibbonControlCommand { get; private set; }
-
         public DelegateCommand<SfSpreadsheet> RelaySpreadsheetControlCommand { get; set; }
-
         public ObservableCollection<string> ComPorts { get; set; } = new ObservableCollection<string>();
+        #endregion
 
+        #region BINDING PARAMS
         private string eLComPort;
 
         public string ELComPort
@@ -91,6 +93,14 @@ namespace ExcelRunner.ViewModels
             set { SetProperty(ref dvConected, value); }
         }
 
+        private string adConnected;
+
+        public string ADConnected
+        {
+            get { return adConnected; }
+            set { SetProperty(ref adConnected, value); }
+        }
+
         private string elConected;
 
         public string ELConnected
@@ -98,74 +108,17 @@ namespace ExcelRunner.ViewModels
             get { return elConected; }
             set { SetProperty(ref elConected, value); }
         }
-
+        #endregion
 
 
         public MainViewModel()
         {
             logger = new Logger();
             logger.Logged += Logger_Logged;
-            SerialPort.GetPortNames().ToList().ForEach(ComPorts.Add);
 
-            //Autoselect for EdgePort hookup
-            if (ComPorts.Count > 3)
-            {
-                var number = new Regex(@"(\d+)$");
+            SetDefaultComPorts();
 
-                //Take last 4 
-                var edgeport = ComPorts.Select(c => new { Port = c, Numer = int.Parse(number.Match(c).Value) })
-                    .OrderByDescending(c => c.Numer).Take(4).OrderBy(c => c.Numer).ToArray();
-                // .Take(4)
-                // (n => ).ToArray();
-                ELComPort = edgeport[1].Port;
-                ADComPort = edgeport[0].Port;
-                DVComPort = edgeport[2].Port;
-            }
-
-            RelaySpreadsheetControlCommand = new DelegateCommand<SfSpreadsheet>((sp) =>
-            {
-                this.spreadsheet = sp;
-            });
-
-            ConnectADCommand = new DelegateCommand(() =>
-            {
-                this.linac = new CSeriesLinac();
-                this.linac.Logger = logger;
-                linac.Initialize(ADComPort);
-            });
-
-            ConnectELCommand = new DelegateCommand(() =>
-            {
-                this.el = new Max4000();
-                el.Logger = logger;
-                el.Initialize(ELComPort);
-                if (!el.Verify())
-                {
-                    MessageBox.Show("Couldn't find Max 4000!");
-                }
-                else
-                {
-                    ELConnected = "(Connected)";
-                    el.Reset();
-                }
-            });
-
-            Connect1DCommand = new DelegateCommand(() =>
-            {
-                this.scan1D = new DoseView1D();
-                scan1D.Logger = logger;
-                scan1D.Initialize(DVComPort);
-                var version = scan1D.GetVersion();
-                if (string.IsNullOrEmpty(version))
-                {
-                    MessageBox.Show("Couldn't find DoseView 1D!");
-                }
-                else
-                {
-                    DVConnected = "(Connected)";
-                }
-
-            });
+            SetCommands();
 
             RunTasksCommand = new DelegateCommand(async () =>
             {
@@ -216,8 +169,88 @@ namespace ExcelRunner.ViewModels
                     }
                     spreadsheet.HighlightRow(job.RowIndex, Syncfusion.XlsIO.ExcelKnownColors.White);
                 }
+
+                this.logger.Log("Tasks complete!");
+            });
+        }
+
+        private void SetCommands()
+        {
+            RelaySpreadsheetControlCommand = new DelegateCommand<SfSpreadsheet>((sp) =>
+            {
+                this.spreadsheet = sp;
             });
 
+            ConnectADCommand = new DelegateCommand(() =>
+            {
+                this.linac = new CSeriesLinac();
+                this.linac.Logger = logger;
+                try { linac.Initialize(ADComPort); ADConnected = "(Connected)"; }
+                catch(Exception e)
+                {
+                    ADConnected = "(Error)";
+                }
+            });
+
+            ConnectELCommand = new DelegateCommand(() =>
+            {
+                this.el = new Max4000();
+                el.Logger = logger;
+                try
+                {
+                    el.Initialize(ELComPort);
+                    if (!el.Verify())
+                    {
+                        MessageBox.Show("Couldn't find Max 4000!");
+                    }
+                    else
+                    {
+                        ELConnected = "(Connected)";
+                    }
+                }
+                catch(Exception e) { ELConnected = "(Error)"; }
+              
+            });
+
+            Connect1DCommand = new DelegateCommand(() =>
+            {
+                this.scan1D = new DoseView1D();
+                scan1D.Logger = logger;
+                try
+                {
+                    scan1D.Initialize(DVComPort);
+                    var version = scan1D.GetVersion();
+                    if (string.IsNullOrEmpty(version))
+                    {
+                        MessageBox.Show("Couldn't find DoseView 1D!");
+                    }
+                    else
+                    {
+                        DVConnected = "(Connected)";
+                    }
+                }
+                catch(Exception e) { DVConnected = "(Error)"; }            
+            });
+        }
+
+        private void SetDefaultComPorts()
+        {
+            SerialPort.GetPortNames().ToList().ForEach(ComPorts.Add);
+
+            //Autoselect for EdgePort hookup
+            if (ComPorts.Count > 3)
+            {
+                var number = new Regex(@"(\d+)$");
+
+                //Take last 4 
+                var edgeport = ComPorts.Select(c => new { Port = c, Numer = int.Parse(number.Match(c).Value) })
+                    .OrderByDescending(c => c.Numer).Take(4).OrderBy(c => c.Numer).ToArray();
+                // .Take(4)
+                // (n => ).ToArray();
+                ELComPort = edgeport[1].Port;
+                ADComPort = edgeport[0].Port;
+                DVComPort = edgeport[2].Port;
+            }
         }
 
         private Task Set1DScannerState(ExcelJob job)
@@ -244,11 +277,11 @@ namespace ExcelRunner.ViewModels
         }
 
         private void Logger_Logged(string toLog)
-    {
-        Application.Current.Dispatcher.Invoke(() =>
         {
-            Status = toLog;
-        });
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Status = toLog;
+            });
+        }
     }
-}
 }

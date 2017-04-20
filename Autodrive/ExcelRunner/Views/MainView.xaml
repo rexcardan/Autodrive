@@ -27,7 +27,10 @@
             <Grid Background="Blue" DockPanel.Dock="Bottom" Height="65" VerticalAlignment="Center">
                 <StackPanel DockPanel.Dock="Top" Background="Gray" Height="55" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
                     <StackPanel Margin="20 0">
-                        <TextBlock Text="Autodrive" Padding="5"/>
+                        <TextBlock  Padding="5">
+                            <Run Text="Autodrive "/>
+                            <Run Text="{Binding ADConnected}"/>
+                        </TextBlock>
                         <StackPanel Orientation="Horizontal">
                             <ComboBox Width="100" ItemsSource="{Binding ComPorts}" SelectedItem="{Binding ADComPort}"/>
                             <Button Content="Connect" Command="{Binding ConnectADCommand}"/>

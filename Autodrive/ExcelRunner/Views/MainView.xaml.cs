@@ -22,7 +22,6 @@ namespace ExcelRunner.Views
     /// </summary>
     public partial class MainView : RibbonWindow
     {
-        private BackstageTabItem fileTab;
         private Ribbon sfribbon;
 
         public MainView()
@@ -56,44 +55,19 @@ namespace ExcelRunner.Views
                         button.Click += Save; ;
                     }
                 }
-                else if (item is BackstageTabItem)
-                {
-                    fileTab = item as BackstageTabItem;
-
-                }
-            }
-            if (sfribbon != null)
-            {
-                var items = sfribbon.Items;
-
-                RibbonTab rb = new RibbonTab();
-                rb.Caption = "OTHER";
-                RibbonButton Button1 = new RibbonButton();
-                Button1.Label = "PRINT";
-                //Button1.SmallIcon = new BitmapImage(new Uri("/../Icon/Icons_Print.png", UriKind.Relative));
-                //Button1.Click += Button1_Click;
-                //RibbonButton Button2 = new RibbonButton();
-                //Button2.Label = "PRINT PREVIEW";
-                //Button2.SmallIcon = new BitmapImage(new Uri("/../Icon/Icons_Print.png", UriKind.Relative));
-                //Button2.Click += Button2_Click;
-                //var customRibbonBar = new RibbonBar();
-                //customRibbonBar.Header = "Printing Options";
-                //customRibbonBar.Items.Add(Button1);
-                //customRibbonBar.Items.Add(Button2);
-                //customRibbonBar.IsLauncherButtonVisible = false;
-                //rb.Items.Add(customRibbonBar);
-                //sfribbon.Items.Add(rb);
             }
         }
 
         private void Save(object sender, RoutedEventArgs e)
         {
             this.spreadsheet.Save();
+            sfribbon.HideBackStage();
         }
 
         private void SaveAs(object sender, RoutedEventArgs e)
         {
             this.spreadsheet.SaveAs();
+            sfribbon.HideBackStage();
         }
 
         private void FileOpen(object sender, RoutedEventArgs e)
