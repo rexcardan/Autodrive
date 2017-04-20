@@ -22,7 +22,7 @@ namespace KeyboardTests
         static void Main(string[] args)
         {
             var linac = new CSeriesLinac();
-            linac.Initialize("COM1");
+            linac.Initialize("COM9");
             var logger = new Logger();
             logger.Logged += (log) => Console.WriteLine(log);
             linac.Logger = logger;

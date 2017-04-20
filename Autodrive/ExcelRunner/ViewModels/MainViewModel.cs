@@ -18,6 +18,7 @@ using System.Collections.ObjectModel;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -108,11 +109,16 @@ namespace ExcelRunner.ViewModels
             //Autoselect for EdgePort hookup
             if (ComPorts.Count > 3)
             {
+                var number = new Regex(@"(\d+)$");
+
                 //Take last 4 
-                var edgeport = ComPorts.OrderByDescending(n => n).Take(4).OrderBy(n => n).ToArray();
-                ELComPort = edgeport[1];
-                ADComPort = edgeport[0];
-                DVComPort = edgeport[2];
+                var edgeport = ComPorts.Select(c => new { Port = c, Numer = int.Parse(number.Match(c).Value) })
+                    .OrderByDescending(c => c.Numer).Take(4).OrderBy(c => c.Numer).ToArray();
+                // .Take(4)
+                // (n => ).ToArray();
+                ELComPort = edgeport[1].Port;
+                ADComPort = edgeport[0].Port;
+                DVComPort = edgeport[2].Port;
             }
 
             RelaySpreadsheetControlCommand = new DelegateCommand<SfSpreadsheet>((sp) =>
@@ -228,11 +234,13 @@ namespace ExcelRunner.ViewModels
                         if (measurementsLeft > 0)
                         {
                             if (linac != null)
-                                linac.SetMachineState(job.Item1.MachineStateRun);
-                        }
-                        if (scan1D != null)
-                        {
-                            scan1D.GoToDepth(job.Item1.DepthOfMeasurentMM).Wait();
+                                job.Item1.MachineStateRun.Time = 99;
+                            linac.SetMachineState(job.Item1.MachineStateRun);
+
+                            if (scan1D != null)
+                            {
+                                scan1D.GoToDepth(job.Item1.DepthOfMeasurentMM).Wait();
+                            }
                         }
                         if (el != null && measurementsLeft > 0)
                         {
@@ -241,7 +249,17 @@ namespace ExcelRunner.ViewModels
                                 if (el != null)
                                     el.StartMeasurement();
                                 if (linac != null)
-                                    linac.BeamOn();
+                                {
+                                    var ms = job.Item1.MachineStateRun;
+                                    if (i == 0)
+                                    {
+                                        linac.BeamOn();
+                                    }
+                                    else { linac.RepeatBeam(); }
+
+                                    Thread.Sleep(linac.WaitMsForMU(ms.MU, ms.Accessory != null && AccessoryHelper.IsEDW(ms.Accessory)));
+                                }
+
                                 if (el != null)
                                     el.StopMeasurement();
 

@@ -107,13 +107,13 @@ namespace Autodrive.Linacs.Varian.CSeries
                     case Energy._6X: SM.Instance.ServiceConsoleState.Energies.Select(EnergyOptions.X1); break;
                     case Energy._15X:
                     case Energy._18X: SM.Instance.ServiceConsoleState.Energies.Select(EnergyOptions.X2); break;
-                    case Energy._6MeV: SM.Instance.ServiceConsoleState.Energies.Select(EnergyOptions.E1); break;
-                    case Energy._9MeV: SM.Instance.ServiceConsoleState.Energies.Select(EnergyOptions.E2); break;
-                    case Energy._12MeV: SM.Instance.ServiceConsoleState.Energies.Select(EnergyOptions.E3); break;
-                    case Energy._15MeV:
-                    case Energy._16MeV: SM.Instance.ServiceConsoleState.Energies.Select(EnergyOptions.E4); break;
-                    case Energy._18MeV:
-                    case Energy._20MeV: SM.Instance.ServiceConsoleState.Energies.Select(EnergyOptions.E5); break;
+                    case Energy._6E: SM.Instance.ServiceConsoleState.Energies.Select(EnergyOptions.E1); break;
+                    case Energy._9E: SM.Instance.ServiceConsoleState.Energies.Select(EnergyOptions.E2); break;
+                    case Energy._12E: SM.Instance.ServiceConsoleState.Energies.Select(EnergyOptions.E3); break;
+                    case Energy._15E:
+                    case Energy._16E: SM.Instance.ServiceConsoleState.Energies.Select(EnergyOptions.E4); break;
+                    case Energy._18E:
+                    case Energy._20E: SM.Instance.ServiceConsoleState.Energies.Select(EnergyOptions.E5); break;
                 }
                 SM.Instance.MachineState.Energy = energy;
                 SM.Instance.AddWaitTime("Waiting on carriage and bmag", SM.Instance.MachineConstraints.EnergySwitchTimeSec * 1000);

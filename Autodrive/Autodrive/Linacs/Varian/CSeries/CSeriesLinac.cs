@@ -25,11 +25,11 @@ namespace Autodrive.Linacs.Varian.CSeries
                 {
                 new BeamCapability(Energy._6X, _100, _200, _300,_400,_500,_600),
                 new BeamCapability(Energy._15X, _100, _200, _300,_400,_500,_600),
-                new BeamCapability(Energy._6MeV, _100, _200, _300,_400,_500,_600),
-                new BeamCapability(Energy._9MeV, _100, _200, _300,_400,_500,_600),
-                new BeamCapability(Energy._12MeV, _100, _200, _300,_400,_500,_600),
-                new BeamCapability(Energy._15MeV, _100, _200, _300,_400,_500,_600),
-                new BeamCapability(Energy._18MeV, _100, _200, _300,_400,_500,_600),
+                new BeamCapability(Energy._6E, _100, _200, _300,_400,_500,_600),
+                new BeamCapability(Energy._9E, _100, _200, _300,_400,_500,_600),
+                new BeamCapability(Energy._12E, _100, _200, _300,_400,_500,_600),
+                new BeamCapability(Energy._15E, _100, _200, _300,_400,_500,_600),
+                new BeamCapability(Energy._18E, _100, _200, _300,_400,_500,_600),
                 };
         }
 

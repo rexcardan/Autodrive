@@ -163,11 +163,11 @@ namespace Autodrive.Jobs.Output
             of.Logger.Logged += (log => Console.WriteLine(log));
             of.AddEnergyDepth(Energy._6X, 15);
             of.AddEnergyDepth(Energy._15X, 27);
-            of.AddEnergyDepth(Energy._6MeV, 13);
-            of.AddEnergyDepth(Energy._9MeV, 21);
-            of.AddEnergyDepth(Energy._12MeV, 29);
-            of.AddEnergyDepth(Energy._15MeV, 33);
-            of.AddEnergyDepth(Energy._18MeV, 22);
+            of.AddEnergyDepth(Energy._6E, 13);
+            of.AddEnergyDepth(Energy._9E, 21);
+            of.AddEnergyDepth(Energy._12E, 29);
+            of.AddEnergyDepth(Energy._15E, 33);
+            of.AddEnergyDepth(Energy._18E, 22);
 
             of.SetPhotonFieldSizes(4, 10, 15, 20, 25, 30, 40);
             of.SetElectronCones("A6", "A10", "A15", "A20", "A25");

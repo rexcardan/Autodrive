@@ -16,13 +16,13 @@ namespace Autodrive.Linacs
         _10FFF,
         _15X,
         _18X,
-        _4MeV,
-        _6MeV,
-        _9MeV,
-        _12MeV,
-        _15MeV,
-        _16MeV,
-        _18MeV,
-        _20MeV
+        _4E,
+        _6E,
+        _9E,
+        _12E,
+        _15E,
+        _16E,
+        _18E,
+        _20E
     }
 }

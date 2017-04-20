@@ -8,16 +8,16 @@ namespace Autodrive.Interfaces
 {
     public interface IKeyboard
     {
-        void Press(char c);
-        void Press(string characters);
-        void PressEnter();
-        void PressEsc();
-        void PressUp(int moveUpAmount, int msDelay);
-        void PressDown(int moveDownAmount, int msDelay);
-        void PressLeft(int moveLeftAmount, int msDelay);
-        void PressRight(int moveRightAmount, int msDelay);
-        void EnterNumber(double num);
-        void EnterNumber(int num);
-        void PressF2();
+        bool Press(char c);
+        bool Press(string characters);
+        bool PressEnter();
+        bool PressEsc();
+        bool PressUp(int moveUpAmount, int msDelay);
+        bool PressDown(int moveDownAmount, int msDelay);
+        bool PressLeft(int moveLeftAmount, int msDelay);
+        bool PressRight(int moveRightAmount, int msDelay);
+        bool EnterNumber(double num);
+        bool EnterNumber(int num);
+        bool PressF2();
     }
 }

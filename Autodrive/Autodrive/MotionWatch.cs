@@ -21,7 +21,11 @@ namespace Autodrive
         {
             var diff = Math.Abs(currentValue - nextValue);
             var sec = diff / speedPerSec + 1.5; //small buffer for small motions
-            motionsToExecute.Add(sec);
+            if (!double.IsNaN(sec))
+            {
+                motionsToExecute.Add(sec);
+                MotionCompleteEvent.Reset();
+            }
         }
 
         public void StartMotionClock()
@@ -33,6 +37,11 @@ namespace Autodrive
                 var maxTime = motionsToExecute.Max();
                 Console.WriteLine($"Waiting {maxTime * 1000} ms for motion to complete...");
                 timer = new Timer(SignalMotionComplete, null, (int)(maxTime * 1000), Timeout.Infinite);
+            }
+            else
+            {
+                MotionCompleteEvent.Set();
+                IsSystemInMotion = false;
             }
         }
 

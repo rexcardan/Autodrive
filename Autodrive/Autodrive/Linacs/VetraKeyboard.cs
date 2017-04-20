@@ -25,114 +25,129 @@ namespace Autodrive
             _sp.DataBits = 8;
             _sp.Handshake = Handshake.RequestToSendXOnXOff;
             _sp.Parity = Parity.None;
-            _sp.Open();
+            if (!_sp.IsOpen)
+                _sp.Open();
         }
 
-        public void Press(string characters)
+        public bool Press(string characters)
         {
             Debug.Write(characters);
             var ascii = ASCIIEncoding.ASCII.GetBytes(characters);
-            _sp.WriteTimeout = 500;
+            _sp.WriteTimeout = 1000;
             try
             {
                 _sp.Write(ascii, 0, ascii.Length);
+                return true;
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
+                return false;
             }
         }
 
-        public void Press(char c)
+        public bool Press(char c)
         {
             try
             {
-                _sp.WriteTimeout = 500;
+                _sp.WriteTimeout = 1000;
                 _sp.Write(new char[] { c }, 0, 1);
+                return true;
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
+                return false;
             }
         }
 
-        private void Send(byte code)
+        private bool Send(byte code)
         {
             var bytes = new byte[] { code };
             try
             {
-                _sp.WriteTimeout = 500;
+                _sp.WriteTimeout = 1000;
                 _sp.Write(bytes, 0, bytes.Length);
+                return true;
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
+                return false;
             }
         }
 
-        public void PressEnter()
+        public bool PressEnter()
         {
             var enter = char.ConvertFromUtf32(13);
-            Press(enter);
+            return Press(enter);
         }
 
-        public void PressEsc()
+        public bool PressEsc()
         {
             var esc = char.ConvertFromUtf32(27);
-            Press(esc);
+            return Press(esc);
         }
 
-        public void PressLeft(int moveLeftAmount, int msDelay)
+        public bool PressLeft(int moveLeftAmount, int msDelay)
         {
+            var success = true;
             for (int i = 0; i < moveLeftAmount; i++)
             {
-                Send(0xD7);
+                success = success & Send(0xD7);
                 Thread.Sleep(msDelay);
             }
+            return success;
         }
 
-        public void PressRight(int moveRightAmount, int msDelay)
+        public bool PressRight(int moveRightAmount, int msDelay)
         {
+            var success = true;
             for (int i = 0; i < moveRightAmount; i++)
             {
-                Send(0xD8);
+                success = success & Send(0xD8);
                 Thread.Sleep(msDelay);
             }
+            return success;
         }
 
-        public void PressDown(int moveDownAmount, int msDelay)
+        public bool PressDown(int moveDownAmount, int msDelay)
         {
+            var success = true;
             for (int i = 0; i < moveDownAmount; i++)
             {
-                Send(0xD6);
+                success = success & Send(0xD6);
                 Thread.Sleep(msDelay);
             }
+            return success;
         }
 
-        public void PressUp(int moveUpAmount, int msDelay)
+        public bool PressUp(int moveUpAmount, int msDelay)
         {
+            bool success = true;
             for (int i = 0; i < moveUpAmount; i++)
             {
-                Send(0xD5);
+                success = success & Send(0xD5);
                 Thread.Sleep(msDelay);
             }
+            return success;
         }
 
-        public void EnterNumber(double num)
+        public bool EnterNumber(double num)
         {
             var numStr = num.ToString("f1");
-            Press(numStr);
+            return Press(numStr);
         }
 
-        public void EnterNumber(int num)
+        public bool EnterNumber(int num)
         {
             var numStr = num.ToString();
-            Press(numStr);
+            return Press(numStr);
         }
 
-        public void PressF2()
+        public bool PressF2()
         {
-            Send(0xa1);
+            return Send(0xa1);
         }
     }
 }
