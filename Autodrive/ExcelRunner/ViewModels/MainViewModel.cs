@@ -102,6 +102,7 @@ namespace ExcelRunner.ViewModels
         }
 
         private string elConected;
+        private bool _requestStop;
 
         public string ELConnected
         {
@@ -110,6 +111,7 @@ namespace ExcelRunner.ViewModels
         }
 
         public DelegateCommand ToggleDefaultInterlocksCommand { get; private set; }
+        public DelegateCommand StopCommand { get; private set; }
         #endregion
 
 
@@ -124,12 +126,14 @@ namespace ExcelRunner.ViewModels
 
             RunTasksCommand = new DelegateCommand(async () =>
             {
+                _requestStop = false;
                 jobs = spreadsheet.GetExcelJobs();
 
                 logger.Log($"{jobs.Count} found. {jobs.Sum(j => j.Measurements.Count())}/{jobs.Sum(j => j.NumberOfMeasurementsDesired)} measurements to do.");
 
                 foreach (var job in jobs.Where(j => !j.IsComplete()))
                 {
+                    if (_requestStop) { break; }
                     //Highlight row to show we are working on it
                     spreadsheet.HighlightRow(job.RowIndex, Syncfusion.XlsIO.ExcelKnownColors.Yellow);
 
@@ -183,6 +187,11 @@ namespace ExcelRunner.ViewModels
             RelaySpreadsheetControlCommand = new DelegateCommand<SfSpreadsheet>((sp) =>
             {
                 this.spreadsheet = sp;
+            });
+
+            StopCommand = new DelegateCommand(() =>
+            {
+                _requestStop = true;
             });
 
             ToggleDefaultInterlocksCommand = new DelegateCommand(() =>

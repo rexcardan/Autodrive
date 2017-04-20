@@ -121,6 +121,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Helpers\SfSpreadSheetExtensions.cs" />
+    <Compile Include="Splash\Splasher.cs" />
+    <Compile Include="Splash\SplashScreen.xaml.cs">
+      <DependentUpon>SplashScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
@@ -154,6 +158,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Splash\SplashScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
     <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -164,6 +172,10 @@
       <Project>{3FB13CCF-C518-4158-8AEB-2D324D9C0F08}</Project>
       <Name>Autodrive</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Splash\uabcode.jpg" />
+    <Resource Include="Splash\uabdistort.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
