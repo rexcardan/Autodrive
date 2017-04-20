@@ -73,6 +73,7 @@
     <Compile Include="Electrometers\StandardImaging\Enums\DeviceMode.cs" />
     <Compile Include="Electrometers\StandardImaging\Enums\Status.cs" />
     <Compile Include="Interfaces\IJob.cs" />
+    <Compile Include="Jobs\ExcelJob.cs" />
     <Compile Include="Jobs\IO\IOTable.cs" />
     <Compile Include="Jobs\IO\JobReader.cs" />
     <Compile Include="Jobs\IO\JobWriter.cs" />

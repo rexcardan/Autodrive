@@ -31,5 +31,10 @@ namespace Autodrive.Jobs
         {
             return NumberOfMeasurementsDesired == 0 || Measurements.Count() >= NumberOfMeasurementsDesired;
         }
+
+        public int MeasurementsLeft
+        {
+            get { return Measurements.Length - NumberOfMeasurementsDesired; }
+        }
     }
 }
