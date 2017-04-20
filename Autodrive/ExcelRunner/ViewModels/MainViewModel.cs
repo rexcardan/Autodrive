@@ -108,6 +108,8 @@ namespace ExcelRunner.ViewModels
             get { return elConected; }
             set { SetProperty(ref elConected, value); }
         }
+
+        public DelegateCommand ToggleDefaultInterlocksCommand { get; private set; }
         #endregion
 
 
@@ -141,7 +143,8 @@ namespace ExcelRunner.ViewModels
                     this.logger.Log("Starting measurement...");
                     if (el != null)
                     {
-                        for (int i = 0; i < job.MeasurementsLeft; i++)
+                        var i = 0;
+                        while (job.MeasurementsLeft != 0)
                         {
                             double val = job.TakeMeasurement(el, linac, repeatBeam: i != 0);
                             this.logger.Log($"Measurement complete : {val}");
@@ -165,6 +168,7 @@ namespace ExcelRunner.ViewModels
                                     Console.WriteLine(e.Message);
                                 }
                             });
+                            i++;
                         }
                     }
                     spreadsheet.HighlightRow(job.RowIndex, Syncfusion.XlsIO.ExcelKnownColors.White);
@@ -181,12 +185,24 @@ namespace ExcelRunner.ViewModels
                 this.spreadsheet = sp;
             });
 
+            ToggleDefaultInterlocksCommand = new DelegateCommand(() =>
+            {
+                if (linac != null)
+                {
+                    linac.OverrideDefaultInterlocks();
+                }
+                else
+                {
+                    MessageBox.Show("Connect to linac Autodrive first!");
+                }
+            });
+
             ConnectADCommand = new DelegateCommand(() =>
             {
                 this.linac = new CSeriesLinac();
                 this.linac.Logger = logger;
                 try { linac.Initialize(ADComPort); ADConnected = "(Connected)"; }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     ADConnected = "(Error)";
                 }
@@ -208,8 +224,8 @@ namespace ExcelRunner.ViewModels
                         ELConnected = "(Connected)";
                     }
                 }
-                catch(Exception e) { ELConnected = "(Error)"; }
-              
+                catch (Exception e) { ELConnected = "(Error)"; }
+
             });
 
             Connect1DCommand = new DelegateCommand(() =>
@@ -230,7 +246,7 @@ namespace ExcelRunner.ViewModels
                         logger.Log($"Found DoseView 1D version {version}");
                     }
                 }
-                catch(Exception e) { DVConnected = "(Error)"; }            
+                catch (Exception e) { DVConnected = "(Error)"; }
             });
         }
 

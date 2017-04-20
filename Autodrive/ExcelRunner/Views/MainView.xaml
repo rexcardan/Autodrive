@@ -58,7 +58,7 @@
                     </StackPanel>
                 </StackPanel>
                 <DockPanel HorizontalAlignment="Right">
-                    <Button Content="Toggle Interocks" Padding="5" Width="100" Margin="10 0" VerticalAlignment="Center" Command="{Binding ToggleInterlocksCommand}"/>
+                    <Button Content="Toggle Interocks" Padding="5" Width="100" Margin="10 0" VerticalAlignment="Center" Command="{Binding ToggleDefaultInterlocksCommand}"/>
                     <Button Content="Run Tasks" HorizontalAlignment="Right" Padding="5" Width="200" Margin="10 0" VerticalAlignment="Center" Command="{Binding RunTasksCommand}"/>
                 </DockPanel>
             </Grid>
