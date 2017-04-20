@@ -26,6 +26,7 @@ namespace ExcelRunner.Helpers
             List<ExcelJob> jobs = new List<ExcelJob>();
             foreach (var row in rows.Skip(1).Where(r => r[0] != null && !((string)r[0]).StartsWith("//")).ToList())
             {
+              
                 var state = new MachineState();
                 var index = rows.IndexOf(row);
                 var header = rows[0];
@@ -44,14 +45,14 @@ namespace ExcelRunner.Helpers
                 state.X2 = XCelRowParser.GetX2(header, row);
                 state.Y1 = XCelRowParser.GetY1(header, row);
                 state.Y2 = XCelRowParser.GetY2(header, row);
-                var job = new Job(state);
+                var excelJob = new ExcelJob(state,index);
                 foreach (var measurement in XCelRowParser.ReadMeasurements(header, row))
                 {
-                    job.AddMeasurement(measurement);
+                    excelJob.AddMeasurement(measurement);
                 }
-                job.DepthOfMeasurentMM = XCelRowParser.GetMeasurementDepth(header, row);
-                job.NumberOfMeasurementsDesired = XCelRowParser.GetNMeasurements(header, row);
-                jobs.Add(new ExcelJob(state, index));
+                excelJob.DepthOfMeasurentMM = XCelRowParser.GetMeasurementDepth(header, row);
+                excelJob.NumberOfMeasurementsDesired = XCelRowParser.GetNMeasurements(header, row);
+                jobs.Add(excelJob);
             }
             return jobs;
         }
@@ -63,7 +64,7 @@ namespace ExcelRunner.Helpers
         /// <returns></returns>
         public static List<XCelData> ToXCelRows(this SfSpreadsheet ss)
         {
-            List<XCelData> rows = ss.ToXCelRows();
+            List<XCelData> rows = new List<XCelData>();
 
             foreach (var r in ss.ActiveSheet.Rows)
             {

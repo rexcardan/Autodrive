@@ -227,6 +227,7 @@ namespace ExcelRunner.ViewModels
                     else
                     {
                         DVConnected = "(Connected)";
+                        logger.Log($"Found DoseView 1D version {version}");
                     }
                 }
                 catch(Exception e) { DVConnected = "(Error)"; }            

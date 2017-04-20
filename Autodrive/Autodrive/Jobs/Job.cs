@@ -34,7 +34,7 @@ namespace Autodrive.Jobs
 
         public int MeasurementsLeft
         {
-            get { return Measurements.Length - NumberOfMeasurementsDesired; }
+            get { return NumberOfMeasurementsDesired - Measurements.Length; }
         }
     }
 }
