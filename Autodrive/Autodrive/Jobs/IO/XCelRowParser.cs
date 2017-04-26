@@ -101,6 +101,11 @@ namespace Autodrive.Jobs.IO
             }
         }
 
+        public static string GetNotification(XCelData header, XCelData row)
+        {
+            return TryGetString(header, row, new string[] { "Notification", "Alert" });
+        }
+
         public static int GetNMeasurements(XCelData header, XCelData row)
         {
             var n = TryGetInt(header, row, "N", "Num Measurements", "Number of Measurements");

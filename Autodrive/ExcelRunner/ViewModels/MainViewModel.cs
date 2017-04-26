@@ -136,6 +136,11 @@ namespace ExcelRunner.ViewModels
 
                 foreach (var job in jobs.Where(j => !j.IsComplete()))
                 {
+                    if (!string.IsNullOrEmpty(job.Notification))
+                    {
+                        MessageBox.Show(job.Notification); //Hold until alert is handled
+                    }
+
                     if (_requestStop) { break; }
                     //Highlight row to show we are working on it
                     spreadsheet.HighlightRow(job.RowIndex, Syncfusion.XlsIO.ExcelKnownColors.Yellow);
@@ -187,6 +192,7 @@ namespace ExcelRunner.ViewModels
                     {
                         //reset AD
                         ServiceModeSession.Instance.ResetConsoleState();
+                        spreadsheet.HighlightRow(job.RowIndex, Syncfusion.XlsIO.ExcelKnownColors.White);
                     }
                   
                 }

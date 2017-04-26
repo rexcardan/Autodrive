@@ -13,6 +13,7 @@ namespace Autodrive.Jobs
         public DateTime TimeMeasured { get; set; }
         public double DepthOfMeasurentMM { get; set; }
         public int NumberOfMeasurementsDesired { get; set; }
+        public string Notification { get; set; }
 
         public Job(MachineState ms)
         {
