@@ -23,49 +23,55 @@ namespace Autodrive.Linacs.Varian.CSeries
 
         public void SetCouchAutomatic(double couchVert, double couchLong, double couchLat, double couchRot)
         {
-            if (MotionWatch.IsSystemInMotion) { MotionWatch.MotionCompleteEvent.WaitOne(); }
-            _session.ResetConsoleState();
-            _session.Keyboard.Press("M");
-            _session.ServiceConsoleState.Main.Current = MainOptions.MOTOR;
-            _session.Keyboard.Press("C");
-            _session.ServiceConsoleState.Motor.Current = MotorOptions.COUCH_AUTOMATIC;
-            _session.ServiceConsoleState.CouchAutomatic.Current = CouchAutoOptions.VERT;
+            var changeNeeded = (_session.MachineState.CouchVert != couchVert) || (_session.MachineState.CouchLng != couchLong) ||
+                _session.MachineState.CouchLat != couchLat || _session.MachineState.CouchRot != couchRot;
 
-            if (_session.MachineState.CouchVert != couchVert)
+            if (changeNeeded)
             {
-                _session.ServiceConsoleState.CouchAutomatic.MoveTo(CouchAutoOptions.VERT);
-                _session.Keyboard.EnterNumber(couchVert);
-                this.MotionWatch.AddMotion(_session.MachineState.CouchVert, couchVert, _session.MachineConstraints.CouchVertMoveCMPerSec);
-            }
+                if (MotionWatch.IsSystemInMotion) { MotionWatch.MotionCompleteEvent.WaitOne(); }
+                _session.ResetConsoleState();
+                _session.Keyboard.Press("M");
+                _session.ServiceConsoleState.Main.Current = MainOptions.MOTOR;
+                _session.Keyboard.Press("C");
+                _session.ServiceConsoleState.Motor.Current = MotorOptions.COUCH_AUTOMATIC;
+                _session.ServiceConsoleState.CouchAutomatic.Current = CouchAutoOptions.VERT;
 
-            if (_session.MachineState.CouchLng != couchLong)
-            {
-                _session.ServiceConsoleState.CouchAutomatic.MoveTo(CouchAutoOptions.LONG);
-                _session.Keyboard.EnterNumber(couchLong);
-                this.MotionWatch.AddMotion(_session.MachineState.CouchLng, couchLong, _session.MachineConstraints.CouchMoveCMPerSec);
-            }
+                if (_session.MachineState.CouchVert != couchVert)
+                {
+                    _session.ServiceConsoleState.CouchAutomatic.MoveTo(CouchAutoOptions.VERT);
+                    _session.Keyboard.EnterNumber(couchVert);
+                    this.MotionWatch.AddMotion(_session.MachineState.CouchVert, couchVert, _session.MachineConstraints.CouchVertMoveCMPerSec);
+                }
 
-            if (_session.MachineState.CouchLat != couchLat)
-            {
-                _session.ServiceConsoleState.CouchAutomatic.MoveTo(CouchAutoOptions.LAT);
-                _session.Keyboard.EnterNumber(couchLat);
-                this.MotionWatch.AddMotion(_session.MachineState.CouchLat, couchLat, _session.MachineConstraints.CouchMoveCMPerSec);
-            }
+                if (_session.MachineState.CouchLng != couchLong)
+                {
+                    _session.ServiceConsoleState.CouchAutomatic.MoveTo(CouchAutoOptions.LONG);
+                    _session.Keyboard.EnterNumber(couchLong);
+                    this.MotionWatch.AddMotion(_session.MachineState.CouchLng, couchLong, _session.MachineConstraints.CouchMoveCMPerSec);
+                }
 
-            if (_session.MachineState.CouchRot != couchRot)
-            {
-                _session.ServiceConsoleState.CouchAutomatic.MoveTo(CouchAutoOptions.ROT);
-                _session.Keyboard.EnterNumber(couchRot);
-                this.MotionWatch.AddMotion(_session.MachineState.CouchRot, couchRot, _session.MachineConstraints.CouchRotDegPerSec);
-            }
-            _session.Keyboard.PressF2();
-            this.MotionWatch.StartMotionClock();
+                if (_session.MachineState.CouchLat != couchLat)
+                {
+                    _session.ServiceConsoleState.CouchAutomatic.MoveTo(CouchAutoOptions.LAT);
+                    _session.Keyboard.EnterNumber(couchLat);
+                    this.MotionWatch.AddMotion(_session.MachineState.CouchLat, couchLat, _session.MachineConstraints.CouchMoveCMPerSec);
+                }
 
-            //Update machine state
-            _session.MachineState.CouchVert = couchVert;
-            _session.MachineState.CouchLat = couchLat;
-            _session.MachineState.CouchLng = couchLong;
-            _session.MachineState.CouchRot = couchRot;
+                if (_session.MachineState.CouchRot != couchRot)
+                {
+                    _session.ServiceConsoleState.CouchAutomatic.MoveTo(CouchAutoOptions.ROT);
+                    _session.Keyboard.EnterNumber(couchRot);
+                    this.MotionWatch.AddMotion(_session.MachineState.CouchRot, couchRot, _session.MachineConstraints.CouchRotDegPerSec);
+                }
+                _session.Keyboard.PressF2();
+                this.MotionWatch.StartMotionClock();
+
+                //Update machine state
+                _session.MachineState.CouchVert = couchVert;
+                _session.MachineState.CouchLat = couchLat;
+                _session.MachineState.CouchLng = couchLong;
+                _session.MachineState.CouchRot = couchRot;
+            }
         }
 
         /// <summary>

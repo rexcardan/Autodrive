@@ -3,11 +3,14 @@ using Syncfusion.UI.Xaml.Spreadsheet;
 using Syncfusion.Windows.Tools.Controls;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -22,7 +25,7 @@ namespace ExcelRunner.Views
     /// </summary>
     public partial class MainView : RibbonWindow
     {
-        private Ribbon sfribbon;
+        public Ribbon sfribbon;
 
         public bool IsOperating { get; private set; }
 
@@ -39,28 +42,26 @@ namespace ExcelRunner.Views
             {
                 if (item is BackStageCommandButton)
                 {
-
                     var button = item as BackStageCommandButton;
                     var header = button.Header;
-
                     if (button.Header.Contains("Open"))
                     {
-                       // button.Click += FileOpen;
-
+                        button.Click += FileOpen;
                     }
                     else if (button.Header.Contains("Save As"))
                     {
-                       // button.Click += SaveAs; ;
+                 
+                        button.Click += SaveAs; ;
                     }
                     else if (button.Header.Contains("Save"))
                     {
-                        //button.Click += Save; ;
+                        button.Click += Save; ;
                     }
                 }
             }
         }
 
-        private void Save(object sender, RoutedEventArgs e)
+        public void Save(object sender, RoutedEventArgs e)
         {
             if (!IsOperating)
             {
@@ -71,7 +72,7 @@ namespace ExcelRunner.Views
             }
         }
 
-        private void SaveAs(object sender, RoutedEventArgs e)
+        public void SaveAs(object sender, RoutedEventArgs e)
         {
             if (!IsOperating)
             {
@@ -82,31 +83,32 @@ namespace ExcelRunner.Views
             }
         }
 
-        private void FileOpen(object sender, RoutedEventArgs e)
+        public void FileOpen(object sender, RoutedEventArgs e)
         {
-            //if (!IsOperating)
-            //{
-            //    IsOperating = true;
-            //    // Create OpenFileDialog
-            //    Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            if (!IsOperating)
+            {
+                IsOperating = true;
+                // Create OpenFileDialog
+                Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
-            //    // Set filter for file extension and default file extension
-            //    dlg.DefaultExt = ".xlsx";
-            //    dlg.Filter = "Excel documents (.xlsx)|*.xlsx";
+                // Set filter for file extension and default file extension
+                dlg.DefaultExt = ".xlsx";
+                dlg.Filter = "Excel Files|*.xls;*.xlsx;*.xlsm";
 
-            //    // Display OpenFileDialog by calling ShowDialog method
-            //    Nullable<bool> result = dlg.ShowDialog();
+                // Display OpenFileDialog by calling ShowDialog method
+                Nullable<bool> result = dlg.ShowDialog();
 
-            //    // Get the selected file name and display in a TextBox
-            //    if (result == true)
-            //    {
-            //        // Open document
-            //        string filename = dlg.FileName;
-            //        this.spreadsheet.Open(filename);
-            //    }
-            //    sfribbon.HideBackStage();
-            //    IsOperating = false;
-            //}
+                // Get the selected file name and display in a TextBox
+                if (result == true)
+                {
+                    // Open document
+                    string filename = dlg.FileName;
+                    spreadsheet.Open(filename);
+                }
+                sfribbon.HideBackStage();
+                IsOperating = false;
+            }
         }
+
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autodrive", "Autodrive\Autodrive.csproj", "{3FB13CCF-C518-4158-8AEB-2D324D9C0F08}"
 EndProject
@@ -14,25 +14,43 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
 		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{3FB13CCF-C518-4158-8AEB-2D324D9C0F08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3FB13CCF-C518-4158-8AEB-2D324D9C0F08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FB13CCF-C518-4158-8AEB-2D324D9C0F08}.Debug|x64.ActiveCfg = Debug|x64
+		{3FB13CCF-C518-4158-8AEB-2D324D9C0F08}.Debug|x64.Build.0 = Debug|x64
 		{3FB13CCF-C518-4158-8AEB-2D324D9C0F08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FB13CCF-C518-4158-8AEB-2D324D9C0F08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FB13CCF-C518-4158-8AEB-2D324D9C0F08}.Release|x64.ActiveCfg = Release|x64
+		{3FB13CCF-C518-4158-8AEB-2D324D9C0F08}.Release|x64.Build.0 = Release|x64
 		{48A35E7E-09BD-46B1-90A6-D131C2E6927C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{48A35E7E-09BD-46B1-90A6-D131C2E6927C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48A35E7E-09BD-46B1-90A6-D131C2E6927C}.Debug|x64.ActiveCfg = Debug|x64
+		{48A35E7E-09BD-46B1-90A6-D131C2E6927C}.Debug|x64.Build.0 = Debug|x64
 		{48A35E7E-09BD-46B1-90A6-D131C2E6927C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48A35E7E-09BD-46B1-90A6-D131C2E6927C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48A35E7E-09BD-46B1-90A6-D131C2E6927C}.Release|x64.ActiveCfg = Release|x64
+		{48A35E7E-09BD-46B1-90A6-D131C2E6927C}.Release|x64.Build.0 = Release|x64
 		{C26B323A-3DE2-4ADB-98D0-504F22F2E253}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C26B323A-3DE2-4ADB-98D0-504F22F2E253}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C26B323A-3DE2-4ADB-98D0-504F22F2E253}.Debug|x64.ActiveCfg = Debug|x64
+		{C26B323A-3DE2-4ADB-98D0-504F22F2E253}.Debug|x64.Build.0 = Debug|x64
 		{C26B323A-3DE2-4ADB-98D0-504F22F2E253}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C26B323A-3DE2-4ADB-98D0-504F22F2E253}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C26B323A-3DE2-4ADB-98D0-504F22F2E253}.Release|x64.ActiveCfg = Release|x64
+		{C26B323A-3DE2-4ADB-98D0-504F22F2E253}.Release|x64.Build.0 = Release|x64
 		{9DF2258C-32C2-4744-A785-572A8A77A0A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9DF2258C-32C2-4744-A785-572A8A77A0A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DF2258C-32C2-4744-A785-572A8A77A0A4}.Debug|x64.ActiveCfg = Debug|x64
+		{9DF2258C-32C2-4744-A785-572A8A77A0A4}.Debug|x64.Build.0 = Debug|x64
 		{9DF2258C-32C2-4744-A785-572A8A77A0A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DF2258C-32C2-4744-A785-572A8A77A0A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DF2258C-32C2-4744-A785-572A8A77A0A4}.Release|x64.ActiveCfg = Release|x64
+		{9DF2258C-32C2-4744-A785-572A8A77A0A4}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

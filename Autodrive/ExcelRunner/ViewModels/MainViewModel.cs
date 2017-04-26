@@ -35,6 +35,7 @@ namespace ExcelRunner.ViewModels
         CSeriesLinac linac;
         IElectrometer el;
         DoseView1D scan1D;
+        CancellationTokenSource cTokenSource = new CancellationTokenSource();
         Logger logger = null;
         #endregion
 
@@ -127,6 +128,8 @@ namespace ExcelRunner.ViewModels
             RunTasksCommand = new DelegateCommand(async () =>
             {
                 _requestStop = false;
+                cTokenSource = new CancellationTokenSource();
+
                 jobs = spreadsheet.GetExcelJobs();
 
                 logger.Log($"{jobs.Count} found. {jobs.Sum(j => j.Measurements.Count())}/{jobs.Sum(j => j.NumberOfMeasurementsDesired)} measurements to do.");
@@ -144,38 +147,48 @@ namespace ExcelRunner.ViewModels
                     await linacTask;
                     await scannerTask;
 
-                    this.logger.Log("Starting measurement...");
-                    if (el != null)
+                    await Task.Run(() =>
                     {
-                        var i = 0;
-                        while (job.MeasurementsLeft != 0)
+                        this.logger.Log("Starting measurement...");
+                        if (el != null)
                         {
-                            double val = job.TakeMeasurement(el, linac, repeatBeam: i != 0);
-                            this.logger.Log($"Measurement complete : {val}");
-
-                            //Update Spreadsheet
-                            var mNumber = job.Measurements.Count();
-                            var mHeader = $"M{mNumber}";
-                            var column = spreadsheet.ActiveSheet.Rows[0].Cells.Select(c => c.Value).ToList().IndexOf(mHeader);
-
-                            Application.Current.Dispatcher.Invoke(() =>
+                            var i = 0;
+                            while (job.MeasurementsLeft != 0 && !_requestStop)
                             {
-                                try
+                                double val = job.TakeMeasurement(el, linac, repeatBeam: i != 0);
+                                this.logger.Log($"Measurement complete : {val}");
+
+                                //Update Spreadsheet
+                                var mNumber = job.Measurements.Count();
+                                var mHeader = $"M{mNumber}";
+                                var column = spreadsheet.ActiveSheet.Rows[0].Cells.Select(c => c.Value).ToList().IndexOf(mHeader);
+
+                                Application.Current.Dispatcher.Invoke(() =>
                                 {
-                                    var activer = spreadsheet.ActiveSheet.Rows[job.RowIndex];
-                                    var activeCell = activer.Cells[column];
-                                    spreadsheet.ActiveGrid.SetCellValue(activeCell, val.ToString());
-                                    spreadsheet.ActiveGrid.InvalidateCell(activeCell.Row, activeCell.Column);
-                                }
-                                catch (Exception e)
-                                {
-                                    Console.WriteLine(e.Message);
-                                }
-                            });
-                            i++;
+                                    try
+                                    {
+                                        var activer = spreadsheet.ActiveSheet.Rows[job.RowIndex];
+                                        var activeCell = activer.Cells[column];
+                                        spreadsheet.ActiveGrid.SetCellValue(activeCell, val.ToString());
+                                        spreadsheet.ActiveGrid.InvalidateCell(activeCell.Row, activeCell.Column);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Console.WriteLine(e.Message);
+                                    }
+                                });
+                                i++;
+                            }
                         }
+                        spreadsheet.HighlightRow(job.RowIndex, Syncfusion.XlsIO.ExcelKnownColors.White);
+                    }, cTokenSource.Token);
+
+                    if (cTokenSource.IsCancellationRequested)
+                    {
+                        //reset AD
+                        ServiceModeSession.Instance.ResetConsoleState();
                     }
-                    spreadsheet.HighlightRow(job.RowIndex, Syncfusion.XlsIO.ExcelKnownColors.White);
+                  
                 }
 
                 this.logger.Log("Tasks complete!");
@@ -197,6 +210,8 @@ namespace ExcelRunner.ViewModels
             StopCommand = new DelegateCommand(() =>
             {
                 _requestStop = true;
+                cTokenSource.Cancel();
+                this.logger.Log($"Stopping measurement...");
             });
 
             ToggleDefaultInterlocksCommand = new DelegateCommand(() =>

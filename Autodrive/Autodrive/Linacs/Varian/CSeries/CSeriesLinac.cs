@@ -38,7 +38,7 @@ namespace Autodrive.Linacs.Varian.CSeries
         public void Initialize(string comPort)
         {
             Logger?.Log($"Initalizing Autodrive on port {comPort}");
-         
+
             _session = ServiceModeSession.Instance;
             if (Logger != null) { _session.Logger = Logger; }
             _session.Keyboard = new VetraKeyboard(comPort);
@@ -55,7 +55,9 @@ namespace Autodrive.Linacs.Varian.CSeries
         public void SetMachineState(MachineState ms)
         {
             var current = ServiceModeSession.Instance.MachineState;
-            if(machineStatesSet == 0) { BeamManager.SetFixed(); }
+            var changingToFixed = !AccessoryHelper.IsEDW(ms.Accessory) && AccessoryHelper.IsEDW(_session.MachineState.Accessory); //Was EDW now is not
+            if (machineStatesSet == 0 || changingToFixed) { BeamManager.SetFixed(); }
+
             BeamManager.SetEnergy(ms.Energy);
 
             //Do mechanical operations first
