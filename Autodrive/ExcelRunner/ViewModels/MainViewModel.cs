@@ -48,6 +48,9 @@ namespace ExcelRunner.ViewModels
         public DelegateCommand RunTasksCommand { get; set; }
         public DelegateCommand<object> RelayRibbonControlCommand { get; private set; }
         public DelegateCommand<SfSpreadsheet> RelaySpreadsheetControlCommand { get; set; }
+        public DelegateCommand ToggleDefaultInterlocksCommand { get; private set; }
+        public DelegateCommand StopCommand { get; private set; }
+        public DelegateCommand RefreshCommCommand { get; private set; }
         public ObservableCollection<string> ComPorts { get; set; } = new ObservableCollection<string>();
         #endregion
 
@@ -109,9 +112,6 @@ namespace ExcelRunner.ViewModels
             get { return elConected; }
             set { SetProperty(ref elConected, value); }
         }
-
-        public DelegateCommand ToggleDefaultInterlocksCommand { get; private set; }
-        public DelegateCommand StopCommand { get; private set; }
         #endregion
 
 
@@ -187,6 +187,11 @@ namespace ExcelRunner.ViewModels
             RelaySpreadsheetControlCommand = new DelegateCommand<SfSpreadsheet>((sp) =>
             {
                 this.spreadsheet = sp;
+            });
+
+            RefreshCommCommand = new DelegateCommand(() =>
+            {
+                SetDefaultComPorts();
             });
 
             StopCommand = new DelegateCommand(() =>

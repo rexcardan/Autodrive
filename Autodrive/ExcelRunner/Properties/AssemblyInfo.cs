@@ -7,12 +7,12 @@ using System.Windows;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ExcelRunner")]
+[assembly: AssemblyTitle("Autodrive UI")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("UAB Health System")]
-[assembly: AssemblyProduct("ExcelRunner")]
-[assembly: AssemblyCopyright("Copyright © UAB Health System 2017")]
+[assembly: AssemblyCompany("Red Ion LLC")]
+[assembly: AssemblyProduct("Autodrive UI")]
+[assembly: AssemblyCopyright("Copyright © Red Ion LLC 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

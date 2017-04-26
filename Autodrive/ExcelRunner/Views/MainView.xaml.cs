@@ -24,6 +24,8 @@ namespace ExcelRunner.Views
     {
         private Ribbon sfribbon;
 
+        public bool IsOperating { get; private set; }
+
         public MainView()
         {
             InitializeComponent();
@@ -43,16 +45,16 @@ namespace ExcelRunner.Views
 
                     if (button.Header.Contains("Open"))
                     {
-                        button.Click += FileOpen;
+                       // button.Click += FileOpen;
 
                     }
                     else if (button.Header.Contains("Save As"))
                     {
-                        button.Click += SaveAs; ;
+                       // button.Click += SaveAs; ;
                     }
                     else if (button.Header.Contains("Save"))
                     {
-                        button.Click += Save; ;
+                        //button.Click += Save; ;
                     }
                 }
             }
@@ -60,36 +62,51 @@ namespace ExcelRunner.Views
 
         private void Save(object sender, RoutedEventArgs e)
         {
-            this.spreadsheet.Save();
-            sfribbon.HideBackStage();
+            if (!IsOperating)
+            {
+                IsOperating = true;
+                this.spreadsheet.Save();
+                sfribbon.HideBackStage();
+                IsOperating = false;
+            }
         }
 
         private void SaveAs(object sender, RoutedEventArgs e)
         {
-            this.spreadsheet.SaveAs();
-            sfribbon.HideBackStage();
+            if (!IsOperating)
+            {
+                IsOperating = true;
+                this.spreadsheet.SaveAs();
+                sfribbon.HideBackStage();
+                IsOperating = false;
+            }
         }
 
         private void FileOpen(object sender, RoutedEventArgs e)
         {
-            // Create OpenFileDialog
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            //if (!IsOperating)
+            //{
+            //    IsOperating = true;
+            //    // Create OpenFileDialog
+            //    Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
-            // Set filter for file extension and default file extension
-            dlg.DefaultExt = ".xlsx";
-            dlg.Filter = "Excel documents (.xlsx)|*.xlsx";
+            //    // Set filter for file extension and default file extension
+            //    dlg.DefaultExt = ".xlsx";
+            //    dlg.Filter = "Excel documents (.xlsx)|*.xlsx";
 
-            // Display OpenFileDialog by calling ShowDialog method
-            Nullable<bool> result = dlg.ShowDialog();
+            //    // Display OpenFileDialog by calling ShowDialog method
+            //    Nullable<bool> result = dlg.ShowDialog();
 
-            // Get the selected file name and display in a TextBox
-            if (result == true)
-            {
-                // Open document
-                string filename = dlg.FileName;
-                this.spreadsheet.Open(filename);
-            }
-            sfribbon.HideBackStage();
+            //    // Get the selected file name and display in a TextBox
+            //    if (result == true)
+            //    {
+            //        // Open document
+            //        string filename = dlg.FileName;
+            //        this.spreadsheet.Open(filename);
+            //    }
+            //    sfribbon.HideBackStage();
+            //    IsOperating = false;
+            //}
         }
     }
 }
