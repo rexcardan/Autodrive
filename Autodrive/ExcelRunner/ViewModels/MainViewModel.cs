@@ -82,7 +82,7 @@ namespace ExcelRunner.ViewModels
             set { SetProperty(ref dVComPort, value); }
         }
 
-        private double chamberDepth;
+        private double chamberDepth = 0.00;
 
         public double ChamberDepth
         {
@@ -151,7 +151,7 @@ namespace ExcelRunner.ViewModels
                     //Make sure keyboard is enabled
                     ServiceModeSession.Instance.Keyboard.IsEnabled = true;
 
-                   IsStopRequested = false;
+                    IsStopRequested = false;
                     cTokenSource = new CancellationTokenSource();
 
                     jobs = spreadsheet.GetExcelJobs();
@@ -272,7 +272,10 @@ namespace ExcelRunner.ViewModels
             {
                 this.linac = new CSeriesLinac();
                 this.linac.Logger = logger;
-                try { linac.Initialize(ADComPort); ADConnected = "(Connected)"; }
+                try
+                {
+                    linac.Initialize(ADComPort); ADConnected = "(Connected)";
+                }
                 catch (Exception e)
                 {
                     ADConnected = "(Error)";
@@ -315,6 +318,7 @@ namespace ExcelRunner.ViewModels
                     {
                         DVConnected = "(Connected)";
                         logger.Log($"Found DoseView 1D version {version}");
+                        ChamberDepth = scan1D.GetCurrentDepthMM();
                     }
                 }
                 catch (Exception e) { DVConnected = "(Error)"; }
@@ -322,7 +326,10 @@ namespace ExcelRunner.ViewModels
 
             MoveChamberCommand = new DelegateCommand(async () =>
             {
-                await MoveChamber(chamberDepth);
+                if (!double.IsNaN(ChamberDepth))
+                {
+                    await MoveChamber(ChamberDepth);
+                }
             });
         }
 

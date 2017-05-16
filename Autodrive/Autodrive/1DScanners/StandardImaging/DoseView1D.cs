@@ -43,7 +43,7 @@ namespace Autodrive._1DScanners.StandardImaging
                 if (success)
                 {
                     var canParse = int.TryParse(response, out lastKnownTickPosition);
-                    if (canParse) result = (lastKnownTickPosition - origin) * TicksPerMM;
+                    if (canParse) result = (lastKnownTickPosition - origin) / TicksPerMM;
                     LastKnowPositionMM = result;
                 }
             }));
