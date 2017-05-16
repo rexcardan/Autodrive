@@ -17,7 +17,6 @@ namespace ExcelRunner
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-
             var splash = Splasher.GetSplash();
             splash.Show();
 

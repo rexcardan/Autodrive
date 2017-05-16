@@ -47,6 +47,7 @@ namespace ExcelRunner.ViewModels
         public DelegateCommand ConnectELCommand { get; set; }
         public DelegateCommand Connect1DCommand { get; set; }
         public DelegateCommand RunTasksCommand { get; set; }
+        public DelegateCommand MoveChamberCommand { get; set; }
         public DelegateCommand<object> RelayRibbonControlCommand { get; private set; }
         public DelegateCommand<SfSpreadsheet> RelaySpreadsheetControlCommand { get; set; }
         public DelegateCommand ToggleDefaultInterlocksCommand { get; private set; }
@@ -81,6 +82,14 @@ namespace ExcelRunner.ViewModels
             set { SetProperty(ref dVComPort, value); }
         }
 
+        private double chamberDepth;
+
+        public double ChamberDepth
+        {
+            get { return chamberDepth; }
+            set { SetProperty(ref chamberDepth, value); }
+        }
+
         private string status;
 
         public string Status
@@ -106,13 +115,21 @@ namespace ExcelRunner.ViewModels
         }
 
         private string elConected;
-        private bool _requestStop;
 
         public string ELConnected
         {
             get { return elConected; }
             set { SetProperty(ref elConected, value); }
         }
+
+        private bool isStopRequested;
+
+        public bool IsStopRequested
+        {
+            get { return isStopRequested; }
+            set { SetProperty(ref isStopRequested, value); }
+        }
+
         #endregion
 
 
@@ -127,77 +144,95 @@ namespace ExcelRunner.ViewModels
 
             RunTasksCommand = new DelegateCommand(async () =>
             {
-                _requestStop = false;
-                cTokenSource = new CancellationTokenSource();
-
-                jobs = spreadsheet.GetExcelJobs();
-
-                logger.Log($"{jobs.Count} found. {jobs.Sum(j => j.Measurements.Count())}/{jobs.Sum(j => j.NumberOfMeasurementsDesired)} measurements to do.");
-
-                foreach (var job in jobs.Where(j => !j.IsComplete()))
+                try
                 {
-                    if (!string.IsNullOrEmpty(job.Notification))
+                    //Not sure where someone left off - RESET
+                    ServiceModeSession.Instance.ResetConsoleState();
+                    //Make sure keyboard is enabled
+                    ServiceModeSession.Instance.Keyboard.IsEnabled = true;
+
+                   IsStopRequested = false;
+                    cTokenSource = new CancellationTokenSource();
+
+                    jobs = spreadsheet.GetExcelJobs();
+
+                    logger.Log($"{jobs.Count} found. {jobs.Sum(j => j.Measurements.Count())}/{jobs.Sum(j => j.NumberOfMeasurementsDesired)} measurements to do.");
+
+                    foreach (var job in jobs.Where(j => !j.IsComplete()))
                     {
-                        MessageBox.Show(job.Notification); //Hold until alert is handled
-                    }
-
-                    if (_requestStop) { break; }
-                    //Highlight row to show we are working on it
-                    spreadsheet.HighlightRow(job.RowIndex, Syncfusion.XlsIO.ExcelKnownColors.Yellow);
-
-                    Task linacTask = SetLinacState(job);
-                    Task scannerTask = Set1DScannerState(job);
-
-                    //Don't start measuring until complete
-                    await linacTask;
-                    await scannerTask;
-
-                    await Task.Run(() =>
-                    {
-                        this.logger.Log("Starting measurement...");
-                        if (el != null)
+                        if (!string.IsNullOrEmpty(job.Notification))
                         {
-                            var i = 0;
-                            while (job.MeasurementsLeft != 0 && !_requestStop)
-                            {
-                                double val = job.TakeMeasurement(el, linac, repeatBeam: i != 0);
-                                this.logger.Log($"Measurement complete : {val}");
-
-                                //Update Spreadsheet
-                                var mNumber = job.Measurements.Count();
-                                var mHeader = $"M{mNumber}";
-                                var column = spreadsheet.ActiveSheet.Rows[0].Cells.Select(c => c.Value).ToList().IndexOf(mHeader);
-
-                                Application.Current.Dispatcher.Invoke(() =>
-                                {
-                                    try
-                                    {
-                                        var activer = spreadsheet.ActiveSheet.Rows[job.RowIndex];
-                                        var activeCell = activer.Cells[column];
-                                        spreadsheet.ActiveGrid.SetCellValue(activeCell, val.ToString());
-                                        spreadsheet.ActiveGrid.InvalidateCell(activeCell.Row, activeCell.Column);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Console.WriteLine(e.Message);
-                                    }
-                                });
-                                i++;
-                            }
+                            System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"Resources/demonstrative.wav");
+                            player.Play();
+                            spreadsheet.Save(); //Save before notification
+                            MessageBox.Show(job.Notification); //Hold until alert is handled
                         }
-                        spreadsheet.HighlightRow(job.RowIndex, Syncfusion.XlsIO.ExcelKnownColors.White);
-                    }, cTokenSource.Token);
 
-                    if (cTokenSource.IsCancellationRequested)
-                    {
-                        //reset AD
-                        ServiceModeSession.Instance.ResetConsoleState();
-                        spreadsheet.HighlightRow(job.RowIndex, Syncfusion.XlsIO.ExcelKnownColors.White);
+                        if (IsStopRequested) { break; }
+                        //Highlight row to show we are working on it
+
+                        spreadsheet.HighlightRow(job.RowIndex, Syncfusion.XlsIO.ExcelKnownColors.Yellow);
+
+                        Task linacTask = SetLinacState(job);
+                        Task scannerTask = Set1DScannerState(job);
+
+                        //Don't start measuring until complete
+                        await linacTask;
+                        await scannerTask;
+
+                        await Task.Run(() =>
+                        {
+                            this.logger.Log("Starting measurement...");
+                            if (el != null)
+                            {
+                                var i = 0;
+                                while (job.MeasurementsLeft != 0 && !IsStopRequested)
+                                {
+                                    double val = job.TakeMeasurement(el, linac, repeatBeam: i != 0);
+                                    this.logger.Log($"Measurement complete : {val}");
+
+                                    //Update Spreadsheet
+                                    var mNumber = job.Measurements.Count();
+                                    var mHeader = $"M{mNumber}";
+                                    var column = spreadsheet.ActiveSheet.Rows[0].Cells.Select(c => c.Value).ToList().IndexOf(mHeader);
+
+                                    Application.Current.Dispatcher.Invoke(() =>
+                                    {
+                                        try
+                                        {
+                                            var activer = spreadsheet.ActiveSheet.Rows[job.RowIndex];
+                                            var activeCell = activer.Cells[column];
+                                            spreadsheet.ActiveGrid.SetCellValue(activeCell, val.ToString());
+                                            spreadsheet.ActiveGrid.InvalidateCell(activeCell.Row, activeCell.Column);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Console.WriteLine(e.Message);
+                                        }
+                                    });
+                                    i++;
+                                }
+                            }
+                            spreadsheet.HighlightRow(job.RowIndex, Syncfusion.XlsIO.ExcelKnownColors.White);
+                        }, cTokenSource.Token);
+
+                        if (cTokenSource.IsCancellationRequested)
+                        {
+                            //reset AD
+                            ServiceModeSession.Instance.ResetConsoleState();
+                            spreadsheet.HighlightRow(job.RowIndex, Syncfusion.XlsIO.ExcelKnownColors.White);
+                        }
+
                     }
-                  
+
+                    this.logger.Log("Tasks complete!");
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                    if (spreadsheet != null) { spreadsheet.Save(); }
                 }
 
-                this.logger.Log("Tasks complete!");
             });
         }
 
@@ -215,7 +250,8 @@ namespace ExcelRunner.ViewModels
 
             StopCommand = new DelegateCommand(() =>
             {
-                _requestStop = true;
+                ServiceModeSession.Instance.Keyboard.IsEnabled = false; // Turn off keyboard immediately
+                IsStopRequested = true;
                 cTokenSource.Cancel();
                 this.logger.Log($"Stopping measurement...");
             });
@@ -283,6 +319,11 @@ namespace ExcelRunner.ViewModels
                 }
                 catch (Exception e) { DVConnected = "(Error)"; }
             });
+
+            MoveChamberCommand = new DelegateCommand(async () =>
+            {
+                await MoveChamber(chamberDepth);
+            });
         }
 
         private void SetDefaultComPorts()
@@ -305,15 +346,23 @@ namespace ExcelRunner.ViewModels
             }
         }
 
-        private Task Set1DScannerState(ExcelJob job)
+        public async Task MoveChamber(double positionMM)
         {
-            return Task.Run(() =>
+            await Task.Run(() =>
             {
                 if (scan1D != null)
                 {
-                    scan1D.GoToDepth(job.DepthOfMeasurentMM).Wait();
+                    this.logger.Log("Moving chamber...");
+                    scan1D.GoToDepth(positionMM).Wait();
+                    this.logger.Log($"Chamber Depth = {positionMM.ToString("F1")} mm");
+                    ChamberDepth = positionMM;
                 }
             });
+        }
+
+        private Task Set1DScannerState(ExcelJob job)
+        {
+            return MoveChamber(job.DepthOfMeasurentMM);
         }
 
         private Task SetLinacState(ExcelJob job)

@@ -19,5 +19,6 @@ namespace Autodrive.Interfaces
         bool EnterNumber(double num);
         bool EnterNumber(int num);
         bool PressF2();
+        bool IsEnabled { get; set; }
     }
 }

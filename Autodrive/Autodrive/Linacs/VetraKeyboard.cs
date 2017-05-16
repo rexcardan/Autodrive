@@ -16,6 +16,8 @@ namespace Autodrive
         private string _comPort;
         private SerialPort _sp;
 
+        public bool IsEnabled { get; set; } = true;
+
         public VetraKeyboard(string comPort)
         {
             _comPort = comPort;
@@ -31,6 +33,8 @@ namespace Autodrive
 
         public bool Press(string characters)
         {
+            if (!IsEnabled) { return false; }
+
             Debug.Write(characters);
             var ascii = ASCIIEncoding.ASCII.GetBytes(characters);
             _sp.WriteTimeout = 1000;
@@ -48,6 +52,7 @@ namespace Autodrive
 
         public bool Press(char c)
         {
+            if (!IsEnabled) { return false; }
             try
             {
                 _sp.WriteTimeout = 1000;
@@ -63,6 +68,7 @@ namespace Autodrive
 
         private bool Send(byte code)
         {
+            if (!IsEnabled) { return false; }
             var bytes = new byte[] { code };
             try
             {
@@ -79,18 +85,21 @@ namespace Autodrive
 
         public bool PressEnter()
         {
+            if (!IsEnabled) { return false; }
             var enter = char.ConvertFromUtf32(13);
             return Press(enter);
         }
 
         public bool PressEsc()
         {
+            if (!IsEnabled) { return false; }
             var esc = char.ConvertFromUtf32(27);
             return Press(esc);
         }
 
         public bool PressLeft(int moveLeftAmount, int msDelay)
         {
+            if (!IsEnabled) { return false; }
             var success = true;
             for (int i = 0; i < moveLeftAmount; i++)
             {
@@ -102,6 +111,7 @@ namespace Autodrive
 
         public bool PressRight(int moveRightAmount, int msDelay)
         {
+            if (!IsEnabled) { return false; }
             var success = true;
             for (int i = 0; i < moveRightAmount; i++)
             {
@@ -113,6 +123,7 @@ namespace Autodrive
 
         public bool PressDown(int moveDownAmount, int msDelay)
         {
+            if (!IsEnabled) { return false; }
             var success = true;
             for (int i = 0; i < moveDownAmount; i++)
             {
@@ -124,6 +135,7 @@ namespace Autodrive
 
         public bool PressUp(int moveUpAmount, int msDelay)
         {
+            if (!IsEnabled) { return false; }
             bool success = true;
             for (int i = 0; i < moveUpAmount; i++)
             {
@@ -135,12 +147,14 @@ namespace Autodrive
 
         public bool EnterNumber(double num)
         {
+            if (!IsEnabled) { return false; }
             var numStr = num.ToString("f1");
             return Press(numStr);
         }
 
         public bool EnterNumber(int num)
         {
+            if (!IsEnabled) { return false; }
             var numStr = num.ToString();
             return Press(numStr);
         }

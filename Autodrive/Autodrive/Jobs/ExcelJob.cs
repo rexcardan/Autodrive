@@ -35,6 +35,7 @@ namespace Autodrive.Jobs
                 if (repeatBeam) { linac.RepeatBeam(); }
                 else { linac.BeamOn(); }
                 Thread.Sleep(linac.WaitMsForMU(ms.MU, ms.Accessory != null && AccessoryHelper.IsEDW(ms.Accessory)));
+                Thread.Sleep(1000); //Extra second to allow electrometer settling
             }
 
             if (el != null)

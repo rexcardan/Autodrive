@@ -6,13 +6,17 @@
         xmlns:local="clr-namespace:ExcelRunner.Views"
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf" x:Class="ExcelRunner.Views.MainView"
         mc:Ignorable="d"
+        xmlns:conv="clr-namespace:AutodriveUI.Converters"
         xmlns:prism="http://prismlibrary.com/"
         prism:ViewModelLocator.AutoWireViewModel="True"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         syncfusion:SkinStorage.VisualStyle="Office2013"
         WindowState="Maximized"
-        Title="Autodrive" Height="800" Width="1024" Icon="/Autodrive UI;component/Resources/AD.png">
+        Title="Autodrive" Height="800" Width="1400" Icon="/Autodrive UI;component/Resources/AD.png">
     <Grid>
+        <Grid.Resources>
+            <conv:InverseBooleanConverter x:Key="invBoolConv"/>
+        </Grid.Resources>
         <DockPanel>
             <syncfusion:SfSpreadsheetRibbon DataContext="{Binding ElementName=spreadsheet}" DockPanel.Dock="Top" x:Name="ribbon" Loaded="ribbon_Loaded">
                 <i:Interaction.Triggers>
@@ -64,6 +68,15 @@
                             <Button Content="Connect" Command="{Binding Connect1DCommand}" Padding="5"/>
                         </StackPanel>
                     </StackPanel>
+                    <StackPanel  Margin="20 0">
+                        <TextBlock  Padding="5" Width="160" Foreground="White">
+                            <Run Text="DoseView 1D Controls"/>
+                        </TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <syncfusion:DoubleTextBox Value="{Binding ChamberDepth}" Padding="5" Width="100"/>
+                            <Button Content="Move" Command="{Binding MoveChamberCommand}" Padding="5"/>
+                        </StackPanel>
+                    </StackPanel>
                 </StackPanel>
                 <DockPanel HorizontalAlignment="Right">
                     <Button Padding="5" Width="100" Command="{Binding RefreshCommCommand}" Margin="1">
@@ -72,7 +85,7 @@
                     <Button Padding="5" Width="100" Command="{Binding ToggleDefaultInterlocksCommand}" Margin="1">
                         <TextBlock Text="Toggle Interlocks"  FontSize="18" TextWrapping="Wrap" TextAlignment="Center" Foreground="#FF0080FF"/>
                     </Button>
-                    <Button Content="Stop" Command="{Binding StopCommand}" Padding="5" Width="100" Margin="0 1" Foreground="Red" FontSize="18"/>
+                    <Button Content="Stop" Command="{Binding StopCommand}" Padding="5" Width="100" Margin="0 1" Foreground="Red" FontSize="18" IsEnabled="{Binding IsStopRequested,Converter={StaticResource invBoolConv}}"/>
                     <Button Content="Run Tasks" HorizontalAlignment="Right" Padding="5" Width="200" Margin="1" Command="{Binding RunTasksCommand}" Foreground="#FF11A61B" FontSize="18"/>
                 </DockPanel>
             </Grid>
