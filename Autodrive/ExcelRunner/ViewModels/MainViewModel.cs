@@ -124,6 +124,7 @@ namespace ExcelRunner.ViewModels
         }
 
         private bool isStopRequested;
+        private bool alreadyZeroed = false;
 
         public bool IsStopRequested
         {
@@ -241,16 +242,16 @@ namespace ExcelRunner.ViewModels
 
         private Task SetElectrometer(ExcelJob job)
         {
-            return Task.Run(async () =>
+            return Task.Run(() =>
             {
                 if (el == null) { MessageBox.Show("No electrometer available!"); return; }
 
-                //ZERO
-                if (!el.IsZeroed())
-                {
-                    logger.Log("Zeroing electrometer...");
-                    await el.Zero();
-                }
+                ////ZERO
+                //if (!el.IsZeroed() && !alreadyZeroed)
+                //{
+                //    logger.Log("Zeroing electrometer...");
+                //    await el.Zero();
+                //}
 
                 //SET RANGE
                 if (el.GetRange() != Autodrive.Electrometers.Enums.Range.HIGH)
@@ -286,6 +287,8 @@ namespace ExcelRunner.ViewModels
                 {
                     el.SetMode(MeasureMode.CHARGE);
                 };
+                el.StopMeasurement();
+                el.Reset();
             });
         }
 
