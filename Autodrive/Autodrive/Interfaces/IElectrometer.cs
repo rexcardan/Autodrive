@@ -1,4 +1,5 @@
 ﻿using Autodrive.Electrometers;
+using Autodrive.Electrometers.Enums;
 using Autodrive.Logging;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,13 @@ namespace Autodrive.Interfaces
         bool SetMode(MeasureMode mode);
 
         /// <summary>
+        /// Gets the measurement mode of the electrometer
+        /// </summary>
+        /// <param name="mode">the mode desired</param>
+        /// <returns>true if measurement mode was set</returns>
+        MeasureMode GetMode();
+
+        /// <summary>
         /// Starts the current measurement
         /// </summary>
         void StartMeasurement();
@@ -56,6 +64,10 @@ namespace Autodrive.Interfaces
         bool SetBias(Bias bias);
 
         Bias GetBias();
+
+        Range GetRange();
+
+        bool SetRange(Range r);
 
         bool Reset();
 

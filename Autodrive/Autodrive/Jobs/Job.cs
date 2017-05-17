@@ -14,6 +14,7 @@ namespace Autodrive.Jobs
         public double DepthOfMeasurentMM { get; set; }
         public int NumberOfMeasurementsDesired { get; set; }
         public string Notification { get; set; }
+        public int Bias { get; set; } = 300;
 
         public Job(MachineState ms)
         {

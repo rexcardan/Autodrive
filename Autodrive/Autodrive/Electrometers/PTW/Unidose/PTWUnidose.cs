@@ -285,5 +285,15 @@ namespace Autodrive.Electrometers.PTW.Unidose
         {
             throw new NotImplementedException();
         }
+
+        Range IElectrometer.GetRange()
+        {
+            throw new NotImplementedException();
+        }
+
+        public MeasureMode GetMode()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

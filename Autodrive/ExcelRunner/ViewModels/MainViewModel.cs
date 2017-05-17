@@ -1,5 +1,6 @@
 ﻿using Autodrive;
 using Autodrive._1DScanners.StandardImaging;
+using Autodrive.Electrometers;
 using Autodrive.Electrometers.StandardImaging;
 using Autodrive.Interfaces;
 using Autodrive.Jobs;
@@ -175,10 +176,12 @@ namespace ExcelRunner.ViewModels
 
                         Task linacTask = SetLinacState(job);
                         Task scannerTask = Set1DScannerState(job);
+                        Task electrometerTask = SetElectrometer(job);
 
                         //Don't start measuring until complete
                         await linacTask;
                         await scannerTask;
+                        await electrometerTask;
 
                         await Task.Run(() =>
                         {
@@ -233,6 +236,56 @@ namespace ExcelRunner.ViewModels
                     if (spreadsheet != null) { spreadsheet.Save(); }
                 }
 
+            });
+        }
+
+        private Task SetElectrometer(ExcelJob job)
+        {
+            return Task.Run(async () =>
+            {
+                if (el == null) { MessageBox.Show("No electrometer available!"); return; }
+
+                //ZERO
+                if (!el.IsZeroed())
+                {
+                    logger.Log("Zeroing electrometer...");
+                    await el.Zero();
+                }
+
+                //SET RANGE
+                if (el.GetRange() != Autodrive.Electrometers.Enums.Range.HIGH)
+                {
+                    el.SetRange(Autodrive.Electrometers.Enums.Range.HIGH);
+                }
+
+                //SET BIAS
+                Bias reqBias = Bias.UNKNOWN;
+                var currentBias = this.el.GetBias();
+                switch (job.Bias)
+                {
+                    case -100:
+                    case -300: reqBias = Bias.NEG_100PERC; break;
+                    case -50:
+                    case -150: reqBias = Bias.NEG_50PERC; break;
+                    case 0: reqBias = Bias.ZERO; break;
+                    case 50:
+                    case 150: reqBias = Bias.POS_50PERC; break;
+                    case 100:
+                    case 300: reqBias = Bias.POS_100PERC; break;
+                }
+
+                if (reqBias != currentBias)
+                {
+                    logger.Log($"Settng Bias {reqBias.ToString()} + 10 sec delay");
+                    el.SetBias(reqBias);
+                    Thread.Sleep(10000);
+                }
+
+                //SET MODE
+                if (el.GetMode() != MeasureMode.CHARGE)
+                {
+                    el.SetMode(MeasureMode.CHARGE);
+                };
             });
         }
 

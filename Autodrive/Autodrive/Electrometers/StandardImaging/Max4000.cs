@@ -68,16 +68,32 @@ namespace Autodrive.Electrometers.StandardImaging
             return value;
         }
 
+        public Range GetRange()
+        {
+            var range = Range.HIGH;
+            mes.SendMessage("*RNG?", (resp) =>
+            {
+                bool success;
+                var cleanedResponse = ProcessMax4000Response(resp, out success, this.Logger);
+                switch (cleanedResponse)
+                {
+                    case "0": range = Range.LOW; break;
+                    case "1": range = Range.HIGH; break;
+                }
+            });
+            return range;
+        }
+
         public bool SetRange(Range r)
         {
             var success = false;
             if (r == Range.HIGH)
             {
-                mes.SendMessage("*RNG1", resp => ProcessMax4000Response(resp, out success, this.Logger));
+                mes.SendMessage("*RNG1?", resp => ProcessMax4000Response(resp, out success, this.Logger));
             }
             else
             {
-                mes.SendMessage("*RNG0", resp => ProcessMax4000Response(resp, out success, this.Logger));
+                mes.SendMessage("*RNG0?", resp => ProcessMax4000Response(resp, out success, this.Logger));
             }
             return success;
         }
@@ -117,6 +133,22 @@ namespace Autodrive.Electrometers.StandardImaging
                 case MeasureMode.TRIGGERED: mes.SendMessage("*CHGTHR?", resp => ProcessMax4000Response(resp, out success, this.Logger)); break;
             }
             return success;
+        }
+
+        public MeasureMode GetMode()
+        {
+            var deviceMode = GetDeviceMode();
+            var success = false;
+            switch (deviceMode)
+            {
+                case DeviceMode.CHARGE:
+                case DeviceMode.COLLECT_CHARGE: return MeasureMode.CHARGE;
+                case DeviceMode.RATE_CHARGE:
+                case DeviceMode.COLLECT_RATE_CHARGE:
+                    return MeasureMode.INT_DOSE_RATE;
+                case DeviceMode.RATE: return MeasureMode.CHARGE_RATE;
+            }
+            return MeasureMode.UNKNOWN;
         }
 
         public void StartMeasurement()
@@ -237,7 +269,7 @@ namespace Autodrive.Electrometers.StandardImaging
                 {
                     case "100": bias = Bias.POS_100PERC; break;
                     case "50": bias = Bias.POS_50PERC; break;
-                    case "0": bias = Bias.POS_50PERC; break;
+                    case "0": bias = Bias.ZERO; break;
                     case "-50": bias = Bias.NEG_50PERC; break;
                     case "-100": bias = Bias.NEG_100PERC; break;
                 }

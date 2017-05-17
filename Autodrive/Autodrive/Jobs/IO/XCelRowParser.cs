@@ -53,7 +53,16 @@ namespace Autodrive.Jobs.IO
 
         public static int GetMU(XCelData header, XCelData row)
         {
-            return TryGetInt(header, row, "MU");
+            var defValue = 0;
+            var read = TryGetInt(header, row, "MU");
+            return read != int.MinValue ? read : defValue;
+        }
+
+        public static int GetBias(XCelData header, XCelData row)
+        {
+            var defValue = 300;
+            var read = TryGetInt(header, row, "Bias", "Voltage");
+            return read != int.MinValue ? read : defValue;
         }
 
         public static double GetX1(XCelData header, XCelData row)
@@ -108,8 +117,9 @@ namespace Autodrive.Jobs.IO
 
         public static int GetNMeasurements(XCelData header, XCelData row)
         {
-            var n = TryGetInt(header, row, "N", "Num Measurements", "Number of Measurements");
-            return n;
+            var defValue = 1;
+            var read = TryGetInt(header, row, "N", "Num Measurements", "Number of Measurements");
+            return read != int.MinValue ? read : defValue;
         }
 
         public static double GetCouchLng(XCelData header, XCelData row)
@@ -161,7 +171,7 @@ namespace Autodrive.Jobs.IO
         public static int TryGetInt(XCelData header, XCelData row, params string[] possibleHeaders)
         {
             var index = GetIgnoreCaseIndex(header, possibleHeaders);
-            int ival = 0;
+            int ival = int.MinValue;
             if (index != -1)
             {
                 var val = row[index];

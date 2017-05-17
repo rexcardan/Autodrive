@@ -46,6 +46,7 @@ namespace ExcelRunner.Helpers
                 state.Y1 = XCelRowParser.GetY1(header, row);
                 state.Y2 = XCelRowParser.GetY2(header, row);
                 var excelJob = new ExcelJob(state,index);
+                excelJob.Bias = XCelRowParser.GetBias(header, row);
                 excelJob.Notification = XCelRowParser.GetNotification(header, row);
                 foreach (var measurement in XCelRowParser.ReadMeasurements(header, row))
                 {
